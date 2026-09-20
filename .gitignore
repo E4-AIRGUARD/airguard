@@ -1,0 +1,25 @@
+# 툴체인 (재설치 가능, 용량 큼)
+embedded/tools/
+
+# 데이터셋 (이미지 수천 장, 용량 큼 — 필요하면 Git LFS나 외부 저장소 사용)
+embedded/data/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Arduino 빌드 산출물
+build/
+*.bin
+*.elf
+
+# 압축 백업 (폴더 원본과 중복되기 쉬움)
+*.zip
+
+# OS/에디터
+Thumbs.db
+desktop.ini
+.DS_Store

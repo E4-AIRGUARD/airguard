@@ -7,9 +7,13 @@
 // 로깅 제어: 시리얼로 "STOP" → CSV 출력 중지 · "START" 또는 "RESUME" → 재개 (센서 측정 자체는 계속됨)
 // PMS5003 미연결 시 pm25=0 · smoke=X로 고정 출력(정상 동작) — 연결되면 코드 수정 없이 실제 값이 그대로 나옴
 // 배선: BME280 SDA21·SCL22 · PMS5003 RX16(→ESP32)·TX17 · Tach(선택) 26/27
-//       팬 속도: GPIO18/19 -> DFR0457 D(신호), DFR0457 +/-  -> 3V3/GND,
-//                DFR0457 VIN <- 팬 전원(+), GND <- 팬 전원(-)+팬GND, VOUT -> 팬 VCC
-//                (팬 내장 PWM 핀은 무반응 확인돼 미사용 · MOSFET로 VCC 자체를 초핑)
+//       흡기팬 속도(가변): GPIO18 -> DFR0457 D(신호), DFR0457 +/- -> 3V3/GND,
+//                DFR0457 VIN <- 팬 전원(+), GND <- 팬 전원(-)+흡기팬GND, VOUT -> 흡기팬 VCC
+//                (팬 내장 PWM 핀은 무반응 확인돼 미사용 · MOSFET로 VCC 자체를 초핑 · 500Hz, DFR0457 상한 1kHz 이하)
+//       배기팬(ON/OFF만, 속도 조절 불가): VCC는 DFR0457 경유 안 하고 5V에 직결 · GND는 공통 GND ·
+//                "동시" 조건일 때만 VCC를 5V에 물리고, "흡기단독/무팬" 조건일 땐 물리적으로 분리(뽑기).
+//                GPIO19(PIN_FAN_OUT)는 어디에도 안 물려 있어 코드가 뭘 보내든 무해하게 무시됨 —
+//                exhaust_fan_pwm 필드는 실제 속도가 아니라 "이 구간에서 배기를 꽂아둬야 함"을 표시하는 라벨일 뿐.
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
@@ -24,6 +28,7 @@ const int PIN_TACH_IN = 26, PIN_TACH_OUT = 27;
 const uint16_t PM_SMOKE_THRESHOLD = 50;   // 이 값(㎍/㎥) 넘으면 연기발생(O) — T08 WARNING 기준과 동일
 const uint32_t PMS_STALE_MS = 6000;       // PMS5003 무응답 판단 기준(T08과 동일 근거)
 const uint32_t FAN_PWM_MAX = 2047;         // 11-bit PWM
+const uint32_t FAN_PWM_FREQ_HZ = 500;      // DFR0457 PWM 상한 1 kHz 이하(T06 가열패드와 동일 근거) · 25kHz는 못 따라가 항상 켜진 것처럼 동작함
 
 // 제조 환경 참고 기준: 목표 23 ℃ / 45 %RH, NORMAL 20~25 ℃ / 35~55 %RH.
 // 실제 무팬 측정값 약 24 ℃는 이 NORMAL 범위에 포함된다.
@@ -144,8 +149,8 @@ void setup() {
 
   pms.begin(9600, SERIAL_8N1, PIN_PMS_RX, PIN_PMS_TX);
 
-  ledcAttach(PIN_FAN_IN, 25000, 11);
-  ledcAttach(PIN_FAN_OUT, 25000, 11);
+  ledcAttach(PIN_FAN_IN, FAN_PWM_FREQ_HZ, 11);
+  ledcAttach(PIN_FAN_OUT, FAN_PWM_FREQ_HZ, 11);
   setFan(PIN_FAN_IN, 0);
   setFan(PIN_FAN_OUT, 0);
 
@@ -199,4 +204,3 @@ void loop() {
     }
   }
 }
-
