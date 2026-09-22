@@ -27,7 +27,7 @@ def main() -> None:
     duration_sec = float(sys.argv[2]) if len(sys.argv) > 2 else 60.0
     out_name = sys.argv[3] if len(sys.argv) > 3 else "measure"
 
-    out_path = Path(r"C:\air_core\new_fan_t\data") / f"{out_name}_{datetime.now():%Y%m%d_%H%M%S}.csv"
+    out_path = Path(__file__).resolve().parent / "data" / f"{out_name}_{datetime.now():%Y%m%d_%H%M%S}.csv"
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     ser = serial.Serial(PORT, BAUD, timeout=1)
