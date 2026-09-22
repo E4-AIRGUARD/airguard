@@ -1,0 +1,12 @@
+# 작업 A/B 준비 목록 — 설계 예시 값입니다. labelme에서 실제로 붙인 클래스 이름과
+# 실제 개봉한 부품 수량으로 아래 값을 바꿔서 사용하세요.
+# (build_yolo_dataset.py가 만든 dataset/data.yaml의 names와 이름이 일치해야 합니다)
+tasks:
+  A:
+    white_short: 2
+    white_long: 1
+    gray_common: 2
+  B:
+    white_short: 1
+    white_long: 2
+    gray_common: 2

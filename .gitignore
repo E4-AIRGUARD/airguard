@@ -4,6 +4,12 @@ embedded/tools/
 # 데이터셋 (이미지 수천 장, 용량 큼 — 필요하면 Git LFS나 외부 저장소 사용)
 embedded/data/
 
+# 비전 시험 캡처 이미지 및 YOLO 파생 산출물 (labelme 원본 JSON은 추적 대상)
+embedded/vision_qc/captures/
+embedded/vision_qc/dataset/
+embedded/vision_qc/runs/
+embedded/vision_qc/*.pt
+
 # Python
 __pycache__/
 *.pyc
