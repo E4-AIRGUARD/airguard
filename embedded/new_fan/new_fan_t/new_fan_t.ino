@@ -1,16 +1,18 @@
 // new_fan_t — 정지·약풍·중풍·강풍 4단 팬 제어(25 kHz 11비트 PWM + Tach 회전수) + BME280(온습압) + PMS5003(미세먼지)
 //
-// 팬 배선(2026-09-22 정정): 팬 Vcc·GND → 브레드보드 5 V 줄 (ESP32 5V 핀 아님)
+// 팬 배선(2026-09-27 재변경): 팬 Vcc·GND → 브레드보드 5 V 줄 (ESP32 5V 핀 아님)
 //       PWM(노란선)  흡기 → 13 · 배기 → 19
-//       Tach(파란선) 흡기 → 32 · 배기 → 33
+//       Tach(파란선) 흡기 → 5 (32에서 이동 — 흡기+배기 동시 구동 시 rpm이 8000~13000으로 튀는
+//                              노이즈가 있어 재배선) · 배기 → 33
 // !! GND는 ESP32·팬·BME280·PMS5003 전부 반드시 공통으로 묶을 것 — 기준 전위가 다르면
 //    Tach 펄스가 튀거나 I2C·UART가 아예 안 붙는다.
 // !! Tach를 GPIO34·35·36·39에 꽂으면 안 된다. 입력 전용이라 내부 풀업 회로가 없고,
 //    오픈 컬렉터인 팬 Tach는 풀업 없이는 라인이 떠서 노이즈만 읽힌다.
 //
-// 센서 배선(T08_cleanbox_fw와 동일 핀, 팬 핀과 겹치지 않음 — 2026-09-22 추가):
-//       BME280   SDA → 21 · SCL → 22 (I2C, 0x76/0x77 자동 탐색)
-//       PMS5003  RX(ESP32측, PMS TX에 연결) → 16 · TX(ESP32측, PMS RX에 연결) → 17 (UART2, 9600bps)
+// 센서 배선(팬 핀과 겹치지 않음 — 2026-09-22 추가, PMS 핀은 2026-09-27 재변경):
+//       BME280   SDA(파란선) → 21 · SCL(노란선) → 22 (I2C, 0x76/0x77 자동 탐색)
+//       PMS5003  RX(ESP32측, PMS TX에 연결) → 14 · TX(ESP32측, PMS RX에 연결) → 27 (UART2, 9600bps)
+//       (GPIO2는 부팅 스트래핑 핀이라 PMS TX가 물리면 업로드가 막혀서 14/27로 옮김)
 // 라이브러리: Adafruit BME280 + Adafruit Unified Sensor + Adafruit BusIO
 //
 // 단계값은 실측 duty→rpm 곡선에서 간격이 가장 크게 벌어지도록 골랐다:
@@ -30,14 +32,14 @@
 #include <HardwareSerial.h>
 
 const int FAN_IN = 13, FAN_OUT = 19;
-const int TACH_IN = 32, TACH_OUT = 33;
+const int TACH_IN = 5, TACH_OUT = 33;
 const uint32_t PWM_FREQ = 25000;   // 4핀 PC 팬 규격 25 kHz
 const uint8_t  PWM_RES  = 11;
 const uint32_t DUTY_MAX = (1u << PWM_RES) - 1;
 const uint32_t REPORT_MS = 1000;
 
 const int PIN_SDA = 21, PIN_SCL = 22;
-const int PIN_PMS_RX = 16, PIN_PMS_TX = 17;
+const int PIN_PMS_RX = 14, PIN_PMS_TX = 27;
 const uint32_t PMS_STALE_MS = 6000;   // PMS5003 안정 모드 출력 간격 최대 2.3 s → 2회 연속 누락까지 정상으로 봄 (T08과 동일 기준)
 
 struct Level { const char *name; int pct; };
