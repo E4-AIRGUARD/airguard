@@ -10,7 +10,7 @@
 //    오픈 컬렉터인 팬 Tach는 풀업 없이는 라인이 떠서 노이즈만 읽힌다.
 //
 // 센서 배선(팬 핀과 겹치지 않음 — 2026-09-22 추가, PMS 핀은 2026-09-27 재변경):
-//       BME280   SDA(파란선) → 21 · SCL(노란선) → 22 (I2C, 0x76/0x77 자동 탐색)
+//       BME280   SDA(파란선) → 21 · SCL(노란선) → 23 (2026-09-30 SDA만 변경, I2C 0x76/0x77 자동 탐색)
 //       PMS5003  RX(ESP32측, PMS TX에 연결) → 14 · TX(ESP32측, PMS RX에 연결) → 27 (UART2, 9600bps)
 //       (GPIO2는 부팅 스트래핑 핀이라 PMS TX가 물리면 업로드가 막혀서 14/27로 옮김)
 // 라이브러리: Adafruit BME280 + Adafruit Unified Sensor + Adafruit BusIO
@@ -38,7 +38,7 @@ const uint8_t  PWM_RES  = 11;
 const uint32_t DUTY_MAX = (1u << PWM_RES) - 1;
 const uint32_t REPORT_MS = 1000;
 
-const int PIN_SDA = 21, PIN_SCL = 22;
+const int PIN_SDA = 21, PIN_SCL = 23;
 const int PIN_PMS_RX = 14, PIN_PMS_TX = 27;
 const uint32_t PMS_STALE_MS = 6000;   // PMS5003 안정 모드 출력 간격 최대 2.3 s → 2회 연속 누락까지 정상으로 봄 (T08과 동일 기준)
 

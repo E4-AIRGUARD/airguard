@@ -4,6 +4,11 @@ embedded/tools/
 # 데이터셋 (이미지 수천 장, 용량 큼 — 필요하면 Git LFS나 외부 저장소 사용)
 embedded/data/
 
+# 실험 카메라 원본은 로컬 보관; CSV·JSON·촬영 시각 목록은 추적
+embedded/new_fan/new_fan_t/data/**/*.jpg
+embedded/new_fan/new_fan_t/data/**/*.jpeg
+embedded/new_fan/new_fan_t/data/**/*.png
+
 # 비전 시험 캡처 이미지 및 YOLO 파생 산출물 (labelme 원본 JSON은 추적 대상)
 embedded/vision_qc/captures/
 embedded/vision_qc/dataset/

@@ -1,0 +1,78 @@
+{
+  "status": "complete",
+  "combination": 5,
+  "intake": 60,
+  "exhaust": 60,
+  "duration_sec": 300,
+  "rows": 299,
+  "images": 300,
+  "csv": "C:\\airguard\\embedded\\new_fan\\new_fan_t\\data\\clean_air_fan_matrix\\heat\\manual_20260929_224615\\05_intake_medium_exhaust_medium\\05_intake_medium_exhaust_medium.csv",
+  "images_dir": "C:\\airguard\\embedded\\new_fan\\new_fan_t\\data\\clean_air_fan_matrix\\heat\\manual_20260929_224615\\05_intake_medium_exhaust_medium\\images",
+  "preheat_check": "C:\\airguard\\embedded\\new_fan\\new_fan_t\\data\\clean_air_fan_matrix\\heat\\manual_20260929_224615\\04_intake_medium_exhaust_weak\\status.json",
+  "preheat_temp_c": 25.57,
+  "trigger": "User confirmed 5 seconds of manual heating completed",
+  "actual_heater_off_timestamp": null,
+  "heat_load": 0,
+  "error": null,
+  "stop_verified": true,
+  "updated": "2026-09-29T23:19:18.468",
+  "started": "2026-09-29T23:14:15.996",
+  "first_sensor": {
+    "duty_in": 0,
+    "rpm_in": 0,
+    "duty_out": 0,
+    "rpm_out": 0,
+    "temp_c": 31.25,
+    "rh_pct": 89.1,
+    "pm2_5": 0,
+    "bme_err": 0,
+    "pms_stale": 0
+  },
+  "last_sensor": {
+    "duty_in": 60,
+    "rpm_in": 4770,
+    "duty_out": 60,
+    "rpm_out": 5100,
+    "temp_c": 25.44,
+    "rh_pct": 88.5,
+    "pm2_5": 0,
+    "bme_err": 0,
+    "pms_stale": 0
+  },
+  "elapsed_sec": 300.0,
+  "measurement_ended": "2026-09-29T23:19:16.003",
+  "stop_sample": {
+    "duty_in": 0,
+    "rpm_in": 0,
+    "duty_out": 0,
+    "rpm_out": 0,
+    "temp_c": 25.45,
+    "rh_pct": 88.5,
+    "pm2_5": 0,
+    "bme_err": 0,
+    "pms_stale": 0
+  },
+  "ranges": {
+    "temp_c": [
+      25.44,
+      31.19
+    ],
+    "rh_pct": [
+      88.5,
+      89.1
+    ],
+    "rpm_in": [
+      2610,
+      5010
+    ],
+    "rpm_out": [
+      2640,
+      5490
+    ],
+    "pm2_5": [
+      0,
+      0
+    ]
+  },
+  "ended": "2026-09-29T23:19:18.468"
+}
