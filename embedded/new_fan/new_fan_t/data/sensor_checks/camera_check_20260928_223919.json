@@ -1,0 +1,16 @@
+{
+  "started": "2026-09-28T22:39:19",
+  "camera_index": 1,
+  "backend": "DSHOW",
+  "opened": true,
+  "frames_ok": 90,
+  "frames_failed": 0,
+  "changed_frames": 89,
+  "duration_sec": 9.24,
+  "reported_fps": -1.0,
+  "width": 1280,
+  "height": 720,
+  "brightness_mean": 126.43,
+  "brightness_std": 20.76,
+  "image_path": "C:\\airguard\\embedded\\new_fan\\new_fan_t\\data\\sensor_checks\\camera_check_20260928_223919.jpg"
+}

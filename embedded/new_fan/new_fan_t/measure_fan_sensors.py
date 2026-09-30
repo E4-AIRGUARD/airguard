@@ -15,6 +15,8 @@ import serial
 
 PORT = "COM7"
 BAUD = 115200
+# 측정 CSV는 어디서 실행하든 항상 이 위치에 저장한다 (사용자 지정 고정 경로)
+DATA_DIR = Path(r"C:\airguard\embedded\new_fan\new_fan_t\data")
 
 HEADER = [
     "pc_timestamp", "elapsed_ms", "duty_in_pct", "rpm_in", "duty_out_pct", "rpm_out",
@@ -27,7 +29,7 @@ def main() -> None:
     duration_sec = float(sys.argv[2]) if len(sys.argv) > 2 else 60.0
     out_name = sys.argv[3] if len(sys.argv) > 3 else "measure"
 
-    out_path = Path(__file__).resolve().parent / "data" / f"{out_name}_{datetime.now():%Y%m%d_%H%M%S}.csv"
+    out_path = DATA_DIR / f"{out_name}_{datetime.now():%Y%m%d_%H%M%S}.csv"
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
     ser = serial.Serial(PORT, BAUD, timeout=1)

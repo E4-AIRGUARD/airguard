@@ -1,0 +1,199 @@
+{
+  "started": "2026-09-28T22:51:10",
+  "port": "COM7",
+  "tests": [
+    {
+      "intake": 35,
+      "exhaust": 35,
+      "samples": [
+        {
+          "elapsed_ms": 1377000.0,
+          "duty_in": 35.0,
+          "rpm_in": 0.0,
+          "duty_out": 35.0,
+          "rpm_out": 1230.0,
+          "temp_c": 24.51,
+          "rh_pct": 58.1,
+          "pressure_hpa": 1007.6,
+          "pm1": 8.0,
+          "pm25": 20.0,
+          "pm10": 21.0,
+          "bme_err": 0.0,
+          "pms_stale": 0.0,
+          "since_command_sec": 0.906
+        },
+        {
+          "elapsed_ms": 1378000.0,
+          "duty_in": 35.0,
+          "rpm_in": 0.0,
+          "duty_out": 35.0,
+          "rpm_out": 2700.0,
+          "temp_c": 24.51,
+          "rh_pct": 57.6,
+          "pressure_hpa": 1007.7,
+          "pm1": 8.0,
+          "pm25": 20.0,
+          "pm10": 22.0,
+          "bme_err": 0.0,
+          "pms_stale": 0.0,
+          "since_command_sec": 1.906
+        },
+        {
+          "elapsed_ms": 1379000.0,
+          "duty_in": 35.0,
+          "rpm_in": 0.0,
+          "duty_out": 35.0,
+          "rpm_out": 2910.0,
+          "temp_c": 24.51,
+          "rh_pct": 57.4,
+          "pressure_hpa": 1007.7,
+          "pm1": 9.0,
+          "pm25": 20.0,
+          "pm10": 22.0,
+          "bme_err": 0.0,
+          "pms_stale": 0.0,
+          "since_command_sec": 2.906
+        },
+        {
+          "elapsed_ms": 1380000.0,
+          "duty_in": 35.0,
+          "rpm_in": 0.0,
+          "duty_out": 35.0,
+          "rpm_out": 2940.0,
+          "temp_c": 24.52,
+          "rh_pct": 57.3,
+          "pressure_hpa": 1007.7,
+          "pm1": 9.0,
+          "pm25": 20.0,
+          "pm10": 22.0,
+          "bme_err": 0.0,
+          "pms_stale": 0.0,
+          "since_command_sec": 3.906
+        },
+        {
+          "elapsed_ms": 1381000.0,
+          "duty_in": 35.0,
+          "rpm_in": 0.0,
+          "duty_out": 35.0,
+          "rpm_out": 2940.0,
+          "temp_c": 24.51,
+          "rh_pct": 57.2,
+          "pressure_hpa": 1007.7,
+          "pm1": 9.0,
+          "pm25": 20.0,
+          "pm10": 22.0,
+          "bme_err": 0.0,
+          "pms_stale": 0.0,
+          "since_command_sec": 4.906
+        }
+      ],
+      "settled_samples": 3,
+      "ok": false,
+      "rpm_in_range": [
+        0.0,
+        0.0
+      ],
+      "rpm_out_range": [
+        2910.0,
+        2940.0
+      ]
+    }
+  ],
+  "errors": [
+    "Fan feedback failed at 35/35; stopping remaining tests"
+  ],
+  "initial": {
+    "elapsed_ms": 1375000.0,
+    "duty_in": 0.0,
+    "rpm_in": 0.0,
+    "duty_out": 0.0,
+    "rpm_out": 0.0,
+    "temp_c": 24.5,
+    "rh_pct": 58.1,
+    "pressure_hpa": 1007.6,
+    "pm1": 8.0,
+    "pm25": 20.0,
+    "pm10": 21.0,
+    "bme_err": 0.0,
+    "pms_stale": 0.0
+  },
+  "stop_samples": [
+    {
+      "elapsed_ms": 1382000.0,
+      "duty_in": 0.0,
+      "rpm_in": 0.0,
+      "duty_out": 0.0,
+      "rpm_out": 2040.0,
+      "temp_c": 24.52,
+      "rh_pct": 57.2,
+      "pressure_hpa": 1007.7,
+      "pm1": 9.0,
+      "pm25": 21.0,
+      "pm10": 22.0,
+      "bme_err": 0.0,
+      "pms_stale": 0.0
+    },
+    {
+      "elapsed_ms": 1383000.0,
+      "duty_in": 0.0,
+      "rpm_in": 0.0,
+      "duty_out": 0.0,
+      "rpm_out": 0.0,
+      "temp_c": 24.51,
+      "rh_pct": 57.4,
+      "pressure_hpa": 1007.7,
+      "pm1": 8.0,
+      "pm25": 20.0,
+      "pm10": 21.0,
+      "bme_err": 0.0,
+      "pms_stale": 0.0
+    },
+    {
+      "elapsed_ms": 1384000.0,
+      "duty_in": 0.0,
+      "rpm_in": 0.0,
+      "duty_out": 0.0,
+      "rpm_out": 0.0,
+      "temp_c": 24.51,
+      "rh_pct": 57.6,
+      "pressure_hpa": 1007.7,
+      "pm1": 8.0,
+      "pm25": 20.0,
+      "pm10": 21.0,
+      "bme_err": 0.0,
+      "pms_stale": 0.0
+    },
+    {
+      "elapsed_ms": 1385000.0,
+      "duty_in": 0.0,
+      "rpm_in": 0.0,
+      "duty_out": 0.0,
+      "rpm_out": 0.0,
+      "temp_c": 24.51,
+      "rh_pct": 57.7,
+      "pressure_hpa": 1007.7,
+      "pm1": 8.0,
+      "pm25": 20.0,
+      "pm10": 21.0,
+      "bme_err": 0.0,
+      "pms_stale": 0.0
+    },
+    {
+      "elapsed_ms": 1386000.0,
+      "duty_in": 0.0,
+      "rpm_in": 0.0,
+      "duty_out": 0.0,
+      "rpm_out": 0.0,
+      "temp_c": 24.51,
+      "rh_pct": 57.7,
+      "pressure_hpa": 1007.7,
+      "pm1": 8.0,
+      "pm25": 20.0,
+      "pm10": 21.0,
+      "bme_err": 0.0,
+      "pms_stale": 0.0
+    }
+  ],
+  "stop_verified": true,
+  "ended": "2026-09-28T22:51:22"
+}

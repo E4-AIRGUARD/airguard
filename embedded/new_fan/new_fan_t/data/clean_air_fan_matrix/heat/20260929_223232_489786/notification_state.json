@@ -1,0 +1,7 @@
+{
+  "completed": [],
+  "error": "카메라 기록 실패: 영상 프레임 수신 실패",
+  "user_notified": true,
+  "status": "failed",
+  "reported_at": "2026-09-29T22:36:48.5625202+09:00"
+}

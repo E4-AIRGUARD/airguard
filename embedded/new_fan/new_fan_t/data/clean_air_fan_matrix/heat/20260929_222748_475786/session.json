@@ -1,0 +1,23 @@
+{
+  "updated": "2026-09-29T22:28:41.043",
+  "status": "stopped",
+  "current": 1,
+  "completed": [],
+  "sample": {
+    "duty_in": 0,
+    "rpm_in": 0,
+    "duty_out": 0,
+    "rpm_out": 0,
+    "temp_c": 23.78,
+    "rh_pct": 54.3,
+    "pm2_5": 0,
+    "bme_err": 0,
+    "pms_stale": 0
+  },
+  "sample_age_sec": 0.97,
+  "can_start": false,
+  "rows": 3,
+  "images": 48,
+  "remaining_sec": 2,
+  "error": null
+}

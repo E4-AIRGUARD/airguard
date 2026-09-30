@@ -1,0 +1,10 @@
+{
+  "phase": "intake_strong_exhaust_medium",
+  "run_id": "intake_strong_exhaust_medium_20260928_233839_741439",
+  "sensor_csv": "C:\\airguard\\embedded\\new_fan\\new_fan_t\\data\\clean_air_fan_matrix\\session_20260928_225746\\fan_matrix\\20260928_230253_333463\\csv\\intake_strong_exhaust_medium\\intake_strong_exhaust_medium_20260928_233839_741439.csv",
+  "experiment": "clean-air",
+  "intake": 100,
+  "exhaust": 60,
+  "camera_index": 1,
+  "image_interval_sec": 1.0
+}
