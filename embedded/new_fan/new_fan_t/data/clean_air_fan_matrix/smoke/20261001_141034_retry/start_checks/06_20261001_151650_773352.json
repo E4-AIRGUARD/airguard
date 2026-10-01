@@ -1,0 +1,68 @@
+{
+  "combination": 6,
+  "bme_enabled": false,
+  "ready": true,
+  "baseline_pm25_range": [
+    0,
+    20
+  ],
+  "samples": [
+    {
+      "duty_in": 0,
+      "rpm_in": 0,
+      "duty_out": 0,
+      "rpm_out": 0,
+      "pm2_5": 14,
+      "pms_stale": 0,
+      "Time": "2026-10-01T15:16:51.203240+09:00"
+    },
+    {
+      "duty_in": 0,
+      "rpm_in": 0,
+      "duty_out": 0,
+      "rpm_out": 0,
+      "pm2_5": 14,
+      "pms_stale": 0,
+      "Time": "2026-10-01T15:16:52.203204+09:00"
+    },
+    {
+      "duty_in": 0,
+      "rpm_in": 0,
+      "duty_out": 0,
+      "rpm_out": 0,
+      "pm2_5": 13,
+      "pms_stale": 0,
+      "Time": "2026-10-01T15:16:53.202938+09:00"
+    },
+    {
+      "duty_in": 0,
+      "rpm_in": 0,
+      "duty_out": 0,
+      "rpm_out": 0,
+      "pm2_5": 13,
+      "pms_stale": 0,
+      "Time": "2026-10-01T15:16:54.205738+09:00"
+    },
+    {
+      "duty_in": 0,
+      "rpm_in": 0,
+      "duty_out": 0,
+      "rpm_out": 0,
+      "pm2_5": 13,
+      "pms_stale": 0,
+      "Time": "2026-10-01T15:16:55.204343+09:00"
+    }
+  ],
+  "error": null,
+  "last": {
+    "duty_in": 0,
+    "rpm_in": 0,
+    "duty_out": 0,
+    "rpm_out": 0,
+    "pm2_5": 13,
+    "pms_stale": 0,
+    "Time": "2026-10-01T15:16:55.204343+09:00"
+  },
+  "fans_stopped": true,
+  "checked_at": "2026-10-01T15:16:55.806510+09:00"
+}

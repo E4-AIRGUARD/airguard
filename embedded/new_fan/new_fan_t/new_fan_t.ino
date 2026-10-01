@@ -26,9 +26,14 @@
 //
 // 출력: 1초마다 사람이 읽는 [FAN] 줄 + PC 로깅용 "DATA,..." CSV 줄을 같이 찍는다.
 //   DATA,elapsed_ms,duty_in,rpm_in,duty_out,rpm_out,temp_c,rh_pct,pressure_hpa,pm1_0,pm2_5,pm10,bme_err,pms_stale
+#ifndef ENABLE_BME280
+#define ENABLE_BME280 1  // 진단 빌드에서 -DENABLE_BME280=0: I2C/BME280 호출 전부 제외
+#endif
+#if ENABLE_BME280
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
+#endif
 #include <HardwareSerial.h>
 
 const int FAN_IN = 13, FAN_OUT = 19;
@@ -81,7 +86,9 @@ uint32_t rpmIn = 0, rpmOut = 0;
 char cmdBuf[16];
 uint8_t cmdLen = 0;
 
+#if ENABLE_BME280
 Adafruit_BME280 bme;
+#endif
 bool bmeOk = false;
 HardwareSerial pms(2);
 struct Sens { float t = NAN, rh = NAN, p = NAN; uint16_t pm1 = 0, pm25 = 0, pm10 = 0; uint32_t pmsAt = 0; } S;
@@ -167,14 +174,16 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(TACH_IN),  isrIn,  FALLING);
   attachInterrupt(digitalPinToInterrupt(TACH_OUT), isrOut, FALLING);
 
+#if ENABLE_BME280
   Wire.begin(PIN_SDA, PIN_SCL, 100000);
   bmeOk = bme.begin(0x76, &Wire) || bme.begin(0x77, &Wire);
   if (bmeOk) bme.setSampling(Adafruit_BME280::MODE_FORCED);
+#endif
   pms.begin(9600, SERIAL_8N1, PIN_PMS_RX, PIN_PMS_TX);
 
   applyBoth(0, "정지");
   Serial.printf("[FAN] 0 정지 · 1 약풍(35 %%) · 2 중풍(60 %%) · 3 강풍(100 %%) · d<n> 수동 · F <in> <out> 독립제어 · ? 상태 (BME280 %s)\n",
-                bmeOk ? "OK" : "감지 안됨");
+                ENABLE_BME280 ? (bmeOk ? "OK" : "감지 안됨") : "진단용 비활성화");
 }
 
 void loop() {
@@ -189,12 +198,14 @@ void loop() {
     rpmOut = tachCntOut * 30;
     tachCntIn = 0; tachCntOut = 0;
 
+#if ENABLE_BME280
     if (bmeOk) {
       bme.takeForcedMeasurement();
       S.t = bme.readTemperature();
       S.rh = bme.readHumidity();
       S.p = bme.readPressure() / 100.0f;
     }
+#endif
     bool pmsStale = (millis() - S.pmsAt > PMS_STALE_MS);
 
     Serial.printf("[FAN] 흡기 %s duty=%3d %% %4lu rpm · 배기 %s duty=%3d %% %4lu rpm · T=%.1fC RH=%.1f%% P=%.0fhPa PM1=%u PM2.5=%u PM10=%u%s\n",

@@ -1,0 +1,491 @@
+{
+  "started": "2026-10-01T10:08:34.315042",
+  "bme_enabled": false,
+  "status": "complete",
+  "stages": [
+    {
+      "name": "stopped",
+      "duty": 0,
+      "duration_sec": 10,
+      "samples": [
+        {
+          "duty_in": 0,
+          "rpm_in": 240,
+          "duty_out": 0,
+          "rpm_out": 240,
+          "pm2_5": 23,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:35.717335",
+          "elapsed_sec": 0.688
+        },
+        {
+          "duty_in": 0,
+          "rpm_in": 0,
+          "duty_out": 0,
+          "rpm_out": 0,
+          "pm2_5": 24,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:36.717179",
+          "elapsed_sec": 1.688
+        },
+        {
+          "duty_in": 0,
+          "rpm_in": 0,
+          "duty_out": 0,
+          "rpm_out": 0,
+          "pm2_5": 24,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:37.717609",
+          "elapsed_sec": 2.688
+        },
+        {
+          "duty_in": 0,
+          "rpm_in": 0,
+          "duty_out": 0,
+          "rpm_out": 0,
+          "pm2_5": 24,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:38.719108",
+          "elapsed_sec": 3.688
+        },
+        {
+          "duty_in": 0,
+          "rpm_in": 0,
+          "duty_out": 0,
+          "rpm_out": 0,
+          "pm2_5": 23,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:39.716815",
+          "elapsed_sec": 4.688
+        },
+        {
+          "duty_in": 0,
+          "rpm_in": 0,
+          "duty_out": 0,
+          "rpm_out": 0,
+          "pm2_5": 23,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:40.720699",
+          "elapsed_sec": 5.688
+        },
+        {
+          "duty_in": 0,
+          "rpm_in": 0,
+          "duty_out": 0,
+          "rpm_out": 0,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:41.718583",
+          "elapsed_sec": 6.688
+        },
+        {
+          "duty_in": 0,
+          "rpm_in": 0,
+          "duty_out": 0,
+          "rpm_out": 0,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:42.717959",
+          "elapsed_sec": 7.688
+        },
+        {
+          "duty_in": 0,
+          "rpm_in": 0,
+          "duty_out": 0,
+          "rpm_out": 0,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:43.715929",
+          "elapsed_sec": 8.688
+        },
+        {
+          "duty_in": 0,
+          "rpm_in": 0,
+          "duty_out": 0,
+          "rpm_out": 0,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:44.715801",
+          "elapsed_sec": 9.688
+        }
+      ],
+      "passed": true,
+      "last": {
+        "duty_in": 0,
+        "rpm_in": 0,
+        "duty_out": 0,
+        "rpm_out": 0,
+        "pm2_5": 22,
+        "pms_stale": 0,
+        "Time": "2026-10-01T10:08:44.715801",
+        "elapsed_sec": 9.688
+      }
+    },
+    {
+      "name": "weak",
+      "duty": 35,
+      "duration_sec": 10,
+      "samples": [
+        {
+          "duty_in": 35,
+          "rpm_in": 1530,
+          "duty_out": 35,
+          "rpm_out": 840,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:45.723349",
+          "elapsed_sec": 0.594
+        },
+        {
+          "duty_in": 35,
+          "rpm_in": 2610,
+          "duty_out": 35,
+          "rpm_out": 2520,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:46.715517",
+          "elapsed_sec": 1.594
+        },
+        {
+          "duty_in": 35,
+          "rpm_in": 2640,
+          "duty_out": 35,
+          "rpm_out": 2790,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:47.715100",
+          "elapsed_sec": 2.594
+        },
+        {
+          "duty_in": 35,
+          "rpm_in": 2670,
+          "duty_out": 35,
+          "rpm_out": 2760,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:48.715079",
+          "elapsed_sec": 3.594
+        },
+        {
+          "duty_in": 35,
+          "rpm_in": 2730,
+          "duty_out": 35,
+          "rpm_out": 2970,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:49.722489",
+          "elapsed_sec": 4.594
+        },
+        {
+          "duty_in": 35,
+          "rpm_in": 2700,
+          "duty_out": 35,
+          "rpm_out": 3030,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:50.714798",
+          "elapsed_sec": 5.594
+        },
+        {
+          "duty_in": 35,
+          "rpm_in": 2790,
+          "duty_out": 35,
+          "rpm_out": 2940,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:51.714482",
+          "elapsed_sec": 6.594
+        },
+        {
+          "duty_in": 35,
+          "rpm_in": 2700,
+          "duty_out": 35,
+          "rpm_out": 2820,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:52.722568",
+          "elapsed_sec": 7.594
+        },
+        {
+          "duty_in": 35,
+          "rpm_in": 2730,
+          "duty_out": 35,
+          "rpm_out": 2970,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:53.714089",
+          "elapsed_sec": 8.594
+        },
+        {
+          "duty_in": 35,
+          "rpm_in": 2700,
+          "duty_out": 35,
+          "rpm_out": 2940,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:54.722752",
+          "elapsed_sec": 9.594
+        }
+      ],
+      "passed": true,
+      "last": {
+        "duty_in": 35,
+        "rpm_in": 2700,
+        "duty_out": 35,
+        "rpm_out": 2940,
+        "pm2_5": 22,
+        "pms_stale": 0,
+        "Time": "2026-10-01T10:08:54.722752",
+        "elapsed_sec": 9.594
+      }
+    },
+    {
+      "name": "medium",
+      "duty": 60,
+      "duration_sec": 10,
+      "samples": [
+        {
+          "duty_in": 60,
+          "rpm_in": 3330,
+          "duty_out": 60,
+          "rpm_out": 3360,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:55.720604",
+          "elapsed_sec": 0.579
+        },
+        {
+          "duty_in": 60,
+          "rpm_in": 4350,
+          "duty_out": 60,
+          "rpm_out": 4680,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:56.721363",
+          "elapsed_sec": 1.579
+        },
+        {
+          "duty_in": 60,
+          "rpm_in": 4680,
+          "duty_out": 60,
+          "rpm_out": 4830,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:57.720081",
+          "elapsed_sec": 2.579
+        },
+        {
+          "duty_in": 60,
+          "rpm_in": 4500,
+          "duty_out": 60,
+          "rpm_out": 4890,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:58.721109",
+          "elapsed_sec": 3.579
+        },
+        {
+          "duty_in": 60,
+          "rpm_in": 4380,
+          "duty_out": 60,
+          "rpm_out": 4830,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:08:59.723031",
+          "elapsed_sec": 4.579
+        },
+        {
+          "duty_in": 60,
+          "rpm_in": 4530,
+          "duty_out": 60,
+          "rpm_out": 4950,
+          "pm2_5": 23,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:09:00.721138",
+          "elapsed_sec": 5.579
+        },
+        {
+          "duty_in": 60,
+          "rpm_in": 4560,
+          "duty_out": 60,
+          "rpm_out": 4770,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:09:01.714255",
+          "elapsed_sec": 6.579
+        },
+        {
+          "duty_in": 60,
+          "rpm_in": 4530,
+          "duty_out": 60,
+          "rpm_out": 4950,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:09:02.722184",
+          "elapsed_sec": 7.579
+        },
+        {
+          "duty_in": 60,
+          "rpm_in": 4500,
+          "duty_out": 60,
+          "rpm_out": 4980,
+          "pm2_5": 21,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:09:03.720809",
+          "elapsed_sec": 8.579
+        },
+        {
+          "duty_in": 60,
+          "rpm_in": 4500,
+          "duty_out": 60,
+          "rpm_out": 4830,
+          "pm2_5": 21,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:09:04.721443",
+          "elapsed_sec": 9.579
+        }
+      ],
+      "passed": true,
+      "last": {
+        "duty_in": 60,
+        "rpm_in": 4500,
+        "duty_out": 60,
+        "rpm_out": 4830,
+        "pm2_5": 21,
+        "pms_stale": 0,
+        "Time": "2026-10-01T10:09:04.721443",
+        "elapsed_sec": 9.579
+      }
+    },
+    {
+      "name": "strong",
+      "duty": 100,
+      "duration_sec": 10,
+      "samples": [
+        {
+          "duty_in": 100,
+          "rpm_in": 4470,
+          "duty_out": 100,
+          "rpm_out": 5070,
+          "pm2_5": 21,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:09:05.714849",
+          "elapsed_sec": 0.391
+        },
+        {
+          "duty_in": 100,
+          "rpm_in": 5640,
+          "duty_out": 100,
+          "rpm_out": 6060,
+          "pm2_5": 21,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:09:06.719399",
+          "elapsed_sec": 1.391
+        },
+        {
+          "duty_in": 100,
+          "rpm_in": 6000,
+          "duty_out": 100,
+          "rpm_out": 6480,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:09:07.718082",
+          "elapsed_sec": 2.391
+        },
+        {
+          "duty_in": 100,
+          "rpm_in": 6060,
+          "duty_out": 100,
+          "rpm_out": 6570,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:09:08.723425",
+          "elapsed_sec": 3.391
+        },
+        {
+          "duty_in": 100,
+          "rpm_in": 6090,
+          "duty_out": 100,
+          "rpm_out": 6600,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:09:09.717915",
+          "elapsed_sec": 4.391
+        },
+        {
+          "duty_in": 100,
+          "rpm_in": 6090,
+          "duty_out": 100,
+          "rpm_out": 6600,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:09:10.717722",
+          "elapsed_sec": 5.391
+        },
+        {
+          "duty_in": 100,
+          "rpm_in": 6060,
+          "duty_out": 100,
+          "rpm_out": 6570,
+          "pm2_5": 22,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:09:11.720089",
+          "elapsed_sec": 6.391
+        },
+        {
+          "duty_in": 100,
+          "rpm_in": 6060,
+          "duty_out": 100,
+          "rpm_out": 6570,
+          "pm2_5": 23,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:09:12.719898",
+          "elapsed_sec": 7.391
+        },
+        {
+          "duty_in": 100,
+          "rpm_in": 6060,
+          "duty_out": 100,
+          "rpm_out": 6570,
+          "pm2_5": 23,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:09:13.717016",
+          "elapsed_sec": 8.391
+        },
+        {
+          "duty_in": 100,
+          "rpm_in": 6090,
+          "duty_out": 100,
+          "rpm_out": 6570,
+          "pm2_5": 23,
+          "pms_stale": 0,
+          "Time": "2026-10-01T10:09:14.719918",
+          "elapsed_sec": 9.391
+        }
+      ],
+      "passed": true,
+      "last": {
+        "duty_in": 100,
+        "rpm_in": 6090,
+        "duty_out": 100,
+        "rpm_out": 6570,
+        "pm2_5": 23,
+        "pms_stale": 0,
+        "Time": "2026-10-01T10:09:14.719918",
+        "elapsed_sec": 9.391
+      }
+    }
+  ],
+  "stop_verified": true,
+  "error": null,
+  "boot_banner": "[FAN] 0 정지 · 1 약풍(35 %) · 2 중풍(60 %) · 3 강풍(100 %) · d<n> 수동 · F <in> <out> 독립제어 · ? 상태 (BME280 진단용 비활성화)",
+  "stop_sample": {
+    "duty_in": 0,
+    "rpm_in": 0,
+    "duty_out": 0,
+    "rpm_out": 0,
+    "pm2_5": 24,
+    "pms_stale": 0
+  },
+  "ended": "2026-10-01T10:09:16.717365"
+}
