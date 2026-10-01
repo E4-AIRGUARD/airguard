@@ -1,0 +1,63 @@
+{
+  "status": "complete",
+  "combination": 6,
+  "intake": 60,
+  "exhaust": 100,
+  "duration_sec": 300,
+  "rows": 299,
+  "images": 300,
+  "csv": "C:\\airguard\\embedded\\new_fan\\new_fan_t\\data\\clean_air_fan_matrix\\smoke\\20261001_141034_retry\\06_intake_medium_exhaust_strong\\06_intake_medium_exhaust_strong.csv",
+  "images_dir": "C:\\airguard\\embedded\\new_fan\\new_fan_t\\data\\clean_air_fan_matrix\\smoke\\20261001_141034_retry\\06_intake_medium_exhaust_strong\\images",
+  "pre_smoke_check": "C:\\airguard\\embedded\\new_fan\\new_fan_t\\data\\clean_air_fan_matrix\\smoke\\20261001_141034_retry\\start_checks\\06_20261001_151650_773352.json",
+  "pre_smoke_pm25": 13,
+  "bme_enabled": false,
+  "temperature_humidity_recorded": false,
+  "trigger": "User reported smoke generation completed",
+  "actual_smoke_generation_timestamp": null,
+  "heat_load": 0,
+  "error": null,
+  "stop_verified": true,
+  "updated": "2026-10-01T15:23:49.629",
+  "started": "2026-10-01T15:18:47.207",
+  "first_sensor": {
+    "duty_in": 0,
+    "rpm_in": 0,
+    "duty_out": 0,
+    "rpm_out": 0,
+    "pm2_5": 1023,
+    "pms_stale": 0
+  },
+  "last_sensor": {
+    "duty_in": 60,
+    "rpm_in": 4350,
+    "duty_out": 100,
+    "rpm_out": 7170,
+    "pm2_5": 1619,
+    "pms_stale": 0
+  },
+  "elapsed_sec": 300.0,
+  "measurement_ended": "2026-10-01T15:23:47.204",
+  "stop_sample": {
+    "duty_in": 0,
+    "rpm_in": 0,
+    "duty_out": 0,
+    "rpm_out": 0,
+    "pm2_5": 1644,
+    "pms_stale": 0
+  },
+  "ranges": {
+    "rpm_in": [
+      2280,
+      4710
+    ],
+    "rpm_out": [
+      3210,
+      7380
+    ],
+    "pm2_5": [
+      1040,
+      1658
+    ]
+  },
+  "ended": "2026-10-01T15:23:49.629"
+}

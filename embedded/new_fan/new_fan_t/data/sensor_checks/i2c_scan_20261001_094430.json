@@ -1,0 +1,21 @@
+{
+  "started": "2026-10-01T09:44:14.129787",
+  "firmware": "T02_i2c_scan",
+  "sda": 21,
+  "scl": 23,
+  "frequency_hz": 100000,
+  "lines": [
+    "[T02] found 0x77  <- chipID=0x60 BME280 OK (T03 진행)",
+    "[T02] ---- 3초 뒤 다시 스캔",
+    "[T02] found 0x77  <- chipID=0x60 BME280 OK (T03 진행)",
+    "[T02] ---- 3초 뒤 다시 스캔",
+    "[T02] found 0x77  <- chipID=0x60 BME280 OK (T03 진행)",
+    "[T02] ---- 3초 뒤 다시 스캔",
+    "[T02] found 0x77  <- chipID=0x60 BME280 OK (T03 진행)",
+    "[T02] ---- 3초 뒤 다시 스캔",
+    "[T02] found 0x77  <- chipID=0x60 BME280 OK (T03 진행)",
+    "[T02] ---- 3초 뒤 다시 스캔"
+  ],
+  "error": null,
+  "ended": "2026-10-01T09:44:30.334818"
+}
