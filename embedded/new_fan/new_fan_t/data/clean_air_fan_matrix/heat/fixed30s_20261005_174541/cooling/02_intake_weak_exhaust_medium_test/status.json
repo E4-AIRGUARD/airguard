@@ -1,0 +1,42 @@
+{
+  "status": "failed",
+  "started": "2026-10-05T18:20:13.871",
+  "intake": 35,
+  "exhaust": 60,
+  "initial_sensor": {
+    "duty_in": 35,
+    "rpm_in": 2550,
+    "duty_out": 60,
+    "rpm_out": 4980,
+    "temp_c": 27.96,
+    "rh_pct": 42.1,
+    "pm2_5": 3,
+    "bme_err": 0,
+    "pms_stale": 0
+  },
+  "rows": 176,
+  "elapsed_sec": 175.984,
+  "criterion": "22 <= temp_c <= 26 for 3 consecutive valid samples",
+  "stop_verified": true,
+  "next_start_ready": false,
+  "continuous_from_measurement": true,
+  "photos_saved": 0,
+  "updated": "2026-10-05T18:23:12.271",
+  "last_sensor": {
+    "duty_in": 35,
+    "rpm_in": 2670,
+    "duty_out": 60,
+    "rpm_out": 4950,
+    "temp_c": 26.5,
+    "rh_pct": 45.0,
+    "pm2_5": 3,
+    "bme_err": 0,
+    "pms_stale": 0
+  },
+  "consecutive_in_range": 0,
+  "serial_closed": true,
+  "error": "[WinError 5] 액세스가 거부되었습니다: 'embedded\\\\new_fan\\\\new_fan_t\\\\data\\\\clean_air_fan_matrix\\\\heat\\\\fixed30s_20261005_174541\\\\cooling\\\\02_intake_weak_exhaust_medium\\\\status.tmp' -> 'embedded\\\\new_fan\\\\new_fan_t\\\\data\\\\clean_air_fan_matrix\\\\heat\\\\fixed30s_20261005_174541\\\\cooling\\\\02_intake_weak_exhaust_medium\\\\status.json'",
+  "ended": "2026-10-05T18:23:12.271",
+  "dataset_label": "test",
+  "renamed_at": "2026-10-05T18:25:30.265961+09:00"
+}

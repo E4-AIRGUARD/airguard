@@ -1,0 +1,8 @@
+{"Time": "2026-10-05T18:29:27.874", "event": "measurement_started", "elapsed_sec": 0.0, "intake": 35, "exhaust": 60}
+{"Time": "2026-10-05T18:29:57.868", "event": "heat_on_instruction", "elapsed_sec": 30.0}
+{"Time": "2026-10-05T18:30:14.866", "event": "temperature_40_reached", "elapsed_sec": 46.984, "temp_c": 40.84, "stage": "heating"}
+{"Time": "2026-10-05T18:30:27.867", "event": "heat_off_instruction", "elapsed_sec": 60.0, "reason": "fixed_duration_elapsed", "temp_c": null}
+{"Time": "2026-10-05T18:34:27.871", "event": "measurement_ended", "elapsed_sec": 300.0}
+{"Time": "2026-10-05T18:34:27.873", "event": "cooling_started", "elapsed_sec": 300.0, "intake": 35, "exhaust": 60}
+{"Time": "2026-10-05T18:39:48.861", "event": "cooling_threshold_reached", "elapsed_sec": 620.984, "cooling_elapsed_sec": 320.984}
+{"Time": "2026-10-05T18:39:51.861", "event": "complete", "elapsed_sec": 623.984, "outcome": "recovery_not_finished"}

@@ -1,0 +1,5 @@
+{"Time": "2026-10-05T17:02:59.883", "event": "measurement_started", "elapsed_sec": 0.015, "intake": 35, "exhaust": 35}
+{"Time": "2026-10-05T17:03:29.877", "event": "heat_on_instruction", "elapsed_sec": 30.0}
+{"Time": "2026-10-05T17:04:29.880", "event": "heat_off_instruction", "elapsed_sec": 90.0, "reason": "heating_time_limit", "temp_c": null}
+{"Time": "2026-10-05T17:07:59.878", "event": "measurement_ended", "elapsed_sec": 300.0}
+{"Time": "2026-10-05T17:08:01.879", "event": "complete", "elapsed_sec": 302.0, "outcome": "target_not_reached"}

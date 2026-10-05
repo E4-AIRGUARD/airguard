@@ -1,0 +1,12 @@
+{
+  "notified_at": "2026-10-05T19:10:11.380319+09:00",
+  "notified_status": "complete",
+  "threshold_elapsed_sec": 397.0,
+  "total_elapsed_sec": 400.0,
+  "initial_temp_c": 30.5,
+  "threshold_temp_c": 26.0,
+  "stop_temp_c": 26.01,
+  "stop_verified": true,
+  "next_start_ready": false,
+  "next_combination": "intake_medium_exhaust_medium"
+}

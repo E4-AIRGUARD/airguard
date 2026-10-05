@@ -1,0 +1,131 @@
+{
+  "checked_at": "2026-10-05T20:26:21.923824+09:00",
+  "csv_header": [
+    "Time",
+    "Temp",
+    "Humidity",
+    "Exhaust_PWM",
+    "Intake_PWM",
+    "Heat_Load",
+    "Exhaust_RPM",
+    "Intake_RPM",
+    "PM2.5"
+  ],
+  "runs": [
+    {
+      "run": "01_intake_weak_exhaust_weak",
+      "main_status": "failed",
+      "csv_rows": 299,
+      "images_verified": 300,
+      "cooling_rows": 472,
+      "cooling_status": "failed",
+      "threshold_elapsed_sec": 471.0,
+      "total_elapsed_sec": null,
+      "stop_verified": true,
+      "serial_closed": true
+    },
+    {
+      "run": "02_intake_weak_exhaust_medium",
+      "main_status": "complete",
+      "csv_rows": 300,
+      "images_verified": 300,
+      "cooling_rows": 321,
+      "cooling_status": "complete",
+      "threshold_elapsed_sec": 320.984,
+      "total_elapsed_sec": 323.984,
+      "stop_verified": true,
+      "serial_closed": true
+    },
+    {
+      "run": "03_intake_weak_exhaust_strong",
+      "main_status": "complete",
+      "csv_rows": 299,
+      "images_verified": 300,
+      "cooling_rows": 479,
+      "cooling_status": "complete",
+      "threshold_elapsed_sec": 478.0,
+      "total_elapsed_sec": 481.0,
+      "stop_verified": true,
+      "serial_closed": true
+    },
+    {
+      "run": "04_intake_medium_exhaust_weak",
+      "main_status": "complete",
+      "csv_rows": 299,
+      "images_verified": 300,
+      "cooling_rows": 398,
+      "cooling_status": "complete",
+      "threshold_elapsed_sec": 397.0,
+      "total_elapsed_sec": 400.0,
+      "stop_verified": true,
+      "serial_closed": true
+    },
+    {
+      "run": "05_intake_medium_exhaust_medium",
+      "main_status": "complete",
+      "csv_rows": 299,
+      "images_verified": 300,
+      "cooling_rows": 325,
+      "cooling_status": "complete",
+      "threshold_elapsed_sec": 325.0,
+      "total_elapsed_sec": 327.985,
+      "stop_verified": true,
+      "serial_closed": true
+    },
+    {
+      "run": "06_intake_medium_exhaust_strong",
+      "main_status": "complete",
+      "csv_rows": 299,
+      "images_verified": 300,
+      "cooling_rows": 247,
+      "cooling_status": "complete",
+      "threshold_elapsed_sec": 246.985,
+      "total_elapsed_sec": 249.985,
+      "stop_verified": true,
+      "serial_closed": true
+    },
+    {
+      "run": "07_intake_strong_exhaust_weak",
+      "main_status": "complete",
+      "csv_rows": 299,
+      "images_verified": 300,
+      "cooling_rows": 296,
+      "cooling_status": "complete",
+      "threshold_elapsed_sec": 295.985,
+      "total_elapsed_sec": 298.985,
+      "stop_verified": true,
+      "serial_closed": true
+    },
+    {
+      "run": "08_intake_strong_exhaust_medium",
+      "main_status": "complete",
+      "csv_rows": 299,
+      "images_verified": 300,
+      "cooling_rows": 224,
+      "cooling_status": "complete",
+      "threshold_elapsed_sec": 223.0,
+      "total_elapsed_sec": 226.0,
+      "stop_verified": true,
+      "serial_closed": true
+    },
+    {
+      "run": "09_intake_strong_exhaust_strong",
+      "main_status": "complete",
+      "csv_rows": 300,
+      "images_verified": 301,
+      "cooling_rows": 158,
+      "cooling_status": "complete",
+      "threshold_elapsed_sec": 157.797,
+      "total_elapsed_sec": 160.797,
+      "stop_verified": true,
+      "serial_closed": true
+    }
+  ],
+  "image_manifest": "image_sha256.jsonl",
+  "images_git_tracked": false,
+  "notes": [
+    "01 failed fan-stop verification; raw failure preserved; cleanup verified stop.",
+    "02 test folder and relocation.json not found in current dataset; cause unknown.",
+    "09 last image elapsed_sec=300.031 at capture-stop boundary."
+  ]
+}
