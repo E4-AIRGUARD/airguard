@@ -1,0 +1,53 @@
+{
+  "status": "failed",
+  "started": "2026-10-05T17:50:45.870",
+  "intake": 35,
+  "exhaust": 35,
+  "initial_sensor": {
+    "duty_in": 35,
+    "rpm_in": 2580,
+    "duty_out": 35,
+    "rpm_out": 2790,
+    "temp_c": 31.9,
+    "rh_pct": 37.1,
+    "pm2_5": 6,
+    "bme_err": 0,
+    "pms_stale": 0
+  },
+  "rows": 472,
+  "elapsed_sec": 471.0,
+  "criterion": "22 <= temp_c <= 26 for 3 consecutive valid samples",
+  "stop_verified": true,
+  "next_start_ready": false,
+  "continuous_from_measurement": true,
+  "photos_saved": 0,
+  "updated": "2026-10-05T17:58:48.340",
+  "last_sensor": {
+    "duty_in": 35,
+    "rpm_in": 2640,
+    "duty_out": 35,
+    "rpm_out": 2790,
+    "temp_c": 25.99,
+    "rh_pct": 45.9,
+    "pm2_5": 6,
+    "bme_err": 0,
+    "pms_stale": 0
+  },
+  "consecutive_in_range": 3,
+  "threshold_elapsed_sec": 471.0,
+  "threshold_at": "2026-10-05T17:58:36.871",
+  "threshold_sensor": {
+    "duty_in": 35,
+    "rpm_in": 2640,
+    "duty_out": 35,
+    "rpm_out": 2790,
+    "temp_c": 25.99,
+    "rh_pct": 45.9,
+    "pm2_5": 6,
+    "bme_err": 0,
+    "pms_stale": 0
+  },
+  "serial_closed": true,
+  "error": "Fan stop not verified",
+  "ended": "2026-10-05T17:58:48.339"
+}

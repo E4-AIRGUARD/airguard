@@ -1,0 +1,8 @@
+{"Time": "2026-10-05T17:45:45.876", "event": "measurement_started", "elapsed_sec": 0.0, "intake": 35, "exhaust": 35}
+{"Time": "2026-10-05T17:46:15.870", "event": "heat_on_instruction", "elapsed_sec": 30.0}
+{"Time": "2026-10-05T17:46:45.871", "event": "heat_off_instruction", "elapsed_sec": 60.0, "reason": "fixed_duration_elapsed", "temp_c": null}
+{"Time": "2026-10-05T17:46:51.874", "event": "temperature_40_reached", "elapsed_sec": 66.0, "temp_c": 40.21, "stage": "recovery"}
+{"Time": "2026-10-05T17:50:45.869", "event": "measurement_ended", "elapsed_sec": 300.0}
+{"Time": "2026-10-05T17:50:45.871", "event": "cooling_started", "elapsed_sec": 300.0, "intake": 35, "exhaust": 35}
+{"Time": "2026-10-05T17:58:36.873", "event": "cooling_threshold_reached", "elapsed_sec": 771.0, "cooling_elapsed_sec": 471.0}
+{"Time": "2026-10-05T17:58:46.871", "event": "aborted", "elapsed_sec": 781.0, "error": "Fan stop not verified"}
