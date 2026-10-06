@@ -52,6 +52,7 @@
 - 커밋 메시지: `feat:` / `fix:` / `docs:` / `refactor:` (예: `feat: 프레임 투표 추론 스크립트 추가`)
 - IMPORTANT: 커밋 메시지, 이슈·PR 제목과 본문은 접두어를 빼고 모두 한글로 쓴다. main 직접 push 금지.
 - PR 하나에 기능 하나
+- 커밋 작성자는 사용자 본인 GitHub 계정(KangJiUng)으로 한다. `Co-Authored-By: Claude` 같은 공동 작성자 줄과 Claude 환경의 서명은 넣지 않는다.
 - 이슈: 작업 요청을 받으면 이슈 초안을 먼저 보여주고, 확인받은 뒤 `gh issue create`로 만든다.
   - 제목(subject) 규칙
     1. 50글자를 넘지 않는다
