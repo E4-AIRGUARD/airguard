@@ -93,6 +93,7 @@
 - IMPORTANT: `AI/smoke/` 밖 파일 수정·커밋 금지. `git add .` 대신 `git add AI/smoke/`.
 - IMPORTANT: 학습/평가 결과 없이 "성능 개선됐다"고 하지 않는다.
 - 의존성 버전 임의 변경 금지
+- IMPORTANT: `git push --force`, `git reset --hard`처럼 무언가를 강제로 덮어쓰는 명령은 실행 전에 한 번 더 물어보고, 확실한 승인을 받은 뒤에만 실행한다.
 
 ## 완료 기준
 - `git status`에 `AI/smoke/` 밖 변경 없음, 커밋 금지 파일 스테이징 없음
