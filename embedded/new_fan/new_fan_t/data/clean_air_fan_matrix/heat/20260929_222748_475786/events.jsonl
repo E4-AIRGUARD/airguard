@@ -1,4 +1,0 @@
-{"Time": "2026-09-29T22:27:52.867", "event": "session_started", "combination": 1, "duration_sec": 300, "heat_sec": 5, "start_temperature": [22, 26], "pm25_gate": false, "heat_load_source": "scheduled manual heater signal; not measured heater power"}
-{"Time": "2026-09-29T22:28:32.107", "event": "countdown_started", "combination": 1}
-{"Time": "2026-09-29T22:28:37.113", "event": "heat_start", "combination": 1, "temp_c": 23.77, "pm2_5": 0, "csv": "C:\\airguard\\embedded\\new_fan\\new_fan_t\\data\\clean_air_fan_matrix\\heat\\20260929_222748_475786\\csv\\01_intake_weak_exhaust_weak.csv"}
-{"Time": "2026-09-29T22:28:41.045", "event": "session_closed", "combination": 1, "status": "stopped", "error": null}

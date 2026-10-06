@@ -1,2 +1,0 @@
-{"Time": "2026-09-29T22:32:36.607", "event": "session_started", "combination": 1, "duration_sec": 300, "heat_sec": 5, "start_temperature": [22, 26], "pm25_gate": false, "capture_during_wait": false, "capture_during_heat": false, "heat_load_source": "scheduled manual heater signal; not measured heater power"}
-{"Time": "2026-09-29T22:34:50.502", "event": "session_closed", "combination": 1, "status": "failed", "error": "카메라 기록 실패: 영상 프레임 수신 실패"}
