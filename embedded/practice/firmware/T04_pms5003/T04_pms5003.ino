@@ -1,5 +1,5 @@
 // T04_pms5003 — Plantower PMS5003 32바이트 프레임 수신 · 체크섬 검사
-// 배선: PMS5003 5번(TX) → ESP32 GPIO16 (UART2 RX) · 4번(RX) ← GPIO17 (선택)
+// 배선(2026-09-27 변경, GPIO2는 부팅 스트래핑 충돌로 폐기): PMS5003 5번(TX) → ESP32 GPIO14 (UART2 RX) · 4번(RX) ← GPIO27 (선택)
 //       1번 VCC → 브레드보드 5 V 줄 · 2번 GND → 공통 GND (ESP32 GND와 반드시 같은 줄)
 //       SET(3) · RESET(6)은 비워 둠 → 자동 출력 모드
 // 라이브러리 없음 (직접 파싱) · 합격 기준: 체크섬 OK가 계속 찍히고 PM2.5가 실내 0~50 부근
@@ -7,7 +7,7 @@
 #include <HardwareSerial.h>
 
 HardwareSerial pms(2);
-const int PMS_RX = 16, PMS_TX = 17;
+const int PMS_RX = 14, PMS_TX = 27;
 
 struct PmsFrame {
   uint16_t pm1_cf, pm25_cf, pm10_cf;      // CF=1 (공장 보정)
@@ -44,7 +44,7 @@ void setup() {
   Serial.begin(115200);
   delay(300);
   pms.begin(9600, SERIAL_8N1, PMS_RX, PMS_TX);
-  Serial.println("[T04] PMS5003 on UART2 RX=16 TX=17 · 9600 8N1");
+  Serial.println("[T04] PMS5003 on UART2 RX=14 TX=27 · 9600 8N1");
   Serial.println("[T04] 전원 후 약 30초는 팬 안정화 시간 → 값이 0이거나 흔들려도 정상");
 }
 
@@ -55,7 +55,7 @@ void loop() {
                   f.pm1_atm, f.pm25_atm, f.pm10_atm, f.pm1_cf, f.pm25_cf, f.pm10_cf, f.n03, f.n25);
     if (f.pm25_atm >= 500) Serial.println("[T04] PM2.5 >= 500 : 측정 상한 (DANGER 조건)");
   } else {
-    Serial.println("[T04] no frame  -> 5 V 전원 · TX→16 배선 · GND 공통 확인");
+    Serial.println("[T04] no frame  -> 5 V 전원 · TX→14 배선 · GND 공통 확인");
   }
   delay(1000);
 }

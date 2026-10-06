@@ -1,8 +1,8 @@
-// T02_i2c_scan — I2C 버스(SDA 21 · SCL 22) 스캔
+// T02_i2c_scan — I2C 버스(SDA 21 · SCL 23) 스캔
 // 합격 기준: BME280이 0x76(또는 0x77)으로 잡히고 chipID=0x60 · (선택) ACD10은 레벨 컨버터 뒤 0x2A
 #include <Wire.h>
 
-const int SDA_PIN = 21, SCL_PIN = 22;
+const int SDA_PIN = 21, SCL_PIN = 23;
 
 // Bosch 칩 ID 레지스터(0xD0): 0x60 = BME280 · 0x56/0x57/0x58 = BMP280(습도 없음) · 0x61 = BME680
 // Adafruit BME280 라이브러리는 0x60만 받아들이므로, BMP280이 오면 T03·T06·T08이 "not found"로 멈춘다.
@@ -25,7 +25,7 @@ void setup() {
   Serial.begin(115200);
   delay(300);
   Wire.begin(SDA_PIN, SCL_PIN, 100000);   // 100 kHz
-  Serial.println("\n[T02] I2C scan on SDA=21 SCL=22");
+  Serial.println("\n[T02] I2C scan on SDA=21 SCL=23");
 }
 
 void loop() {

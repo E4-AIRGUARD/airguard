@@ -38,5 +38,5 @@ cat <<'NEXT'
   1) 로그아웃 후 다시 로그인 (dialout 그룹 반영). 확인: id | tr ',' '\n' | grep dialout
   2) ESP32를 데이터 케이블로 연결 → ls -l /dev/ttyUSB0 확인
   3) 빠른 확인:   picocom -b 115200 /dev/ttyUSB0     (종료 Ctrl-A Ctrl-X)
-  4) T08 왕복:    python3 cb_serial_check.py          (실행 중 C 20 20 35 / T 600 / T -1 / q)
+  4) T08 왕복:    python3 cb_serial_check.py          (실행 중 C 20 20 / T 600 / T -1 / q)
 NEXT
