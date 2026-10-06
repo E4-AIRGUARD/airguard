@@ -1,8 +1,10 @@
 # 툴체인 (재설치 가능, 용량 큼)
 embedded/tools/
+embedded/practice/tools/
 
 # 데이터셋 (이미지 수천 장, 용량 큼 — 필요하면 Git LFS나 외부 저장소 사용)
 embedded/data/
+embedded/practice/data/
 
 # 실험 카메라 원본은 로컬 보관; CSV·JSON·촬영 시각 목록은 추적
 embedded/new_fan/new_fan_t/data/**/*.jpg
@@ -14,6 +16,10 @@ embedded/vision_qc/captures/
 embedded/vision_qc/dataset/
 embedded/vision_qc/runs/
 embedded/vision_qc/*.pt
+embedded/practice/vision_qc/captures/
+embedded/practice/vision_qc/dataset/
+embedded/practice/vision_qc/runs/
+embedded/practice/vision_qc/*.pt
 
 # Python
 __pycache__/

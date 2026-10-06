@@ -7,14 +7,14 @@
 #include <Adafruit_BME280.h>
 
 Adafruit_BME280 bme;
-const int SDA_PIN = 21, SCL_PIN = 22;
+const int SDA_PIN = 21, SCL_PIN = 23;
 
 void setup() {
   Serial.begin(115200);
   delay(300);
   Wire.begin(SDA_PIN, SCL_PIN, 100000);
-  bool ok = bme.begin(0x76, &Wire);
-  if (!ok) ok = bme.begin(0x77, &Wire);           // Waveshare 보드는 점퍼로 주소가 바뀔 수 있음
+  bool ok = bme.begin(0x77, &Wire);                // 이 보드는 T02로 0x77 확인됨 — 먼저 시도
+  if (!ok) ok = bme.begin(0x76, &Wire);           // Waveshare 보드는 점퍼로 주소가 바뀔 수 있음
   if (!ok) {
     Serial.println("[T03] BME280 not found (0x76/0x77) -> T02로 주소 확인");
     while (true) delay(1000);

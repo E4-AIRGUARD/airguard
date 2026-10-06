@@ -109,7 +109,7 @@ PMS5003 RX14/TX27. 가열패드·부저·LED는 배선하지 않기로 해서 �
   `E <type> [note]` (실험 이벤트 마커)
 - 안전 우선순위: LIMIT(센서 이상·과열) > DANGER(PM 매우 높음) > WARNING(PM 높음) >
   Jetson 명령 > LOCAL(명령 없음 시 최소 순환)
-- Jetson 쪽 확인용 스크립트: `embedded/jetson/cb_serial_check.py` (같은 명령 형식으로 갱신됨)
+- Jetson 쪽 확인용 스크립트: `embedded/practice/jetson/cb_serial_check.py` (같은 명령 형식으로 갱신됨)
 
 ## 관련 파일
 

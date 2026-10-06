@@ -4,7 +4,8 @@
        sudo usermod -aG dialout $USER  → 재로그인
 사용:  python3 cb_serial_check.py            (포트 자동: /dev/ttyUSB0)
        python3 cb_serial_check.py /dev/ttyUSB1
-       실행 중 입력:  C 20 20 35   /  T 600  /  T -1  /  q
+       실행 중 입력:  C 20 20   /  T 600  /  T -1  /  E supply_start  /  q
+       (2026-09-28: 가열패드 미배선으로 C 명령에서 ht 인자 제거 — "C fi fo"만 받음)
 """
 import sys, json, time, glob, threading
 import serial
@@ -31,7 +32,7 @@ def reader():
         if d.get("k") == "sens":
             print(f"{ts} SENS seq={d['seq']} T={d['t']:.2f} RH={d['rh']:.1f} PM2.5={d['pm25']} err={d['err']}")
         elif d.get("k") == "stat":
-            print(f"{ts} STAT {d['st']:8s} fan={d['fi']}/{d['fo']} heat={d['ht']} test={d['test']}   (json ok={ok} bad={bad})")
+            print(f"{ts} STAT {d['st']:8s} fan={d['fi']}/{d['fo']} rpm={d['rpmIn']}/{d['rpmOut']} test={d['test']}   (json ok={ok} bad={bad})")
         else:
             print(f"{ts} {d}")
 
