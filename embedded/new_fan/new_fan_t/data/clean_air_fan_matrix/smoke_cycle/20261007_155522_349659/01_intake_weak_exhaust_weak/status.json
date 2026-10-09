@@ -1,0 +1,50 @@
+{
+  "status": "complete",
+  "stop_verified": true,
+  "rows": 656,
+  "images": 655,
+  "protocol": "baseline10_smoke60_off30_recovery",
+  "recovery_pm25": 20,
+  "baseline_sec": 10,
+  "smoke_sec": 60,
+  "fans_off_sec": 30,
+  "camera_rotation_deg": 180,
+  "start_temperature_range": [
+    22,
+    26
+  ],
+  "max_run_sec": 1800,
+  "combination": 1,
+  "pm_output": "atmospheric",
+  "error": null,
+  "intake": 35,
+  "exhaust": 35,
+  "started": "2026-10-07T15:55:29.587+09:00",
+  "camera_enabled": true,
+  "updated": "2026-10-07T16:06:29.564+09:00",
+  "phase": "complete",
+  "peak_pm25": 1631,
+  "last_sensor": {
+    "seq": 2538,
+    "uptime_ms": 2660760,
+    "pm1": 16,
+    "pm25": 20,
+    "pm10": 24
+  },
+  "pre_start_sensor": {
+    "temperature": 23.04,
+    "pm25": 8,
+    "Time": "2026-10-07T15:55:29.587+09:00"
+  },
+  "insertion_confirmed": "2026-10-07T16:00:21.513+09:00",
+  "removal_confirmed": "2026-10-07T16:02:03.155+09:00",
+  "fans_off_confirmed": "2026-10-07T16:02:06.208+09:00",
+  "ventilation_started": "2026-10-07T16:02:36.198+09:00",
+  "recovered_at": "2026-10-07T16:06:25.851+09:00",
+  "elapsed_sec": 656.25,
+  "removal_to_recovery_sec": 262.68799999996554,
+  "recovery_elapsed_sec": 229.64099999994505,
+  "actual_smoke_sec": 101.64000000001397,
+  "actual_fans_off_sec": 30.0,
+  "ended": "2026-10-07T16:06:29.564+09:00"
+}

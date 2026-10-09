@@ -1,0 +1,16 @@
+{"Time": "2026-10-08T15:28:58.414+09:00", "event": "start_requested", "phase": "monitoring"}
+{"Time": "2026-10-08T15:29:28.802+09:00", "event": "fan_command", "phase": "baseline", "intake": 100, "exhaust": 100, "elapsed_sec": 0.0}
+{"Time": "2026-10-08T15:29:28.802+09:00", "event": "baseline_started", "phase": "baseline"}
+{"Time": "2026-10-08T15:29:34.044+09:00", "event": "baseline_pm_above_start_limit", "phase": "baseline", "pm25": 21, "elapsed_sec": 5.233999999938533}
+{"Time": "2026-10-08T15:29:38.845+09:00", "event": "fan_command", "phase": "stopping_for_smoke", "intake": 0, "exhaust": 0, "elapsed_sec": 10.047000000020489}
+{"Time": "2026-10-08T15:29:38.846+09:00", "event": "smoke_fan_stop_requested", "phase": "stopping_for_smoke", "elapsed_sec": 10.047000000020489}
+{"Time": "2026-10-08T15:29:41.221+09:00", "event": "insert_requested", "phase": "await_insert", "elapsed_sec": 12.422000000020489}
+{"Time": "2026-10-08T15:30:21.231+09:00", "event": "pm_over_limit", "phase": "await_insert", "pm25": 507, "elapsed_sec": 52.42200000002049}
+{"Time": "2026-10-08T15:30:26.112+09:00", "event": "removal_confirmed_by_user", "phase": "recovery", "elapsed_sec": 57.31299999996554}
+{"Time": "2026-10-08T15:30:26.112+09:00", "event": "insertion_time_unknown_operator_timed", "phase": "recovery", "nominal_smoke_sec": 2.0, "elapsed_sec": 57.31299999996554}
+{"Time": "2026-10-08T15:30:26.112+09:00", "event": "fan_command", "phase": "recovery", "intake": 100, "exhaust": 100, "elapsed_sec": 57.31299999996554}
+{"Time": "2026-10-08T15:30:26.112+09:00", "event": "direct_ventilation_started", "phase": "recovery", "elapsed_sec": 57.31299999996554}
+{"Time": "2026-10-08T15:30:27.221+09:00", "event": "ventilation_verified", "phase": "recovery", "elapsed_sec": 58.42200000002049, "intake_rpm": 3150, "exhaust_rpm": 3150}
+{"Time": "2026-10-08T15:33:58.235+09:00", "event": "recovery_complete", "phase": "complete", "pm25": 20, "elapsed_sec": 269.43799999996554}
+{"Time": "2026-10-08T15:33:58.235+09:00", "event": "measurement_ended", "phase": "complete"}
+{"Time": "2026-10-08T15:34:01.792+09:00", "event": "finished", "phase": "complete", "status": "complete", "stop_verified": true, "error": null}

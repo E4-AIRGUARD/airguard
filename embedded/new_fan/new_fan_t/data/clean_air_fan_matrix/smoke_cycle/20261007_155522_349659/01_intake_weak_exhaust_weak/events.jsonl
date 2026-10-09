@@ -1,0 +1,14 @@
+{"Time": "2026-10-07T15:55:22.352+09:00", "event": "start_requested", "phase": "monitoring"}
+{"Time": "2026-10-07T15:55:29.587+09:00", "event": "fan_command", "phase": "baseline", "intake": 35, "exhaust": 35, "elapsed_sec": 0.0}
+{"Time": "2026-10-07T15:55:29.587+09:00", "event": "baseline_started", "phase": "baseline"}
+{"Time": "2026-10-07T15:55:39.612+09:00", "event": "insert_requested", "phase": "await_insert", "elapsed_sec": 10.01500000001397}
+{"Time": "2026-10-07T16:00:21.513+09:00", "event": "insertion_confirmed_by_user", "phase": "smoking", "elapsed_sec": 291.9220000000205}
+{"Time": "2026-10-07T16:01:21.515+09:00", "event": "remove_requested", "phase": "await_remove", "elapsed_sec": 351.9220000000205}
+{"Time": "2026-10-07T16:02:03.155+09:00", "event": "removal_confirmed_by_user", "phase": "stopping_for_settle", "elapsed_sec": 393.56200000003446}
+{"Time": "2026-10-07T16:02:03.155+09:00", "event": "fan_command", "phase": "stopping_for_settle", "intake": 0, "exhaust": 0, "elapsed_sec": 393.56200000003446}
+{"Time": "2026-10-07T16:02:06.207+09:00", "event": "fans_off_confirmed", "phase": "settling", "elapsed_sec": 396.60900000005495}
+{"Time": "2026-10-07T16:02:36.198+09:00", "event": "fan_command", "phase": "recovery", "intake": 35, "exhaust": 35, "elapsed_sec": 426.60900000005495}
+{"Time": "2026-10-07T16:02:36.198+09:00", "event": "ventilation_started", "phase": "recovery", "elapsed_sec": 426.60900000005495}
+{"Time": "2026-10-07T16:06:25.851+09:00", "event": "recovery_complete", "phase": "complete", "pm25": 20, "elapsed_sec": 656.25}
+{"Time": "2026-10-07T16:06:25.851+09:00", "event": "measurement_ended", "phase": "complete"}
+{"Time": "2026-10-07T16:06:29.564+09:00", "event": "finished", "phase": "complete", "status": "complete", "stop_verified": true, "error": null}

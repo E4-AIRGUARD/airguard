@@ -1,0 +1,17 @@
+{
+  "recorded_at": "2026-10-08T15:55:35.7183582+09:00",
+  "measurement_status_preserved": "failed",
+  "operator_reports": [
+    "Exhaust fan physically stopped",
+    "Intake fan still rotating",
+    "Operator reports issue resolved",
+    "Exhaust wire was disconnected"
+  ],
+  "disconnected_wire_type": "unspecified",
+  "disconnection_time": "unknown",
+  "follow_up": "F 0 0 acknowledged; subsequent DATA reports both PWM and both RPM zero",
+  "original_stop_verification": false,
+  "fan_mapping_confirmed": false,
+  "interpretation": "Recovery samples preserved. Exclude this trial from verified fan-combination comparison because exhaust wiring was disconnected and onset is unknown.",
+  "next_trial": "Await explicit operator start"
+}

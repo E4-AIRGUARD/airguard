@@ -1,0 +1,9 @@
+{
+  "nominal_smoke_sec": 6,
+  "dose_timing_mode": "operator_manual",
+  "bme280_enabled": false,
+  "excluded_channels": ["temperature", "humidity", "pressure"],
+  "reason": "User requested BME280 exclusion after failed diagnosis. Firmware compiled with ENABLE_BME280=0; boot message confirmed disabled.",
+  "missing_data_note": "Temperature and humidity CSV cells are blank. Any -99 values in raw telemetry or pre_start_sensor are missing-data sentinels, never real measurements.",
+  "timing_note": "The operator times six seconds manually. Chat removal acknowledgement is not a verified physical removal timestamp."
+}

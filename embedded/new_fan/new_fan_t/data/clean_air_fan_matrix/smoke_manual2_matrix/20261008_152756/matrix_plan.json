@@ -1,0 +1,223 @@
+{
+  "created": "2026-10-08T15:27:56.482196+09:00",
+  "status": "measurement_block_complete",
+  "nominal_smoke_sec": 2,
+  "dose_timing_mode": "operator_manual",
+  "repetitions_this_block": 1,
+  "bme280_enabled": false,
+  "environment_columns_omitted": true,
+  "quality_policy": "atmospheric_pilot_v2",
+  "experiment_max_pm25": 500,
+  "interpretation": "Exploratory; over-limit runs remain flagged and excluded from primary comparison.",
+  "random_seed": 20261008,
+  "trials": [
+    {
+      "order": 1,
+      "combination": 9,
+      "intake": 100,
+      "exhaust": 100,
+      "status": "complete",
+      "run_directory": "20261008_152858_394354/09_intake_strong_exhaust_strong",
+      "result": {
+        "peak_pm25": 785,
+        "recovery_elapsed_sec": 212.125,
+        "peak_verdict": "excluded_over_experiment_limit",
+        "stop_verified": true,
+        "rows": 270,
+        "images": 270
+      }
+    },
+    {
+      "order": 2,
+      "combination": 7,
+      "intake": 100,
+      "exhaust": 35,
+      "status": "complete",
+      "run_directory": "20261008_153508_476667/07_intake_strong_exhaust_weak",
+      "result": {
+        "peak_pm25": 1495,
+        "recovery_elapsed_sec": 363.655999999959,
+        "peak_verdict": "excluded_over_experiment_limit",
+        "stop_verified": true,
+        "rows": 429,
+        "images": 429
+      }
+    },
+    {
+      "order": 3,
+      "combination": 8,
+      "intake": 100,
+      "exhaust": 60,
+      "status": "complete",
+      "run_directory": "20261008_154356_324674/08_intake_strong_exhaust_medium",
+      "result": {
+        "peak_pm25": 1244,
+        "recovery_elapsed_sec": 148.625,
+        "peak_verdict": "excluded_over_experiment_limit",
+        "stop_verified": true,
+        "rows": 202,
+        "images": 202
+      }
+    },
+    {
+      "order": 4,
+      "combination": 3,
+      "intake": 35,
+      "exhaust": 100,
+      "status": "complete",
+      "run_directory": "20261008_170015_427434/03_intake_weak_exhaust_strong",
+      "previous_attempts": [
+        {
+          "status": "failed",
+          "run_directory": "20261008_154828_182846/03_intake_weak_exhaust_strong",
+          "result": {
+            "peak_pm25": 1525,
+            "recovery_elapsed_sec": 175.03200000000652,
+            "peak_verdict": "excluded_over_experiment_limit",
+            "stop_verified": false,
+            "rows": 241,
+            "images": 241,
+            "error": "Fan stop not verified; inspect hardware"
+          },
+          "repeat_reason": "Previous trial failed fan stop verification; operator reported disconnected exhaust wire"
+        }
+      ],
+      "result": {
+        "peak_pm25": 1426,
+        "recovery_elapsed_sec": 298.89099999994505,
+        "peak_verdict": "excluded_over_experiment_limit",
+        "stop_verified": true,
+        "rows": 358,
+        "images": 359
+      }
+    },
+    {
+      "order": 5,
+      "combination": 6,
+      "intake": 60,
+      "exhaust": 100,
+      "status": "complete",
+      "run_directory": "20261008_155809_518745/06_intake_medium_exhaust_strong",
+      "result": {
+        "peak_pm25": 1436,
+        "recovery_elapsed_sec": 482.4529999999795,
+        "peak_verdict": "excluded_over_experiment_limit",
+        "stop_verified": true,
+        "rows": 553,
+        "images": 554
+      }
+    },
+    {
+      "order": 6,
+      "combination": 2,
+      "intake": 35,
+      "exhaust": 60,
+      "status": "complete",
+      "run_directory": "20261008_161747_620688/02_intake_weak_exhaust_medium",
+      "previous_attempts": [
+        {
+          "status": "failed",
+          "run_directory": "20261008_160917_905675/02_intake_weak_exhaust_medium",
+          "result": {
+            "peak_pm25": 19,
+            "peak_verdict": "too_low",
+            "stop_verified": true,
+            "rows": 50,
+            "images": 50,
+            "error": "카메라 기록 실패: 영상 프레임 수신 실패",
+            "recovery_recorded": false
+          }
+        }
+      ],
+      "result": {
+        "peak_pm25": 1392,
+        "recovery_elapsed_sec": 237.51500000001397,
+        "peak_verdict": "excluded_over_experiment_limit",
+        "stop_verified": true,
+        "rows": 321,
+        "images": 321
+      }
+    },
+    {
+      "order": 7,
+      "combination": 4,
+      "intake": 60,
+      "exhaust": 35,
+      "status": "complete",
+      "run_directory": "20261008_162450_839295/04_intake_medium_exhaust_weak",
+      "result": {
+        "peak_pm25": 1642,
+        "recovery_elapsed_sec": 200.7029999999795,
+        "peak_verdict": "excluded_over_experiment_limit",
+        "stop_verified": true,
+        "rows": 305,
+        "images": 305
+      }
+    },
+    {
+      "order": 8,
+      "combination": 1,
+      "intake": 35,
+      "exhaust": 35,
+      "status": "complete",
+      "run_directory": "20261008_164417_391909/01_intake_weak_exhaust_weak",
+      "previous_attempts": [
+        {
+          "status": "complete",
+          "run_directory": "20261008_163154_821681/01_intake_weak_exhaust_weak",
+          "result": {
+            "peak_pm25": 815,
+            "recovery_elapsed_sec": 196.56299999996554,
+            "peak_verdict": "excluded_over_experiment_limit",
+            "stop_verified": true,
+            "rows": 268,
+            "images": 269
+          },
+          "repeat_reason": "Operator requested repeat from trial 8; previous completed run retained"
+        }
+      ],
+      "result": {
+        "peak_pm25": 1385,
+        "recovery_elapsed_sec": 302.96899999992456,
+        "peak_verdict": "excluded_over_experiment_limit",
+        "stop_verified": true,
+        "rows": 375,
+        "images": 376
+      }
+    },
+    {
+      "order": 9,
+      "combination": 5,
+      "intake": 60,
+      "exhaust": 60,
+      "status": "complete",
+      "run_directory": "20261008_165218_269517/05_intake_medium_exhaust_medium",
+      "previous_attempts": [
+        {
+          "status": "complete",
+          "run_directory": "20261008_163749_387467/05_intake_medium_exhaust_medium",
+          "result": {
+            "peak_pm25": 833,
+            "recovery_elapsed_sec": 195.2029999999795,
+            "peak_verdict": "excluded_over_experiment_limit",
+            "stop_verified": true,
+            "rows": 264,
+            "images": 265
+          },
+          "repeat_reason": "Operator requested repeat from trial 8; previous completed run retained"
+        }
+      ],
+      "result": {
+        "peak_pm25": 1180,
+        "recovery_elapsed_sec": 216.18699999991804,
+        "peak_verdict": "excluded_over_experiment_limit",
+        "stop_verified": true,
+        "rows": 286,
+        "images": 287
+      }
+    }
+  ],
+  "progression_policy": "Start each subsequent trial only after the operator says 시작.",
+  "next_action": "All nine combinations have completed recordings; requested trial 8 and 9 repeats also complete. No further measurement starts without user instruction. All current runs exceed provisional limit 500; preserve exclusions and prior attempts.",
+  "completed_at": "2026-10-08T17:07:20.6899764+09:00"
+}

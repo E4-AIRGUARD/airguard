@@ -1,0 +1,2 @@
+{"Time": "2026-10-08T14:33:05.131+09:00", "event": "start_requested", "phase": "monitoring"}
+{"Time": "2026-10-08T14:33:06.000+09:00", "event": "finished", "phase": "monitoring", "status": "failed", "stop_verified": false, "error": "카메라 기록 실패: 카메라 index=1를 열 수 없습니다"}

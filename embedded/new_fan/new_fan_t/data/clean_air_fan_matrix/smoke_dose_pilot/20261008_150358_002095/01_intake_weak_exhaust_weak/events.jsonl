@@ -1,0 +1,15 @@
+{"Time": "2026-10-08T15:03:58.002+09:00", "event": "start_requested", "phase": "monitoring"}
+{"Time": "2026-10-08T15:04:07.516+09:00", "event": "fan_command", "phase": "baseline", "intake": 35, "exhaust": 35, "elapsed_sec": 0.0}
+{"Time": "2026-10-08T15:04:07.517+09:00", "event": "baseline_started", "phase": "baseline"}
+{"Time": "2026-10-08T15:04:17.553+09:00", "event": "fan_command", "phase": "stopping_for_smoke", "intake": 0, "exhaust": 0, "elapsed_sec": 10.030999999959022}
+{"Time": "2026-10-08T15:04:17.553+09:00", "event": "smoke_fan_stop_requested", "phase": "stopping_for_smoke", "elapsed_sec": 10.030999999959022}
+{"Time": "2026-10-08T15:04:20.249+09:00", "event": "insert_requested", "phase": "await_insert", "elapsed_sec": 12.734000000054948}
+{"Time": "2026-10-08T15:04:56.795+09:00", "event": "pm_over_limit", "phase": "await_insert", "pm25": 538, "elapsed_sec": 49.28099999995902}
+{"Time": "2026-10-08T15:05:03.054+09:00", "event": "removal_confirmed_by_user", "phase": "recovery", "elapsed_sec": 55.53099999995902}
+{"Time": "2026-10-08T15:05:03.054+09:00", "event": "insertion_time_unknown_operator_timed", "phase": "recovery", "nominal_smoke_sec": 6.0, "elapsed_sec": 55.53099999995902}
+{"Time": "2026-10-08T15:05:03.054+09:00", "event": "fan_command", "phase": "recovery", "intake": 35, "exhaust": 35, "elapsed_sec": 55.53099999995902}
+{"Time": "2026-10-08T15:05:03.054+09:00", "event": "direct_ventilation_started", "phase": "recovery", "elapsed_sec": 55.53099999995902}
+{"Time": "2026-10-08T15:05:04.249+09:00", "event": "ventilation_verified", "phase": "recovery", "elapsed_sec": 56.73400000005495, "intake_rpm": 2880, "exhaust_rpm": 2010}
+{"Time": "2026-10-08T15:09:21.024+09:00", "event": "recovery_complete", "phase": "complete", "pm25": 20, "elapsed_sec": 313.51500000001397}
+{"Time": "2026-10-08T15:09:21.024+09:00", "event": "measurement_ended", "phase": "complete"}
+{"Time": "2026-10-08T15:09:23.709+09:00", "event": "finished", "phase": "complete", "status": "complete", "stop_verified": true, "error": null}

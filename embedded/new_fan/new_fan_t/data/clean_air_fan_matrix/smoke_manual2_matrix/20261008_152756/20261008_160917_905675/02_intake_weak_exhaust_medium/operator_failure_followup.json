@@ -1,0 +1,21 @@
+{
+  "recorded_at": "2026-10-08T16:12:32.7481837+09:00",
+  "operator_message": "제거",
+  "removal_command_delivered": false,
+  "reason": "Measurement process had already exited on camera frame read failure",
+  "cleanup": "Separate fan-duty 100 ventilation; not a continuation of the 35/60 trial",
+  "interpretation": "Failed attempt; repeat required. Peak 19 describes only pre-failure data, not smoke peak.",
+  "cleanup_result": {
+    "status": "target_reached",
+    "stop_verified": true,
+    "final_pm25": 19,
+    "report": "ventilation/20261008_161124.json"
+  },
+  "camera_recheck": {
+    "status": "passed",
+    "duration_sec": 90,
+    "images": 90,
+    "root_cause": "undetermined",
+    "report": "C:/airguard/embedded/new_fan/new_fan_t/data/sensor_checks/camera_recheck_20261008_161222/status.json"
+  }
+}

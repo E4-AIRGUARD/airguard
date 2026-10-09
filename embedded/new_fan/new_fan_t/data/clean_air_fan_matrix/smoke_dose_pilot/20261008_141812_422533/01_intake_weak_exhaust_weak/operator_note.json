@@ -1,0 +1,12 @@
+{
+  "trial_classification": "reference_only",
+  "operator_planned_smoke_sec": 2,
+  "operator_timing_method": "operator stated they would time the dose themselves",
+  "operator_removal_message": "제거",
+  "physical_insertion_time": null,
+  "physical_removal_time": null,
+  "actual_exposure_sec": null,
+  "reason": "The assistant did not connect chat-only removal to the existing inserted/removed console protocol. The original run remained in await_insert. The assistant stopped it and started separate 35/35 ventilation after the user reported removal.",
+  "recovery_location": "chat_recovery/ventilation",
+  "original_logs_preserved": true
+}

@@ -1,0 +1,15 @@
+{"Time": "2026-10-08T16:17:47.624+09:00", "event": "start_requested", "phase": "monitoring"}
+{"Time": "2026-10-08T16:17:55.464+09:00", "event": "fan_command", "phase": "baseline", "intake": 35, "exhaust": 60, "elapsed_sec": 0.0}
+{"Time": "2026-10-08T16:17:55.464+09:00", "event": "baseline_started", "phase": "baseline"}
+{"Time": "2026-10-08T16:18:05.498+09:00", "event": "fan_command", "phase": "stopping_for_smoke", "intake": 0, "exhaust": 0, "elapsed_sec": 10.030999999959022}
+{"Time": "2026-10-08T16:18:05.498+09:00", "event": "smoke_fan_stop_requested", "phase": "stopping_for_smoke", "elapsed_sec": 10.030999999959022}
+{"Time": "2026-10-08T16:18:08.189+09:00", "event": "insert_requested", "phase": "await_insert", "elapsed_sec": 12.71799999999348}
+{"Time": "2026-10-08T16:19:09.884+09:00", "event": "pm_over_limit", "phase": "await_insert", "pm25": 546, "elapsed_sec": 74.42099999997299}
+{"Time": "2026-10-08T16:19:18.674+09:00", "event": "removal_confirmed_by_user", "phase": "recovery", "elapsed_sec": 83.20299999997951}
+{"Time": "2026-10-08T16:19:18.674+09:00", "event": "insertion_time_unknown_operator_timed", "phase": "recovery", "nominal_smoke_sec": 2.0, "elapsed_sec": 83.20299999997951}
+{"Time": "2026-10-08T16:19:18.674+09:00", "event": "fan_command", "phase": "recovery", "intake": 35, "exhaust": 60, "elapsed_sec": 83.20299999997951}
+{"Time": "2026-10-08T16:19:18.674+09:00", "event": "direct_ventilation_started", "phase": "recovery", "elapsed_sec": 83.20299999997951}
+{"Time": "2026-10-08T16:19:20.189+09:00", "event": "ventilation_verified", "phase": "recovery", "elapsed_sec": 84.71799999999348, "intake_rpm": 4140, "exhaust_rpm": 4080}
+{"Time": "2026-10-08T16:23:16.192+09:00", "event": "recovery_complete", "phase": "complete", "pm25": 20, "elapsed_sec": 320.7179999999935}
+{"Time": "2026-10-08T16:23:16.192+09:00", "event": "measurement_ended", "phase": "complete"}
+{"Time": "2026-10-08T16:23:19.757+09:00", "event": "finished", "phase": "complete", "status": "complete", "stop_verified": true, "error": null}

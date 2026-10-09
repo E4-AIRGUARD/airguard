@@ -1,0 +1,13 @@
+{
+  "completion_notified": true,
+  "status": "complete",
+  "notified_at": "2026-10-07T18:07:29.6810373+09:00",
+  "combination": 4,
+  "recovery_elapsed_sec": 432.5929999999935,
+  "pm25_end": 19,
+  "stop_verified": true,
+  "csv_rows": 606,
+  "images": 607,
+  "next_combination": 5,
+  "waiting_for_user": true
+}
