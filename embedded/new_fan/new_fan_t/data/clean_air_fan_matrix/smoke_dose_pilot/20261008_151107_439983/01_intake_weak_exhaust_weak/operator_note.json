@@ -1,0 +1,9 @@
+{
+  "nominal_smoke_sec": 2,
+  "dose_timing_mode": "operator_manual",
+  "bme280_enabled": false,
+  "excluded_channels": ["temperature", "humidity", "pressure"],
+  "reason": "Repeat two-second pilot requested by operator with BME280 still disabled in firmware.",
+  "missing_data_note": "Temperature and humidity CSV cells are blank. Any -99 values in raw telemetry or pre_start_sensor are missing-data sentinels, not real measurements.",
+  "timing_note": "The operator times two seconds manually. Chat removal acknowledgement is not a verified physical removal timestamp."
+}

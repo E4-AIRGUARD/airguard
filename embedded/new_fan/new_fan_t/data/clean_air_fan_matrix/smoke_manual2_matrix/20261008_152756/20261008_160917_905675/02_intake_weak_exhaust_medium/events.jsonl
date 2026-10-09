@@ -1,0 +1,7 @@
+{"Time": "2026-10-08T16:09:17.914+09:00", "event": "start_requested", "phase": "monitoring"}
+{"Time": "2026-10-08T16:09:25.024+09:00", "event": "fan_command", "phase": "baseline", "intake": 35, "exhaust": 60, "elapsed_sec": 0.0}
+{"Time": "2026-10-08T16:09:25.024+09:00", "event": "baseline_started", "phase": "baseline"}
+{"Time": "2026-10-08T16:09:35.064+09:00", "event": "fan_command", "phase": "stopping_for_smoke", "intake": 0, "exhaust": 0, "elapsed_sec": 10.047000000020489}
+{"Time": "2026-10-08T16:09:35.064+09:00", "event": "smoke_fan_stop_requested", "phase": "stopping_for_smoke", "elapsed_sec": 10.047000000020489}
+{"Time": "2026-10-08T16:09:37.194+09:00", "event": "insert_requested", "phase": "await_insert", "elapsed_sec": 12.172000000020489}
+{"Time": "2026-10-08T16:10:16.193+09:00", "event": "finished", "phase": "await_insert", "status": "failed", "stop_verified": true, "error": "카메라 기록 실패: 영상 프레임 수신 실패"}

@@ -1,0 +1,4 @@
+{"Time": "2026-10-07T16:57:10.406+09:00", "event": "start_requested", "phase": "monitoring"}
+{"Time": "2026-10-07T16:57:49.201+09:00", "event": "fan_command", "phase": "baseline", "intake": 35, "exhaust": 35, "elapsed_sec": 0.0}
+{"Time": "2026-10-07T16:57:49.201+09:00", "event": "baseline_started", "phase": "baseline"}
+{"Time": "2026-10-07T16:57:56.632+09:00", "event": "finished", "phase": "baseline", "status": "failed", "stop_verified": true, "error": "PM2.5 exceeded 20 during clean 10-second baseline"}

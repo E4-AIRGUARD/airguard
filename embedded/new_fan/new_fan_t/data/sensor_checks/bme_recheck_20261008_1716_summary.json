@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-10-08T17:18:34.1160214+09:00",
+  "diagnostic": "BME280 temporarily enabled via staged firmware; existing experiment source unchanged",
+  "pins": {
+    "sda": 25,
+    "scl": 26
+  },
+  "address_0x76_ack_status": 2,
+  "address_0x77_ack_status": 2,
+  "sda_idle": 1,
+  "scl_idle": 1,
+  "chip_id_read": false,
+  "valid_environment_readings": false,
+  "diagnostic_report": "bme_live_20261008_171616.json",
+  "firmware_restored": "Original ENABLE_BME280=0 binary uploaded and boot banner verified",
+  "operator_has_spare_bme280": true,
+  "next_step": "Power off and swap only BME280, preserving wiring; wait for operator replacement confirmation before active I2C retest",
+  "experiment_start_authorized": false
+}

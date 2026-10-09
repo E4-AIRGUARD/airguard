@@ -1,4 +1,4 @@
-"""Explicitly requested ventilation, both fans 100%, stop at fresh PM2.5 <=20."""
+"""Explicitly requested ventilation, selected fan duty, stop at fresh PM2.5 <=20."""
 import argparse
 import json
 import time
@@ -13,9 +13,11 @@ from measure_smoke_after_manual import valid_pm
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--session-dir', required=True, type=Path)
+    parser.add_argument('--fan-duty', type=int, choices=(35, 60, 100), default=100)
     args = parser.parse_args()
     report = dict(status='starting', started=datetime.now().astimezone().isoformat(),
-                  target_pm25_max=20, bme_enabled=False, stop_verified=False, samples=[], error=None)
+                  target_pm25_max=20, fan_duty=args.fan_duty,
+                  bme_enabled=False, stop_verified=False, samples=[], error=None)
     directory = args.session_dir / 'ventilation'
     directory.mkdir(parents=True, exist_ok=True)
     path = directory / datetime.now().strftime('%Y%m%d_%H%M%S.json')
@@ -48,11 +50,11 @@ def main():
         if first['pm2_5'] <= 20:
             report['status'] = 'target_reached'
         else:
-            port.write(b'F 100 100\n')
+            port.write(f'F {args.fan_duty} {args.fan_duty}\n'.encode())
             start = last = time.monotonic()
             next_print = start
             report['status'] = 'ventilating'
-            print('FANS_REQUESTED=100/100 PM25=' + str(first['pm2_5']), flush=True)
+            print(f'FANS_REQUESTED={args.fan_duty}/{args.fan_duty} PM25=' + str(first['pm2_5']), flush=True)
             while time.monotonic() - start < 900:
                 if (args.session_dir / 'STOP').exists():
                     raise InterruptedError('STOP requested')
@@ -72,7 +74,7 @@ def main():
                 if d['pm2_5'] <= 20:
                     report['status'] = 'target_reached'
                     break
-                if now - start > 8 and ((d['duty_in'], d['duty_out']) != (100, 100)
+                if now - start > 8 and ((d['duty_in'], d['duty_out']) != (args.fan_duty, args.fan_duty)
                                         or d['rpm_in'] <= 0 or d['rpm_out'] <= 0):
                     raise OSError('Fan duty/RPM verification failed')
             else:

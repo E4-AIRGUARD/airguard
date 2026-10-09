@@ -1,0 +1,6 @@
+{"Time": "2026-10-08T14:10:22.272+09:00", "event": "start_requested", "phase": "monitoring"}
+{"Time": "2026-10-08T14:10:30.173+09:00", "event": "fan_command", "phase": "baseline", "intake": 35, "exhaust": 35, "elapsed_sec": 0.0}
+{"Time": "2026-10-08T14:10:30.173+09:00", "event": "baseline_started", "phase": "baseline"}
+{"Time": "2026-10-08T14:10:40.160+09:00", "event": "fan_command", "phase": "stopping_for_smoke", "intake": 0, "exhaust": 0, "elapsed_sec": 10.0}
+{"Time": "2026-10-08T14:10:40.160+09:00", "event": "smoke_fan_stop_requested", "phase": "stopping_for_smoke", "elapsed_sec": 10.0}
+{"Time": "2026-10-08T14:10:43.170+09:00", "event": "insert_requested", "phase": "await_insert", "elapsed_sec": 13.0}

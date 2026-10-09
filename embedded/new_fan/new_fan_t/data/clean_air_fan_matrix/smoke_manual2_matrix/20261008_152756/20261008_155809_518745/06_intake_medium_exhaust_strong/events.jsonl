@@ -1,0 +1,15 @@
+{"Time": "2026-10-08T15:58:09.521+09:00", "event": "start_requested", "phase": "monitoring"}
+{"Time": "2026-10-08T15:58:17.327+09:00", "event": "fan_command", "phase": "baseline", "intake": 60, "exhaust": 100, "elapsed_sec": 0.0}
+{"Time": "2026-10-08T15:58:17.327+09:00", "event": "baseline_started", "phase": "baseline"}
+{"Time": "2026-10-08T15:58:27.403+09:00", "event": "fan_command", "phase": "stopping_for_smoke", "intake": 0, "exhaust": 0, "elapsed_sec": 10.077999999979511}
+{"Time": "2026-10-08T15:58:27.403+09:00", "event": "smoke_fan_stop_requested", "phase": "stopping_for_smoke", "elapsed_sec": 10.077999999979511}
+{"Time": "2026-10-08T15:58:30.199+09:00", "event": "insert_requested", "phase": "await_insert", "elapsed_sec": 12.875}
+{"Time": "2026-10-08T15:59:13.929+09:00", "event": "pm_over_limit", "phase": "await_insert", "pm25": 537, "elapsed_sec": 56.60999999998603}
+{"Time": "2026-10-08T15:59:28.301+09:00", "event": "removal_confirmed_by_user", "phase": "recovery", "elapsed_sec": 70.98499999998603}
+{"Time": "2026-10-08T15:59:28.301+09:00", "event": "insertion_time_unknown_operator_timed", "phase": "recovery", "nominal_smoke_sec": 2.0, "elapsed_sec": 70.98499999998603}
+{"Time": "2026-10-08T15:59:28.301+09:00", "event": "fan_command", "phase": "recovery", "intake": 60, "exhaust": 100, "elapsed_sec": 70.98499999998603}
+{"Time": "2026-10-08T15:59:28.302+09:00", "event": "direct_ventilation_started", "phase": "recovery", "elapsed_sec": 70.98499999998603}
+{"Time": "2026-10-08T15:59:30.200+09:00", "event": "ventilation_verified", "phase": "recovery", "elapsed_sec": 72.875, "intake_rpm": 3990, "exhaust_rpm": 5760}
+{"Time": "2026-10-08T16:07:30.754+09:00", "event": "recovery_complete", "phase": "complete", "pm25": 20, "elapsed_sec": 553.4379999999655}
+{"Time": "2026-10-08T16:07:30.754+09:00", "event": "measurement_ended", "phase": "complete"}
+{"Time": "2026-10-08T16:07:33.671+09:00", "event": "finished", "phase": "complete", "status": "complete", "stop_verified": true, "error": null}

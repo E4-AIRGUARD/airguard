@@ -1,0 +1,3 @@
+{"Time": "2026-10-07T16:42:04.402+09:00", "event": "start_conditions_verified", "pm25": 17, "temperature": 22.83}
+{"Time": "2026-10-07T16:42:11.603+09:00", "event": "measurement_started_smoke_insertion_cue", "pm25": 3365}
+{"Time": "2026-10-07T16:43:11.702+09:00", "event": "remove_requested", "elapsed_sec": 60.09400000004098}

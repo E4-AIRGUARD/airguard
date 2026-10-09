@@ -1,0 +1,42 @@
+{
+  "status": "failed",
+  "protocol": "fans_off_smoke60_remove_confirm_off30",
+  "nominal_duration_sec": 90,
+  "smoke_sec": 60,
+  "post_removal_sec": 30,
+  "camera_interval_sec": 1.0,
+  "camera_rotation_deg": 180,
+  "start_pm25_max": 20,
+  "start_temperature_range": null,
+  "rows": 148,
+  "images": 148,
+  "stop_verified": true,
+  "error": "카메라 기록 실패: 영상 프레임 수신 실패",
+  "pre_smoke_check_path": "C:\\airguard\\embedded\\new_fan\\new_fan_t\\data\\clean_air_fan_matrix\\smoke_off90\\20261007_163741_564441\\status.json",
+  "pre_start_sensor": {
+    "Time": "2026-10-07T16:38:36.702+09:00",
+    "pm25": 17,
+    "temperature": 22.83
+  },
+  "timing_note": "Recording starts on command receipt; smoke was already generated. Baseline was verified before smoke, not after insertion.",
+  "camera_manual_exposure": -6,
+  "updated": "2026-10-07T16:44:41.199+09:00",
+  "camera_preflight": {
+    "frames": 100,
+    "span_sec": 9.51500000001397,
+    "last_age_sec": 0.9690000000409782,
+    "max_gap_sec": 0.2029999999795109,
+    "ready": false
+  },
+  "last_sensor": {
+    "seq": 4725,
+    "uptime_ms": 4953677,
+    "pm1": 3354,
+    "pm25": 3354,
+    "pm10": 3354
+  },
+  "started": "2026-10-07T16:42:11.603+09:00",
+  "phase": "await_remove",
+  "peak_pm25": 3393,
+  "ended": "2026-10-07T16:44:41.199+09:00"
+}

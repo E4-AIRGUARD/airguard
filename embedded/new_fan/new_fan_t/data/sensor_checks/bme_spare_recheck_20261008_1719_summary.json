@@ -1,0 +1,21 @@
+{
+  "recorded_at": "2026-10-08T17:20:24.5478843+09:00",
+  "operator_confirmed": "Spare BME280 replacement complete",
+  "diagnostic_report": "bme_live_20261008_171927.json",
+  "firmware": "BME280-enabled staged diagnostic firmware remains on device",
+  "pins": {
+    "sda": 25,
+    "scl": 26
+  },
+  "address_0x76_ack_status": 2,
+  "address_0x77_ack_status": 2,
+  "sda_idle": 1,
+  "scl_idle": 1,
+  "valid_environment_readings": false,
+  "final_fan_pwm_in": 0,
+  "final_fan_pwm_out": 0,
+  "final_fan_rpm_in": 0,
+  "final_fan_rpm_out": 0,
+  "inference": "Same no-response result with spare; shared wiring/power/interface selection needs inspection, sensor failure not proven",
+  "next_step": "Await operator module pin labels/count and CSB/SDO details; no experiment running"
+}

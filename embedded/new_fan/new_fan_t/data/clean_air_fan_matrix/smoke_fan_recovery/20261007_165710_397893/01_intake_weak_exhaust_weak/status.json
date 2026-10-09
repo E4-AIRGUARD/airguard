@@ -1,0 +1,37 @@
+{
+  "status": "failed",
+  "stop_verified": true,
+  "rows": 4,
+  "images": 7,
+  "protocol": "baseline10_smoke60_fans_off_direct_recovery",
+  "recovery_pm25": 20,
+  "baseline_sec": 10,
+  "smoke_sec": 60,
+  "fans_off_sec": 0,
+  "camera_rotation_deg": 180,
+  "start_temperature_range": null,
+  "max_run_sec": 1800,
+  "combination": 1,
+  "pm_output": "atmospheric",
+  "error": "PM2.5 exceeded 20 during clean 10-second baseline",
+  "intake": 35,
+  "exhaust": 35,
+  "started": "2026-10-07T16:57:49.201+09:00",
+  "camera_enabled": true,
+  "updated": "2026-10-07T16:57:56.632+09:00",
+  "phase": "baseline",
+  "peak_pm25": 21,
+  "last_sensor": {
+    "seq": 5483,
+    "uptime_ms": 5748306,
+    "pm1": 15,
+    "pm25": 21,
+    "pm10": 24
+  },
+  "pre_start_sensor": {
+    "temperature": 22.71,
+    "pm25": 20,
+    "Time": "2026-10-07T16:57:49.201+09:00"
+  },
+  "ended": "2026-10-07T16:57:56.632+09:00"
+}

@@ -1,0 +1,14 @@
+{
+  "nominal_smoke_sec": 4,
+  "dose_timing_mode": "operator_manual",
+  "actual_insertion_time_known": false,
+  "physical_removal_time_known": false,
+  "timing_note": "The operator timed exposure manually and reported removal through chat. The program removal timestamp is acknowledgement time, not a verified physical removal time.",
+  "quality_flags": [
+    "pm25_exceeded_provisional_experiment_limit_500",
+    "temperature_telemetry_anomaly"
+  ],
+  "temperature_note": "Telemetry changed from approximately 23.96 C to 180.56 C at 2026-10-08T14:35:31.147+09:00 and subsequently repeatedly reported 181.81 C. These readings are anomalous and are not verified physical temperatures. Do not use affected temperature readings as valid AI training targets or inputs without investigation.",
+  "comparison_eligible": false,
+  "raw_data_preserved": true
+}

@@ -1,0 +1,15 @@
+{"Time": "2026-10-08T14:24:59.601+09:00", "event": "start_requested", "phase": "monitoring"}
+{"Time": "2026-10-08T14:25:07.367+09:00", "event": "fan_command", "phase": "baseline", "intake": 35, "exhaust": 35, "elapsed_sec": 0.0}
+{"Time": "2026-10-08T14:25:07.367+09:00", "event": "baseline_started", "phase": "baseline"}
+{"Time": "2026-10-08T14:25:17.459+09:00", "event": "fan_command", "phase": "stopping_for_smoke", "intake": 0, "exhaust": 0, "elapsed_sec": 10.094000000040978}
+{"Time": "2026-10-08T14:25:17.459+09:00", "event": "smoke_fan_stop_requested", "phase": "stopping_for_smoke", "elapsed_sec": 10.094000000040978}
+{"Time": "2026-10-08T14:25:19.841+09:00", "event": "insert_requested", "phase": "await_insert", "elapsed_sec": 12.469000000040978}
+{"Time": "2026-10-08T14:26:03.980+09:00", "event": "pm_over_limit", "phase": "await_insert", "pm25": 516, "elapsed_sec": 56.60900000005495}
+{"Time": "2026-10-08T14:26:06.825+09:00", "event": "removal_confirmed_by_user", "phase": "recovery", "elapsed_sec": 59.453000000095926}
+{"Time": "2026-10-08T14:26:06.825+09:00", "event": "insertion_time_unknown_operator_timed", "phase": "recovery", "nominal_smoke_sec": 2.0, "elapsed_sec": 59.453000000095926}
+{"Time": "2026-10-08T14:26:06.825+09:00", "event": "fan_command", "phase": "recovery", "intake": 35, "exhaust": 35, "elapsed_sec": 59.453000000095926}
+{"Time": "2026-10-08T14:26:06.825+09:00", "event": "direct_ventilation_started", "phase": "recovery", "elapsed_sec": 59.453000000095926}
+{"Time": "2026-10-08T14:26:08.840+09:00", "event": "ventilation_verified", "phase": "recovery", "elapsed_sec": 61.46900000004098, "intake_rpm": 2850, "exhaust_rpm": 2580}
+{"Time": "2026-10-08T14:29:42.045+09:00", "event": "recovery_complete", "phase": "complete", "pm25": 20, "elapsed_sec": 274.68700000003446}
+{"Time": "2026-10-08T14:29:42.045+09:00", "event": "measurement_ended", "phase": "complete"}
+{"Time": "2026-10-08T14:29:45.759+09:00", "event": "finished", "phase": "complete", "status": "complete", "stop_verified": true, "error": null}

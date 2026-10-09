@@ -1,0 +1,9 @@
+{
+  "operator_confirmation": "Smoke source is off and no additional smoke is being generated near the intake.",
+  "confirmation_context": "Asked during recovery after PM2.5 declined then rose again at low concentrations.",
+  "cause_of_rebound": "undetermined",
+  "nominal_smoke_sec": 2,
+  "actual_insertion_time_known": false,
+  "physical_removal_time_known": false,
+  "bme280_enabled": false
+}

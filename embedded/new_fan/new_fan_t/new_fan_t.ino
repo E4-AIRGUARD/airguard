@@ -10,7 +10,7 @@
 //    오픈 컬렉터인 팬 Tach는 풀업 없이는 라인이 떠서 노이즈만 읽힌다.
 //
 // 센서 배선(팬 핀과 겹치지 않음 — 2026-09-22 추가, PMS 핀은 2026-09-27 재변경):
-//       BME280   SDA(파란선) → 21 · SCL(노란선) → 23 (2026-09-30 SDA만 변경, I2C 0x76/0x77 자동 탐색)
+//       BME280   SDA(파란선) → 25 · SCL(노란선) → 26 (2026-10-08 연결 이상 진단용 변경, I2C 0x76/0x77 자동 탐색)
 //       PMS5003  RX(ESP32측, PMS TX에 연결) → 14 · TX(ESP32측, PMS RX에 연결) → 27 (UART2, 9600bps)
 //       (GPIO2는 부팅 스트래핑 핀이라 PMS TX가 물리면 업로드가 막혀서 14/27로 옮김)
 // 라이브러리: Adafruit BME280 + Adafruit Unified Sensor + Adafruit BusIO
@@ -27,7 +27,7 @@
 // 출력: 1초마다 사람이 읽는 [FAN] 줄 + PC 로깅용 "DATA,..." CSV 줄을 같이 찍는다.
 //   DATA,elapsed_ms,duty_in,rpm_in,duty_out,rpm_out,temp_c,rh_pct,pressure_hpa,pm1_0,pm2_5,pm10,bme_err,pms_stale
 #ifndef ENABLE_BME280
-#define ENABLE_BME280 1  // 진단 빌드에서 -DENABLE_BME280=0: I2C/BME280 호출 전부 제외
+#define ENABLE_BME280 0  // 2026-10-08: 센서 미응답으로 연기 실험에서 제외. 복구 후 1로 변경.
 #endif
 #if ENABLE_BME280
 #include <Wire.h>
@@ -43,7 +43,7 @@ const uint8_t  PWM_RES  = 11;
 const uint32_t DUTY_MAX = (1u << PWM_RES) - 1;
 const uint32_t REPORT_MS = 1000;
 
-const int PIN_SDA = 21, PIN_SCL = 23;
+const int PIN_SDA = 25, PIN_SCL = 26;
 const int PIN_PMS_RX = 14, PIN_PMS_TX = 27;
 const uint32_t PMS_STALE_MS = 6000;   // PMS5003 안정 모드 출력 간격 최대 2.3 s → 2회 연속 누락까지 정상으로 봄 (T08과 동일 기준)
 
@@ -91,7 +91,7 @@ Adafruit_BME280 bme;
 #endif
 bool bmeOk = false;
 HardwareSerial pms(2);
-struct Sens { float t = NAN, rh = NAN, p = NAN; uint16_t pm1 = 0, pm25 = 0, pm10 = 0; uint32_t pmsAt = 0; } S;
+struct Sens { float t = NAN, rh = NAN, p = NAN; uint16_t pm1 = 0, pm25 = 0, pm10 = 0; uint32_t pmsAt = 0, pmsSeq = 0; } S;
 
 // ---- PMS5003 (T08_cleanbox_fw와 동일 파싱) ----
 bool pmsRead() {
@@ -102,11 +102,16 @@ bool pmsRead() {
     if (pms.readBytes(b + 2, 28) != 28) return false;
     uint16_t rx = ((uint16_t)pms.read() << 8) | pms.read(), sum = 0;
     for (int i = 0; i < 30; i++) sum += b[i];
-    if (sum != rx) return false;
+    if (sum != rx || b[2] != 0 || b[3] != 28 || b[29] != 0) return false;
     S.pm1  = (b[10] << 8) | b[11];   // data4~6 = 대기환경용 PM1 / PM2.5 / PM10
     S.pm25 = (b[12] << 8) | b[13];
     S.pm10 = (b[14] << 8) | b[15];
     S.pmsAt = millis();
+    ++S.pmsSeq;
+    // Separate fresh-frame stream; the existing DATA and CSV schemas stay unchanged.
+    Serial.printf("PMS_SAMPLE,%lu,%lu,%u,%u,%u\n",
+                  (unsigned long)S.pmsSeq, (unsigned long)S.pmsAt,
+                  (unsigned)S.pm1, (unsigned)S.pm25, (unsigned)S.pm10);
     return true;
   }
   return false;
@@ -176,6 +181,29 @@ void setup() {
 
 #if ENABLE_BME280
   Wire.begin(PIN_SDA, PIN_SCL, 100000);
+  // Read-only boot diagnostics: ACK and chip ID distinguish bus access from init failure.
+  // Idle HIGH alone does not prove continuity through the jumper wires.
+  Serial.printf("[BME_DIAG] SDA=%d level=%d SCL=%d level=%d\n",
+                PIN_SDA, digitalRead(PIN_SDA), PIN_SCL, digitalRead(PIN_SCL));
+  for (uint8_t address = 0x76; address <= 0x77; ++address) {
+    Wire.beginTransmission(address);
+    uint8_t ack = Wire.endTransmission();
+    Serial.printf("[BME_DIAG] address=0x%02X ack_status=%u\n", address, ack);
+    if (ack != 0) continue;
+    Wire.beginTransmission(address);
+    Wire.write(0xD0);  // BME280 chip ID register; expected value 0x60.
+    uint8_t regStatus = Wire.endTransmission(false);
+    if (regStatus != 0) {
+      Serial.printf("[BME_DIAG] id_pointer_status=%u\n", regStatus);
+      continue;
+    }
+    size_t count = Wire.requestFrom(address, (uint8_t)1);
+    if (count == 1 && Wire.available()) {
+      Serial.printf("[BME_DIAG] chip_id=0x%02X\n", Wire.read());
+    } else {
+      Serial.printf("[BME_DIAG] chip_id_read_failed count=%u\n", (unsigned)count);
+    }
+  }
   bmeOk = bme.begin(0x76, &Wire) || bme.begin(0x77, &Wire);
   if (bmeOk) bme.setSampling(Adafruit_BME280::MODE_FORCED);
 #endif
@@ -206,7 +234,7 @@ void loop() {
       S.p = bme.readPressure() / 100.0f;
     }
 #endif
-    bool pmsStale = (millis() - S.pmsAt > PMS_STALE_MS);
+    bool pmsStale = (S.pmsSeq == 0 || millis() - S.pmsAt > PMS_STALE_MS);
 
     Serial.printf("[FAN] 흡기 %s duty=%3d %% %4lu rpm · 배기 %s duty=%3d %% %4lu rpm · T=%.1fC RH=%.1f%% P=%.0fhPa PM1=%u PM2.5=%u PM10=%u%s\n",
                   nameIn, pctIn, (unsigned long)rpmIn, nameOut, pctOut, (unsigned long)rpmOut,

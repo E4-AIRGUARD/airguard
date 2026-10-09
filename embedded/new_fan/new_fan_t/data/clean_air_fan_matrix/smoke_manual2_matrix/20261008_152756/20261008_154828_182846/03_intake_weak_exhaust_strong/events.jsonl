@@ -1,0 +1,15 @@
+{"Time": "2026-10-08T15:48:28.182+09:00", "event": "start_requested", "phase": "monitoring"}
+{"Time": "2026-10-08T15:48:35.621+09:00", "event": "fan_command", "phase": "baseline", "intake": 35, "exhaust": 100, "elapsed_sec": 0.0}
+{"Time": "2026-10-08T15:48:35.621+09:00", "event": "baseline_started", "phase": "baseline"}
+{"Time": "2026-10-08T15:48:45.616+09:00", "event": "fan_command", "phase": "stopping_for_smoke", "intake": 0, "exhaust": 0, "elapsed_sec": 10.0}
+{"Time": "2026-10-08T15:48:45.616+09:00", "event": "smoke_fan_stop_requested", "phase": "stopping_for_smoke", "elapsed_sec": 10.0}
+{"Time": "2026-10-08T15:48:48.205+09:00", "event": "insert_requested", "phase": "await_insert", "elapsed_sec": 12.577999999979511}
+{"Time": "2026-10-08T15:49:26.978+09:00", "event": "pm_over_limit", "phase": "await_insert", "pm25": 509, "elapsed_sec": 51.35999999998603}
+{"Time": "2026-10-08T15:49:41.653+09:00", "event": "removal_confirmed_by_user", "phase": "recovery", "elapsed_sec": 66.03099999995902}
+{"Time": "2026-10-08T15:49:41.653+09:00", "event": "insertion_time_unknown_operator_timed", "phase": "recovery", "nominal_smoke_sec": 2.0, "elapsed_sec": 66.03099999995902}
+{"Time": "2026-10-08T15:49:41.654+09:00", "event": "fan_command", "phase": "recovery", "intake": 35, "exhaust": 100, "elapsed_sec": 66.03099999995902}
+{"Time": "2026-10-08T15:49:41.654+09:00", "event": "direct_ventilation_started", "phase": "recovery", "elapsed_sec": 66.03099999995902}
+{"Time": "2026-10-08T15:49:43.205+09:00", "event": "ventilation_verified", "phase": "recovery", "elapsed_sec": 67.57799999997951, "intake_rpm": 2250, "exhaust_rpm": 5340}
+{"Time": "2026-10-08T15:52:36.678+09:00", "event": "recovery_complete", "phase": "complete", "pm25": 19, "elapsed_sec": 241.06299999996554}
+{"Time": "2026-10-08T15:52:36.678+09:00", "event": "measurement_ended", "phase": "complete"}
+{"Time": "2026-10-08T15:52:47.187+09:00", "event": "finished", "phase": "complete", "status": "failed", "stop_verified": false, "error": "Fan stop not verified; inspect hardware"}

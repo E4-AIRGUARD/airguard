@@ -12,7 +12,8 @@ def main():
     root.mkdir(parents=True, exist_ok=True)
     status_path = root / f'{os.getpid()}.json'
     stop_path = root / f'{os.getpid()}.stop'
-    status = {'pid': os.getpid(), 'camera_index': 1, 'status': 'opening', 'images_saved': 0}
+    status = {'pid': os.getpid(), 'camera_index': 1, 'status': 'opening',
+              'images_saved': 0, 'rotation_deg': 180}
 
     def save():
         status_path.write_text(json.dumps(status, indent=2), encoding='utf-8')
@@ -35,6 +36,7 @@ def main():
             ok, frame = cap.read()
             if not ok or frame is None:
                 raise OSError('Camera frame unavailable')
+            frame = cv2.rotate(frame, cv2.ROTATE_180)
             cv2.imshow(title, frame)
             frames += 1
             now = time.monotonic()
