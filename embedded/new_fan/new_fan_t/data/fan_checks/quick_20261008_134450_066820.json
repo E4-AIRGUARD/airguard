@@ -1,0 +1,251 @@
+{
+  "started": "2026-10-08T13:44:50.066820+09:00",
+  "port": "COM7",
+  "stages": [
+    {
+      "level": "weak",
+      "duty": 35,
+      "duration_sec": 6,
+      "samples": [
+        {
+          "Time": "2026-10-08T13:44:51.925064+09:00",
+          "elapsed_ms": 122000,
+          "intake_pwm": 35,
+          "intake_rpm": 1950,
+          "exhaust_pwm": 35,
+          "exhaust_rpm": 1620,
+          "temperature": -99.0,
+          "pm25": 5,
+          "pms_stale": 0
+        },
+        {
+          "Time": "2026-10-08T13:44:52.914965+09:00",
+          "elapsed_ms": 123000,
+          "intake_pwm": 35,
+          "intake_rpm": 2730,
+          "exhaust_pwm": 35,
+          "exhaust_rpm": 2610,
+          "temperature": -99.0,
+          "pm25": 5,
+          "pms_stale": 0
+        },
+        {
+          "Time": "2026-10-08T13:44:53.923614+09:00",
+          "elapsed_ms": 124000,
+          "intake_pwm": 35,
+          "intake_rpm": 2760,
+          "exhaust_pwm": 35,
+          "exhaust_rpm": 2730,
+          "temperature": -99.0,
+          "pm25": 5,
+          "pms_stale": 0
+        },
+        {
+          "Time": "2026-10-08T13:44:54.923725+09:00",
+          "elapsed_ms": 125000,
+          "intake_pwm": 35,
+          "intake_rpm": 2850,
+          "exhaust_pwm": 35,
+          "exhaust_rpm": 2700,
+          "temperature": -99.0,
+          "pm25": 5,
+          "pms_stale": 0
+        },
+        {
+          "Time": "2026-10-08T13:44:55.922233+09:00",
+          "elapsed_ms": 126000,
+          "intake_pwm": 35,
+          "intake_rpm": 2730,
+          "exhaust_pwm": 35,
+          "exhaust_rpm": 2730,
+          "temperature": -99.0,
+          "pm25": 5,
+          "pms_stale": 0
+        }
+      ],
+      "passed": true,
+      "rpm_ranges": {
+        "intake_rpm": [
+          2730,
+          2850
+        ],
+        "exhaust_rpm": [
+          2700,
+          2730
+        ]
+      }
+    },
+    {
+      "level": "medium",
+      "duty": 60,
+      "duration_sec": 6,
+      "samples": [
+        {
+          "Time": "2026-10-08T13:44:57.924825+09:00",
+          "elapsed_ms": 128000,
+          "intake_pwm": 60,
+          "intake_rpm": 4560,
+          "exhaust_pwm": 60,
+          "exhaust_rpm": 3660,
+          "temperature": -99.0,
+          "pm25": 5,
+          "pms_stale": 0
+        },
+        {
+          "Time": "2026-10-08T13:44:58.922248+09:00",
+          "elapsed_ms": 129000,
+          "intake_pwm": 60,
+          "intake_rpm": 4590,
+          "exhaust_pwm": 60,
+          "exhaust_rpm": 4290,
+          "temperature": -99.0,
+          "pm25": 5,
+          "pms_stale": 0
+        },
+        {
+          "Time": "2026-10-08T13:44:59.921978+09:00",
+          "elapsed_ms": 130000,
+          "intake_pwm": 60,
+          "intake_rpm": 4590,
+          "exhaust_pwm": 60,
+          "exhaust_rpm": 4470,
+          "temperature": -99.0,
+          "pm25": 5,
+          "pms_stale": 0
+        },
+        {
+          "Time": "2026-10-08T13:45:00.922564+09:00",
+          "elapsed_ms": 131000,
+          "intake_pwm": 60,
+          "intake_rpm": 4500,
+          "exhaust_pwm": 60,
+          "exhaust_rpm": 4410,
+          "temperature": -99.0,
+          "pm25": 5,
+          "pms_stale": 0
+        },
+        {
+          "Time": "2026-10-08T13:45:01.925609+09:00",
+          "elapsed_ms": 132000,
+          "intake_pwm": 60,
+          "intake_rpm": 4680,
+          "exhaust_pwm": 60,
+          "exhaust_rpm": 4290,
+          "temperature": -99.0,
+          "pm25": 5,
+          "pms_stale": 0
+        }
+      ],
+      "passed": true,
+      "rpm_ranges": {
+        "intake_rpm": [
+          4500,
+          4680
+        ],
+        "exhaust_rpm": [
+          4290,
+          4470
+        ]
+      }
+    },
+    {
+      "level": "strong",
+      "duty": 100,
+      "duration_sec": 6,
+      "samples": [
+        {
+          "Time": "2026-10-08T13:45:02.925690+09:00",
+          "elapsed_ms": 133000,
+          "intake_pwm": 60,
+          "intake_rpm": 4800,
+          "exhaust_pwm": 60,
+          "exhaust_rpm": 4440,
+          "temperature": -99.0,
+          "pm25": 5,
+          "pms_stale": 0
+        },
+        {
+          "Time": "2026-10-08T13:45:03.921504+09:00",
+          "elapsed_ms": 134000,
+          "intake_pwm": 100,
+          "intake_rpm": 5130,
+          "exhaust_pwm": 100,
+          "exhaust_rpm": 5040,
+          "temperature": -99.0,
+          "pm25": 5,
+          "pms_stale": 0
+        },
+        {
+          "Time": "2026-10-08T13:45:04.920845+09:00",
+          "elapsed_ms": 135000,
+          "intake_pwm": 100,
+          "intake_rpm": 5820,
+          "exhaust_pwm": 100,
+          "exhaust_rpm": 5700,
+          "temperature": -99.0,
+          "pm25": 5,
+          "pms_stale": 0
+        },
+        {
+          "Time": "2026-10-08T13:45:05.925876+09:00",
+          "elapsed_ms": 136000,
+          "intake_pwm": 100,
+          "intake_rpm": 5970,
+          "exhaust_pwm": 100,
+          "exhaust_rpm": 5790,
+          "temperature": -99.0,
+          "pm25": 5,
+          "pms_stale": 0
+        },
+        {
+          "Time": "2026-10-08T13:45:06.926378+09:00",
+          "elapsed_ms": 137000,
+          "intake_pwm": 100,
+          "intake_rpm": 6030,
+          "exhaust_pwm": 100,
+          "exhaust_rpm": 5820,
+          "temperature": -99.0,
+          "pm25": 5,
+          "pms_stale": 0
+        },
+        {
+          "Time": "2026-10-08T13:45:07.925924+09:00",
+          "elapsed_ms": 138000,
+          "intake_pwm": 100,
+          "intake_rpm": 6060,
+          "exhaust_pwm": 100,
+          "exhaust_rpm": 5820,
+          "temperature": -99.0,
+          "pm25": 5,
+          "pms_stale": 0
+        }
+      ],
+      "passed": true,
+      "rpm_ranges": {
+        "intake_rpm": [
+          5970,
+          6060
+        ],
+        "exhaust_rpm": [
+          5790,
+          5820
+        ]
+      }
+    }
+  ],
+  "status": "complete",
+  "stop_verified": true,
+  "error": null,
+  "stop_sample": {
+    "Time": "2026-10-08T13:45:11.919532+09:00",
+    "elapsed_ms": 142000,
+    "intake_pwm": 0,
+    "intake_rpm": 0,
+    "exhaust_pwm": 0,
+    "exhaust_rpm": 0,
+    "temperature": -99.0,
+    "pm25": 4,
+    "pms_stale": 0
+  },
+  "ended": "2026-10-08T13:45:11.925269+09:00"
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "report": "bme_live_20261008_171100.json",
+    "started": "2026-10-08T17:11:00.375+09:00",
+    "ended": "2026-10-08T17:11:12.474+09:00",
+    "pms_frames": 11,
+    "data_frames": 12,
+    "first_pms": {
+      "time": "2026-10-08T17:11:02.339+09:00",
+      "raw": "PMS_SAMPLE,7331,7684831,8,15,16"
+    },
+    "last_pms": {
+      "time": "2026-10-08T17:11:12.473+09:00",
+      "raw": "PMS_SAMPLE,7341,7695315,8,17,17"
+    },
+    "pm25_min": 15.0,
+    "pm25_max": 17.0,
+    "sequence_increment_min": 1.0,
+    "sequence_increment_max": 1.0,
+    "stale_reports": 0,
+    "nonzero_fan_reports": 0,
+    "unrecognized_lines": 3368,
+    "last_unrecognized_time": "2026-10-08T17:11:02.334+09:00",
+    "last_data": {
+      "time": "2026-10-08T17:11:12.156+09:00",
+      "raw": "DATA,7695000,0,0,0,0,-99.00,-99.0,-99.0,8,16,16,1,0"
+    },
+    "error": null
+  },
+  {
+    "report": "bme_live_20261008_171134.json",
+    "started": "2026-10-08T17:11:34.073+09:00",
+    "ended": "2026-10-08T17:11:46.462+09:00",
+    "pms_frames": 11,
+    "data_frames": 12,
+    "first_pms": {
+      "time": "2026-10-08T17:11:35.642+09:00",
+      "raw": "PMS_SAMPLE,7363,7718378,7,15,16"
+    },
+    "last_pms": {
+      "time": "2026-10-08T17:11:46.01+09:00",
+      "raw": "PMS_SAMPLE,7373,7728863,7,14,16"
+    },
+    "pm25_min": 14.0,
+    "pm25_max": 16.0,
+    "sequence_increment_min": 1.0,
+    "sequence_increment_max": 1.0,
+    "stale_reports": 0,
+    "nonzero_fan_reports": 0,
+    "unrecognized_lines": 3403,
+    "last_unrecognized_time": "2026-10-08T17:11:35.642+09:00",
+    "last_data": {
+      "time": "2026-10-08T17:11:46.154+09:00",
+      "raw": "DATA,7729000,0,0,0,0,-99.00,-99.0,-99.0,7,14,16,1,0"
+    },
+    "error": null
+  }
+]
