@@ -69,6 +69,32 @@ class CameraTests(unittest.TestCase):
             camera.close()
         self.cap.release.assert_called_once()
 
+    def test_manual_exposure_is_opt_in_and_rejection_fails(self):
+        self.cv.CAP_PROP_FPS = 5
+        self.cv.CAP_PROP_AUTO_EXPOSURE = 21
+        self.cv.CAP_PROP_EXPOSURE = 15
+        self.cap.set.side_effect = lambda prop,value: prop != 21
+        camera = CameraRecorder(self.directory,manual_exposure=-6)
+        with self.assertRaisesRegex(OSError,'수동 노출'):
+            camera.open()
+        with self.assertRaises(OSError):
+            camera.close()
+        self.cap.release.assert_called_once()
+
+    def test_requested_rotation_is_applied_before_encoding(self):
+        rotated = object()
+        self.cv.ROTATE_180 = 1
+        self.cv.rotate = Mock(return_value=rotated)
+        camera = CameraRecorder(self.directory, interval=0.02, rotation_deg=180)
+        try:
+            camera.open()
+            camera.begin()
+            self.wait_for(lambda: camera.count >= 1)
+        finally:
+            camera.close()
+        self.assertTrue(self.cv.rotate.called)
+        self.assertIs(self.cv.imencode.call_args.args[1], rotated)
+
     def test_read_failure_is_reported(self):
         self.cap.read.return_value = (False, None)
         self.cap.read.side_effect = None
