@@ -3,6 +3,7 @@ K-뉴딜 아카데미 온디바이스AI기반 산업용 소프트웨어 개발 1
 
 ## 폴더 구성
 
+- [`embedded/dashboard/`](embedded/dashboard/): 에어가드 웹 대시보드 소스, 실행 안내, 팀 PR 작업 방법과 자동 검사.
 - `embedded/new_fan/new_fan_t/`: 현재 팬 조합 실험 코드, 실험 문서와 센서 기록.
 - `embedded/practice/firmware/`: 기존 부품 점검 및 통합 펌웨어 스케치.
 - `embedded/practice/pc/`, `embedded/practice/jetson/`: 기존 PC 측정 도구와 Jetson 연결 도구.

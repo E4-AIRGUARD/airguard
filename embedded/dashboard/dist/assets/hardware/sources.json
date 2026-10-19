@@ -1,0 +1,8 @@
+{
+  "pms5003.jpg": {"image": "https://cdn-shop.adafruit.com/970x728/3686-10.jpg", "source": "https://www.adafruit.com/product/3686", "specification": "https://cdn-shop.adafruit.com/product-files/3686/plantower-pms5003-manual_v2-3.pdf"},
+  "bme280.jpg": {"image": "https://thepihut.com/cdn/shop/products/bme280-environmental-sensor-waveshare-wav-15231-22853122195651.jpg?v=1646625075&width=640", "source": "https://thepihut.com/products/bme280-environmental-sensor", "specification": "https://www.waveshare.com/product/modules/bme280-environmental-sensor.htm", "humidity_conditions": "https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf"},
+  "esp32.jpg": {"image": "https://www.devicemart.co.kr/data/goods/1/2024/01/_tmp_ce6fdf417437b4b67262fcc637f9555e4972large.jpg", "source": "https://www.devicemart.co.kr/goods/view?no=15313999", "model": "ESP32 DevKitC WROOM-32D V4 CP2102 CMODULE-40"},
+  "fan.jpg": {"image": "https://m.media-amazon.com/images/I/61npFDVf1HL._AC_SL1440_.jpg", "source": "https://bigamart.com/product/waveshare-2-pack-dedicated-cooling-fan-for-jetson-nano-developer-kit-5v-pwm-speed-adjustment-strong-cooling-air-4pin-reverse-proof-connector/", "specification": "https://www.waveshare.com/fan-4020-pwm-5v.htm"},
+  "camera.jpg": {"image": "https://www.inno-maker.com/wp-content/uploads/2023/11/720P-1.jpg", "source": "https://www.inno-maker.com/product/u20cam-720p/"},
+  "jetson.jpg": {"image": "https://developer-blogs.nvidia.com/wp-content/uploads/2023/03/jetson-orin-nano-developer-kit.jpg", "source": "https://developer.nvidia.com/blog/develop-ai-powered-robots-smart-vision-systems-and-more-with-nvidia-jetson-orin-nano-developer-kit/"}
+}

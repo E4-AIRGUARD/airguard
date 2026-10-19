@@ -1,0 +1,23 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+let csvBlob;
+const element={classList:{add(){}},click(){}};
+const context=vm.createContext({Intl,Date,Map,Blob,window:{matchMedia:()=>({matches:false})},document:{querySelector:()=>element,createElement:()=>element},URL:{createObjectURL:b=>(csvBlob=b,'blob:test')},setTimeout:()=>0,clearTimeout(){},assert});
+const code=fs.readFileSync('dist/app.js','utf8').split("document.querySelectorAll('[data-icon]')")[0];
+vm.runInContext(code,context);
+vm.runInContext(`
+assert.equal(events.length,9);
+assert.equal(new Set(events.map(e=>e.id)).size,9);
+state.eventPage=1;assert.equal(eventWindow(filteredEvents()).rows.length,5);
+state.eventPage=2;assert.equal(eventWindow(filteredEvents()).rows.length,4);
+state.filter='active';assert.equal(eventWindow(filteredEvents()).rows.length,1);assert.equal(state.eventPage,1);
+state.filter='all';state.date='2000-01-01';assert.equal(eventWindow(filteredEvents()).rows.length,0);
+state.date=today();state.eventPage=2;
+assert.ok(Math.abs(eventEnergy(events[0])-0.038)<1e-12);
+assert.equal(eventTimeline(events[1]).at(-1),138);
+assert.equal(eventTimeline(events[2]).at(-1),102);
+assert.match(fanReason(events[2]),/온도/);
+assert.equal(deviceData.length,6);
+assert.equal(deviceData.filter(d=>d.kind==='fan').length,1);
+downloadCSV();
+`,context);
+csvBlob.text().then(text=>{assert.equal(text.trim().split('\r\n').length,10);console.log('PASS: pagination, filter bounds, empty state, energy integration, event timing, 6 device types, CSV exports all 9 filtered records from page 2.');});

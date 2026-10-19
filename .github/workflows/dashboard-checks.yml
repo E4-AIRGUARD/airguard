@@ -1,0 +1,38 @@
+name: Dashboard checks
+
+on:
+  pull_request:
+    paths:
+      - 'embedded/dashboard/**'
+      - '.github/workflows/dashboard-checks.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'embedded/dashboard/**'
+      - '.github/workflows/dashboard-checks.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dashboard-checks:
+    name: Dashboard checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: embedded/dashboard
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: node --check dist/app.js
+      - name: Check event interactions and calculations
+        run: node tests/dashboard.cjs
+      - name: Check local preview server syntax
+        run: python3 -m py_compile run.py
