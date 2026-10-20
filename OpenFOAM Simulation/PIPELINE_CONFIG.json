@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "revision": "V04",
+  "geometry_version": "asbuilt_diagonal_20260917",
+  "flow_basis": "per_combination_equivalent_flow",
+  "levels": {
+    "I100_E100": {
+      "intake_pwm_percent": 100,
+      "exhaust_pwm_percent": 100,
+      "velocity_mps": 2.18,
+      "basis": "assumed",
+      "source_note": "Assumed RMS proxy from references 2.18 and 2.18 m/s; not measured; symmetric group PAIR_100_100",
+      "equivalent_flow_group": "PAIR_100_100"
+    },
+    "I100_E60": {
+      "intake_pwm_percent": 100,
+      "exhaust_pwm_percent": 60,
+      "velocity_mps": 1.86715,
+      "basis": "assumed",
+      "source_note": "Assumed RMS proxy from references 2.18 and 1.49 m/s; not measured; symmetric group PAIR_100_60",
+      "equivalent_flow_group": "PAIR_100_60"
+    },
+    "I100_E35": {
+      "intake_pwm_percent": 100,
+      "exhaust_pwm_percent": 35,
+      "velocity_mps": 1.659714,
+      "basis": "assumed",
+      "source_note": "Assumed RMS proxy from references 2.18 and 0.87 m/s; not measured; symmetric group PAIR_100_35",
+      "equivalent_flow_group": "PAIR_100_35"
+    },
+    "I60_E100": {
+      "intake_pwm_percent": 60,
+      "exhaust_pwm_percent": 100,
+      "velocity_mps": 1.86715,
+      "basis": "assumed",
+      "source_note": "Assumed RMS proxy from references 1.49 and 2.18 m/s; not measured; symmetric group PAIR_100_60",
+      "equivalent_flow_group": "PAIR_100_60"
+    },
+    "I60_E60": {
+      "intake_pwm_percent": 60,
+      "exhaust_pwm_percent": 60,
+      "velocity_mps": 1.49,
+      "basis": "assumed",
+      "source_note": "Assumed RMS proxy from references 1.49 and 1.49 m/s; not measured; symmetric group PAIR_60_60",
+      "equivalent_flow_group": "PAIR_60_60"
+    },
+    "I60_E35": {
+      "intake_pwm_percent": 60,
+      "exhaust_pwm_percent": 35,
+      "velocity_mps": 1.220041,
+      "basis": "assumed",
+      "source_note": "Assumed RMS proxy from references 1.49 and 0.87 m/s; not measured; symmetric group PAIR_60_35",
+      "equivalent_flow_group": "PAIR_60_35"
+    },
+    "I35_E100": {
+      "intake_pwm_percent": 35,
+      "exhaust_pwm_percent": 100,
+      "velocity_mps": 1.659714,
+      "basis": "assumed",
+      "source_note": "Assumed RMS proxy from references 0.87 and 2.18 m/s; not measured; symmetric group PAIR_100_35",
+      "equivalent_flow_group": "PAIR_100_35"
+    },
+    "I35_E60": {
+      "intake_pwm_percent": 35,
+      "exhaust_pwm_percent": 60,
+      "velocity_mps": 1.220041,
+      "basis": "assumed",
+      "source_note": "Assumed RMS proxy from references 0.87 and 1.49 m/s; not measured; symmetric group PAIR_60_35",
+      "equivalent_flow_group": "PAIR_60_35"
+    },
+    "I35_E35": {
+      "intake_pwm_percent": 35,
+      "exhaust_pwm_percent": 35,
+      "velocity_mps": 0.87,
+      "basis": "assumed",
+      "source_note": "Assumed RMS proxy from references 0.87 and 0.87 m/s; not measured; symmetric group PAIR_35_35",
+      "equivalent_flow_group": "PAIR_35_35"
+    }
+  },
+  "ambient_c": 24.4,
+  "heat_initial_c": 33.91,
+  "duration_s": 300,
+  "field_interval_s": 1,
+  "flow_model": "sst",
+  "mesh_refinement": 1,
+  "initial_flow": "baseline_final",
+  "heat_gravity_mps2": [
+    0,
+    0,
+    -9.81
+  ],
+  "rho0_kg_m3": 1.184,
+  "mu_Pa_s": 1.85e-05,
+  "effective_heat_capacity_J_kgK": 1005,
+  "quality_limits": {
+    "temperature_margin_C": 0.2,
+    "scalar_margin": 0.0001,
+    "tail_mass_residual_fraction": 0.02,
+    "baseline_tail_U_range_fraction": 0.05,
+    "baseline_tail_flux_imbalance_fraction": 0.01
+  },
+  "smoke_Sc": 1.0,
+  "smoke_Sct": 0.7,
+  "low_speed_threshold_mps": 0.05,
+  "recovery_hold_s": 10,
+  "visualization": {
+    "fps": 10,
+    "speed_max_mps": 3.3,
+    "width": 1600,
+    "height": 1000,
+    "duration_s": 60
+  },
+  "notes": [
+    "BASE only: no separate fan pressure curves, leakage, or blade swirl.",
+    "Input/output area 0.0016 m2. Prescribed inlet velocity, pressure outlet.",
+    "Each combination needs measured or explicitly assumed equivalent velocity. No PWM averaging.",
+    "Identical equivalent velocities produce identical boundary conditions; distinct labels are not independent fan physics.",
+    "Comparative assumed flows approved 2026-10-08.",
+    "Identical exchanged pairs are intentionally retained for experiment ID matching; not independent physical conditions.",
+    "Archived equal-stage cases are not included. The shared production queue uses three mixed representative conditions."
+  ],
+  "equivalent_flow_assumption": {
+    "formula": "Ueq = sqrt((Uref_I**2 + Uref_E**2)/2)",
+    "basis": "Constructed symmetric pressure-addition proxy with common quadratic resistance; division by two preserves the previous equal-stage anchor speeds.",
+    "installed_flow_measured": false,
+    "manufacturer_curve_used": false,
+    "fan_pressure_or_leakage_modeled": false,
+    "limitations": [
+      "No physical fan operating point is solved.",
+      "Swapped pairs have identical boundary conditions: nine labels, six distinct flows.",
+      "No claim of actual pressure, energy use, or experimental recovery ranking."
+    ],
+    "reference": "https://www.amca.org/assets/resources/public/pdf/Education%20Modules/AMCA%20201-02%20%28R2011%29.pdf",
+    "reference_scope": "Fan laws motivate squared pressure contribution; the normalized formula here is an unvalidated project assumption, not an AMCA prediction of these installed fans."
+  },
+  "reference_stage_velocity_mps": {
+    "35": 0.87,
+    "60": 1.49,
+    "100": 2.18
+  },
+  "project_name": "E4_AIRGUARD",
+  "active_pairs": [
+    "I100_E60",
+    "I100_E35",
+    "I60_E100",
+    "I60_E35",
+    "I35_E100",
+    "I35_E60"
+  ]
+}
