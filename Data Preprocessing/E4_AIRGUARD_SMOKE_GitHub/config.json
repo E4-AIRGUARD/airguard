@@ -1,0 +1,13 @@
+{
+  "median_window": 3,
+  "gap_factor": 1.5,
+  "hold_seconds": 5,
+  "pm_cap": 500,
+  "pm_target": 50,
+  "invalid_rows": "legacy",
+  "exclude_runs": [
+    {"dates": ["20261015", "20261016"], "series": "intermittent", "ids": ["A10"], "reason": "전체 측정 신뢰성 의심: 사용자 확인"},
+    {"dates": ["20261015", "20261016"], "series": "intermittent", "ids": ["A11"], "reason": "오류 실험: 사용자 확인"}
+  ],
+  "review_runs": []
+}
