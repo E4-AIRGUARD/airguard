@@ -16,6 +16,7 @@ import time
 from dataclasses import dataclass, replace
 from pathlib import Path
 from project_paths import PROJECT_ROOT, MODELS_DIR
+from control_policy_v5 import HysteresisPolicy, SafeEnergySwitchGate
 
 import joblib
 import numpy as np
@@ -223,7 +224,10 @@ def select_energy_plan(
         power = relative_fan_energy(intake, exhaust)
         duration = int(recovery[index]) if recovery[index] >= 0 else None
         cost = power * duration if duration is not None else None
-        safe = bool(np.isfinite(predicted[index]) and predicted[index] <= limit_c and duration is not None)
+        if getattr(controller,'control_policy_version','v4')=='v5':
+            safe=bool(np.isfinite(predicted[index]) and predicted[index]<controller.target_c)
+        else:
+            safe = bool(np.isfinite(predicted[index]) and predicted[index] <= limit_c and duration is not None)
         candidates.append(CandidateComparison(
             intake, exhaust, float(predicted[index]), relative_fan_energy(intake, exhaust), safe,
             recovery_seconds=duration,
@@ -232,13 +236,21 @@ def select_energy_plan(
     # 이미 정상인 후보는 시간·비용이 0이므로 상대 전력이 낮은 후보를 택합니다.
     candidates.sort(key=lambda item: (float('inf') if item.total_relative_energy is None else item.total_relative_energy, item.relative_energy))
     feasible = [item for item in candidates if item.safe]
-    selected = feasible[0] if feasible else next(
-        (item for item in candidates if item.intake_pwm == 100 and item.exhaust_pwm == 100),
-        candidates[-1],
-    )
+    v5=getattr(controller,'control_policy_version','v4')=='v5'
+    current_pair=getattr(controller,'current_command_pair',None)
+    current_candidate=next((c for c in candidates if (c.intake_pwm,c.exhaust_pwm)==current_pair),None)
+    if feasible:
+        # Preserve a safe existing command rather than invent an unknown recovery cost.
+        selected=(current_candidate if v5 and current_candidate is not None and current_candidate.safe
+                  and current_candidate.recovery_seconds is None else feasible[0])
+    elif v5:
+        finite_candidates=[c for c in candidates if np.isfinite(c.predicted_temp_c)]
+        selected=min(finite_candidates,key=lambda c:(c.predicted_temp_c,c.relative_energy)) if finite_candidates else (current_candidate or candidates[0])
+    else:
+        selected=next((item for item in candidates if item.intake_pwm==100 and item.exhaust_pwm==100),candidates[-1])
     name = getattr(controller, "display_name", "Physics" if isinstance(controller, PhysicsMpcController) else "LSTM")
     return InferenceResult(selected.predicted_temp_c, selected.intake_pwm, selected.exhaust_pwm,
-                           selected.recovery_seconds, f'{name} MPC · 전력×회복시간' if feasible else f'{name} MPC 안전 냉각',
+                           selected.recovery_seconds, f'{name} MPC · 전력×회복시간' if feasible else (f'{name} MPC 예측 불확실 후보 비교' if v5 else f'{name} MPC 안전 냉각'),
                            candidate_summary(candidates, selected), all_candidates=tuple(candidates))
 
 
@@ -362,6 +374,8 @@ class LstmMpcController:
         self.horizon_seconds = int(artifact["horizon_seconds"])
         self.model_path = str(model_path.resolve())
         self.model_sha256 = hashlib.sha256(model_path.read_bytes()).hexdigest()
+        self.default_control_policy=artifact.get('control_policy','v4')
+        self.recommended_raw_rise_assist=artifact.get('recommended_raw_rise_assist',False)
         self.display_name = f"LSTM {model_path.stem} ({self.horizon_seconds}s)"
         self.target_c = target_c
         self.pwm_candidates = validated_pwm_candidates(min_pwm)
@@ -632,6 +646,14 @@ class AirGuardRuntime:
         self.trial_finished = False
         self.baseline_trigger_c = args.baseline_trigger if args.baseline_trigger is not None else self.target_c
         self.controller = self._load_controller(args)
+        self.control_policy_version=getattr(args,'control_policy','auto')
+        if self.control_policy_version=='auto':
+            self.control_policy_version=getattr(self.controller,'default_control_policy','v4')
+        if args.raw_rise_assist is None:
+            args.raw_rise_assist=getattr(self.controller,'recommended_raw_rise_assist',False)
+        self.policy_v5=HysteresisPolicy(self.target_c)
+        if self.controller is not None:
+            self.controller.control_policy_version=self.control_policy_version
         required_window = (
             self.controller.sequence_length if isinstance(
                 self.controller, (LstmMpcController, MultiHorizonLstmMpcController)
@@ -647,6 +669,9 @@ class AirGuardRuntime:
         self.buffer = SensorBuffer(window_size=window_size, sample_period_s=args.period)
         self.switch_gate = EnergySwitchGate(args.min_saving_ratio, args.min_saving_absolute,
                                             args.switch_confirmations, args.min_hold_seconds)
+        if self.control_policy_version=='v5':
+            self.switch_gate=SafeEnergySwitchGate(args.min_saving_ratio,args.min_saving_absolute,
+                                                args.switch_confirmations,args.min_hold_seconds)
         self.last_pwm_change = float('-inf')
         self.lstm_stability = PwmStabilityGuard(target_c=self.target_c) if args.stabilize_lstm and isinstance(self.controller, LstmMpcController) else None
         if args.raw_rise_assist and self.controller is None:
@@ -659,6 +684,7 @@ class AirGuardRuntime:
         metadata = {
             'trial_id': args.trial_id,
             'controller': args.controller_model,
+            'control_policy_resolved':self.control_policy_version,
             'model_path': getattr(self.controller, 'model_path', None),
             'sha256': getattr(self.controller, 'model_sha256', None),
             'horizon_seconds': getattr(self.controller, 'horizon_seconds', None),
@@ -731,9 +757,17 @@ class AirGuardRuntime:
     def _control_policy(
         self, history: np.ndarray
     ) -> tuple[str, float, float, list[tuple[int, int]]]:
-        """현재 온도와 10초 예측으로 단계별 운전 후보를 정합니다."""
+        """현재 온도와 선택 모델의 예측으로 운전 후보를 정합니다."""
         current_temp = float(history[-1, 0])
         projected_temp = self.controller.forecast_current(history)
+        if self.control_policy_version=='v5':
+            stage,limit=self.policy_v5.update(current_temp,projected_temp)
+            candidates=candidates_for_stage(self.controller.pwm_candidates,stage)
+            pair=(self.state.last_intake_percent,self.state.last_exhaust_percent)
+            if pair in self.controller.pwm_candidates and pair not in candidates:
+                candidates=candidates+[pair]
+            self.controller.current_command_pair=pair
+            return stage,limit,projected_temp,candidates
         risk_temp = max(current_temp, projected_temp)
         if risk_temp >= self.target_c:
             stage, limit = "상한 회복", self.target_c
@@ -773,7 +807,8 @@ class AirGuardRuntime:
             if self.raw_rise_assist is not None:
                 raw_samples = self.buffer.snapshot()
                 rise = self.raw_rise_assist.update(raw_samples)
-                if rise.active:
+                if rise.active and (self.control_policy_version!='v5' or sample.temperature_c>=self.target_c or
+                                    (sample.temperature_c>=self.target_c-.5 and rise.projected_temp_c>=self.target_c)):
                     smoothed_rate = 0.
                     if len(raw_samples) >= 4:
                         recent = [s.temperature_c for s in raw_samples[-4:]]
@@ -837,8 +872,11 @@ class AirGuardRuntime:
                             if (item.intake_pwm, item.exhaust_pwm) == (previous_intake, previous_exhaust)), None)
             proposed = next(item for item in result.all_candidates
                             if (item.intake_pwm, item.exhaust_pwm) == (result.intake_pwm, result.exhaust_pwm))
+            risk_options={}
+            if self.control_policy_version=='v5':
+                risk_options['upper_risk']=self.policy_v5.upper_risk(sample.temperature_c,projected_temp)
             chosen, switch_reason = self.switch_gate.decide(
-                current, proposed, time.monotonic(), self.last_pwm_change, self.controller.horizon_seconds)
+                current, proposed, time.monotonic(), self.last_pwm_change, self.controller.horizon_seconds,**risk_options)
             result = replace(result, intake_pwm=chosen.intake_pwm, exhaust_pwm=chosen.exhaust_pwm,
                              predicted_temp_c=chosen.predicted_temp_c, recovery_seconds=chosen.recovery_seconds,
                              candidate_comparison=candidate_summary(list(result.all_candidates), chosen))
@@ -1012,11 +1050,15 @@ def build_parser() -> argparse.ArgumentParser:
                         help="불러올 LSTM 파일명 또는 절대 경로")
     parser.add_argument("--stabilize-lstm", action="store_true",
                         help="시험용 LSTM PWM 안정화: 예측 위험 2회, 일반 변경 3회 및 8초 유지 확인")
-    parser.add_argument('--raw-rise-assist',action='store_true',help='원본 온도 상승률로 모델보다 먼저 예방 냉각 보조')
+    assistance=parser.add_mutually_exclusive_group()
+    assistance.add_argument('--raw-rise-assist',dest='raw_rise_assist',action='store_true',help='원본 상승률 보조 사용')
+    assistance.add_argument('--no-raw-rise-assist',dest='raw_rise_assist',action='store_false',help='모델 권장값과 무관하게 원본 상승률 보조 해제')
+    parser.set_defaults(raw_rise_assist=None)
     parser.add_argument('--raw-rise-rate',type=float,default=.08,help='원본 1초 상승률 기동 기준(°C/s), 시험 기본값 0.08')
     parser.add_argument('--raw-rise-hold',type=float,default=3.,help='원본 상승률 보조 최소 유지시간(초)')
     parser.add_argument("--database", default=str(PROJECT_ROOT/'runtime/edge_events.db'))
     parser.add_argument("--controller-model", choices=("physics", "lstm", "lstm-multi", "threshold"), default="physics")
+    parser.add_argument('--control-policy',choices=('auto','v4','v5'),default='auto',help='auto: 모델 메타데이터의 정책 사용')
     parser.add_argument("--multi-lstm-horizon", type=int, default=5,
                         help="lstm-multi에서 제어 기준으로 사용할 예측 시간(기본 5초)")
     parser.add_argument("--target-temp", type=float, default=TARGET_TEMPERATURE_C)
