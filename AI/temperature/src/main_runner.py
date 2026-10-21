@@ -64,6 +64,9 @@ class CandidateComparison:
     selected: bool = False
     recovery_seconds: int | None = None
     total_relative_energy: float | None = None
+    control_cost: float | None = None
+    predicted_rate_c_per_s: float | None = None
+    upper_temp_c: float | None = None
 
 
 @dataclass(frozen=True)
@@ -345,12 +348,18 @@ class LstmMpcController:
             artifact = torch.load(model_path, map_location="cpu", weights_only=False)
         except TypeError:  # 구형 JetPack PyTorch 호환
             artifact = torch.load(model_path, map_location="cpu")
-        if artifact.get("model_version") not in (2, 4, 5) or artifact.get("feature_names") is None:
+        if artifact.get("model_version") not in (2, 4, 5, 6) or artifact.get("feature_names") is None:
             raise RuntimeError("LSTM 모델 형식이 오래되었습니다. 새 train_model.py로 모델을 다시 학습하세요.")
-        self.relative_temperature_input = artifact.get('architecture') in ('stable_relative_lstm','multirate_relative_lstm')
+        self.relative_temperature_input = artifact.get('architecture') in ('stable_relative_lstm','multirate_relative_lstm','trajectory_relative_lstm')
         if artifact.get('model_version') == 4 and not self.relative_temperature_input:
             raise ValueError('지원하지 않는 LSTM v4 구조입니다.')
-        if artifact.get('architecture') == 'multirate_relative_lstm':
+        if artifact.get('architecture')=='trajectory_relative_lstm':
+            if artifact.get('model_version')!=6:raise ValueError('궤적 모델 형식 오류')
+            from trajectory_lstm_v6 import TrajectoryLSTM
+            self.model=TrajectoryLSTM(artifact['feature_mean'],artifact['feature_std'])
+        elif artifact.get('model_version')==6:
+            raise ValueError('지원하지 않는 궤적 모델 구조')
+        elif artifact.get('architecture') == 'multirate_relative_lstm':
             if artifact.get('model_version') != 5:
                 raise ValueError('다중 변화율 LSTM 형식이 맞지 않습니다.')
             from multirate_temperature_lstm import MultiRateTemperatureLSTM
@@ -376,6 +385,10 @@ class LstmMpcController:
         self.model_sha256 = hashlib.sha256(model_path.read_bytes()).hexdigest()
         self.default_control_policy=artifact.get('control_policy','v4')
         self.recommended_raw_rise_assist=artifact.get('recommended_raw_rise_assist',False)
+        self.prediction_margin=np.array(artifact.get('prediction_margin_c',[0.,0.,0.]))
+        self.risk_threshold=artifact.get('risk_threshold',1.)
+        self.rate_weight=artifact.get('rate_weight',25.)
+        self.upper_risk_count=0
         self.display_name = f"LSTM {model_path.stem} ({self.horizon_seconds}s)"
         self.target_c = target_c
         self.pwm_candidates = validated_pwm_candidates(min_pwm)
@@ -394,12 +407,33 @@ class LstmMpcController:
     def forecast_current(self, history: np.ndarray) -> float:
         return self.forecast(history, int(history[-1, 2]), int(history[-1, 3]))
 
+    def trajectory(self,history,intake,exhaust):
+        context=history[-self.sequence_length:].copy()
+        window=np.column_stack((context,np.tile((intake,exhaust),(len(context),1))))
+        normalized=normalize_lstm_window(self,window)
+        with torch.inference_mode():
+            delta,rate,logit=self.model.details(torch.tensor(normalized.tolist(),dtype=torch.float32)[None])
+        temperatures=float(context[-1,0])+np.array(delta[0].tolist())
+        rates=np.diff(np.r_[float(context[-1,0]),temperatures])/np.array([1.,2.,2.])
+        return dict(temperatures=temperatures,rate=float(rate.item()),max_rate=float(np.max(rates)),
+                    risk_score=float(torch.sigmoid(logit).item()))
+
+    def upper_risk(self,history,temperature):
+        detail=self.trajectory(history,int(history[-1,2]),int(history[-1,3]))
+        risky=np.max(detail['temperatures']+self.prediction_margin)>=self.target_c or (
+            detail['risk_score']>=self.risk_threshold and history[-1,4]>.03)
+        self.upper_risk_count=self.upper_risk_count+1 if risky else 0
+        return temperature>=self.target_c or (risky and history[-1,4]>=.08) or self.upper_risk_count>=2
+
     def choose(
         self,
         history: np.ndarray,
         limit_c: float | None = None,
         allowed_candidates: list[tuple[int, int]] | None = None,
     ) -> InferenceResult:
+        if self.context_feature_count==8:
+            from trajectory_control_v6 import choose_trajectory
+            return choose_trajectory(self,history[-self.sequence_length:],allowed_candidates)
         return select_energy_plan(
             self,
             history[-self.sequence_length :],
@@ -570,6 +604,9 @@ class EventStore:
                 "total_relative_energy": round(candidate.total_relative_energy, 4) if candidate.total_relative_energy is not None else None,
                 "safe": bool(candidate.safe),
                 "selected": bool(candidate.selected),
+                'control_cost':candidate.control_cost,
+                'predicted_rate_c_per_s':candidate.predicted_rate_c_per_s,
+                'upper_temp_c':candidate.upper_temp_c,
             }
             for candidate in result.candidate_comparison
         ]
@@ -649,6 +686,8 @@ class AirGuardRuntime:
         self.control_policy_version=getattr(args,'control_policy','auto')
         if self.control_policy_version=='auto':
             self.control_policy_version=getattr(self.controller,'default_control_policy','v4')
+        if (getattr(self.controller,'context_feature_count',0)==8)!=(self.control_policy_version=='v6'):
+            raise ValueError('v6 궤적 모델과 v6 제어 정책은 함께 사용해야 합니다.')
         if args.raw_rise_assist is None:
             args.raw_rise_assist=getattr(self.controller,'recommended_raw_rise_assist',False)
         self.policy_v5=HysteresisPolicy(self.target_c)
@@ -672,6 +711,12 @@ class AirGuardRuntime:
         if self.control_policy_version=='v5':
             self.switch_gate=SafeEnergySwitchGate(args.min_saving_ratio,args.min_saving_absolute,
                                                 args.switch_confirmations,args.min_hold_seconds)
+        if self.control_policy_version=='v6':
+            from trajectory_control_v6 import TrajectorySwitchGate
+            self.switch_gate=TrajectorySwitchGate(args.min_saving_ratio,args.min_saving_absolute,
+                                                  args.switch_confirmations,args.min_hold_seconds)
+        if args.rate_weight is not None and self.controller is not None:
+            self.controller.rate_weight=args.rate_weight
         self.last_pwm_change = float('-inf')
         self.lstm_stability = PwmStabilityGuard(target_c=self.target_c) if args.stabilize_lstm and isinstance(self.controller, LstmMpcController) else None
         if args.raw_rise_assist and self.controller is None:
@@ -760,6 +805,10 @@ class AirGuardRuntime:
         """현재 온도와 선택 모델의 예측으로 운전 후보를 정합니다."""
         current_temp = float(history[-1, 0])
         projected_temp = self.controller.forecast_current(history)
+        if self.control_policy_version=='v6':
+            pair=(self.state.last_intake_percent,self.state.last_exhaust_percent)
+            self.controller.current_command_pair=pair
+            return '상한·상승률·에너지',self.target_c,projected_temp,list(self.controller.pwm_candidates)
         if self.control_policy_version=='v5':
             stage,limit=self.policy_v5.update(current_temp,projected_temp)
             candidates=candidates_for_stage(self.controller.pwm_candidates,stage)
@@ -807,7 +856,7 @@ class AirGuardRuntime:
             if self.raw_rise_assist is not None:
                 raw_samples = self.buffer.snapshot()
                 rise = self.raw_rise_assist.update(raw_samples)
-                if rise.active and (self.control_policy_version!='v5' or sample.temperature_c>=self.target_c or
+                if rise.active and (self.control_policy_version not in ('v5','v6') or sample.temperature_c>=self.target_c or
                                     (sample.temperature_c>=self.target_c-.5 and rise.projected_temp_c>=self.target_c)):
                     smoothed_rate = 0.
                     if len(raw_samples) >= 4:
@@ -822,6 +871,7 @@ class AirGuardRuntime:
                         previous = (self.state.last_intake_percent, self.state.last_exhaust_percent)
                     floor = (60,100) if sample.temperature_c >= PREVENTIVE_LIMIT_C else (35,60)
                     self.switch_gate.reset()
+                    if self.control_policy_version=='v6':self.controller.upper_risk_count=0
                     self._apply(
                         sample,
                         InferenceResult(
@@ -847,8 +897,10 @@ class AirGuardRuntime:
                 previous_exhaust = max(0, self.state.last_exhaust_percent)
             history = self.buffer.control_feature_matrix(
                 previous_intake, previous_exhaust,
-                include_raw_rates=getattr(self.controller,'context_feature_count',4)==7,
+                include_raw_rates=getattr(self.controller,'context_feature_count',4)>=7,
             )
+            if getattr(self.controller,'context_feature_count',4)==8:
+                history=np.column_stack((history,history[:,0]))
             if self.controller is None:
                 self._apply_threshold_baseline(sample)
                 continue
@@ -875,6 +927,8 @@ class AirGuardRuntime:
             risk_options={}
             if self.control_policy_version=='v5':
                 risk_options['upper_risk']=self.policy_v5.upper_risk(sample.temperature_c,projected_temp)
+            elif self.control_policy_version=='v6':
+                risk_options['upper_risk']=self.controller.upper_risk(history,sample.temperature_c)
             chosen, switch_reason = self.switch_gate.decide(
                 current, proposed, time.monotonic(), self.last_pwm_change, self.controller.horizon_seconds,**risk_options)
             result = replace(result, intake_pwm=chosen.intake_pwm, exhaust_pwm=chosen.exhaust_pwm,
@@ -1058,7 +1112,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument('--raw-rise-hold',type=float,default=3.,help='원본 상승률 보조 최소 유지시간(초)')
     parser.add_argument("--database", default=str(PROJECT_ROOT/'runtime/edge_events.db'))
     parser.add_argument("--controller-model", choices=("physics", "lstm", "lstm-multi", "threshold"), default="physics")
-    parser.add_argument('--control-policy',choices=('auto','v4','v5'),default='auto',help='auto: 모델 메타데이터의 정책 사용')
+    parser.add_argument('--control-policy',choices=('auto','v4','v5','v6'),default='auto',help='auto: 모델 메타데이터의 정책 사용')
+    parser.add_argument('--rate-weight',type=float,default=None,help='v6 양의 상승률 억제 가중치. 기본은 모델 설정')
     parser.add_argument("--multi-lstm-horizon", type=int, default=5,
                         help="lstm-multi에서 제어 기준으로 사용할 예측 시간(기본 5초)")
     parser.add_argument("--target-temp", type=float, default=TARGET_TEMPERATURE_C)
