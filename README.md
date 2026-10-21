@@ -1,6 +1,18 @@
 # airguard
 K-뉴딜 아카데미 온디바이스AI기반 산업용 소프트웨어 개발 1기 E4 - AirGuard
 
+## 온도 AI 실행
+
+학습 데이터·분할·배포 모델·실행 코드는 [AI/temperature](AI/temperature/README.md)에 있습니다. 해당 안내에서 환경 설치와 가상 센서 검사를 먼저 수행하세요. 새 HTML 대시보드는 포함하지 않습니다.
+
+```bash
+python3 -m pip install 'numpy>=1.26,<2' 'pandas>=2.1,<3' 'joblib>=1.3,<2' 'pyserial>=3.5,<4' 'scikit-learn>=1.4,<2' 'matplotlib>=3.8,<4'
+python3 -m unittest discover -s AI/temperature/tests -v
+python3 AI/temperature/src/main_runner.py --controller-model physics --dummy --dry-run
+```
+
+PyTorch는 별도 설치가 필요하며 Jetson은 JetPack 호환 빌드를 사용합니다. 실제 USB 연결·장치 권한·펌웨어 설정은 별도로 준비합니다.
+
 ## 폴더 구성
 
 - `embedded/new_fan/new_fan_t/`: 현재 팬 조합 실험 코드, 실험 문서와 센서 기록.
