@@ -17,6 +17,7 @@ from dataclasses import dataclass, replace
 from pathlib import Path
 from project_paths import PROJECT_ROOT, MODELS_DIR
 from control_policy_v5 import HysteresisPolicy, SafeEnergySwitchGate
+from fan_power import candidate_power_w, recovery_energy_wh, POWER_METHOD
 
 import joblib
 import numpy as np
@@ -124,8 +125,8 @@ def candidates_for_stage(
 
 
 def relative_fan_energy(intake: int, exhaust: int) -> float:
-    """실측 전력이 없을 때 쓰는 PWM³ 기반의 무차원 비교 점수입니다."""
-    return (intake / 100.0) ** 3 + (exhaust / 100.0) ** 3
+    """기존 호출명을 유지하되 후보 RPM 기반 추정 전력(W)을 반환합니다."""
+    return candidate_power_w(intake, exhaust)
 
 
 def normalize_lstm_window(controller, window: np.ndarray) -> np.ndarray:
@@ -600,6 +601,10 @@ class EventStore:
                 "exhaust_pwm": int(candidate.exhaust_pwm),
                 "predicted_temp_c": float(round(candidate.predicted_temp_c, 3)),
                 "relative_energy": float(round(candidate.relative_energy, 4)),
+                "estimated_power_w": float(candidate.relative_energy),
+                "predicted_recovery_energy_wh": recovery_energy_wh(candidate.relative_energy, candidate.recovery_seconds),
+                "power_estimation_method": POWER_METHOD,
+                "legacy_energy_units": "relative_energy=W; total_relative_energy=J",
                 "recovery_seconds": candidate.recovery_seconds,
                 "total_relative_energy": round(candidate.total_relative_energy, 4) if candidate.total_relative_energy is not None else None,
                 "safe": bool(candidate.safe),
@@ -730,6 +735,7 @@ class AirGuardRuntime:
             'trial_id': args.trial_id,
             'controller': args.controller_model,
             'control_policy_resolved':self.control_policy_version,
+            'power_estimation_method': POWER_METHOD,
             'model_path': getattr(self.controller, 'model_path', None),
             'sha256': getattr(self.controller, 'model_sha256', None),
             'horizon_seconds': getattr(self.controller, 'horizon_seconds', None),
@@ -1128,7 +1134,7 @@ def build_parser() -> argparse.ArgumentParser:
                         help="팬이 켜질 때 허용하는 최소 PWM(검증 기본값 35%%)")
     parser.add_argument("--period", type=float, default=1.0, help="센서·제어 주기(초)")
     parser.add_argument("--min-saving-ratio", type=float, default=0.10, help="변경에 필요한 최소 예상 절감 비율")
-    parser.add_argument("--min-saving-absolute", type=float, default=0.0, help="최소 절감 점수(PWM³×초, Wh 아님)")
+    parser.add_argument("--min-saving-absolute", type=float, default=0.0, help="최소 절감 기준: v4/v5는 J, v6는 복합 목적함수 점수")
     parser.add_argument("--switch-confirmations", type=int, default=5, help="동일 후보의 연속 우위 확인 횟수")
     parser.add_argument("--min-hold-seconds", type=float, default=15.0, help="안전 운전 중 PWM 최소 유지시간")
     parser.add_argument("--dummy", action="store_true", help="USB Serial 없이 가상 센서로 시험")

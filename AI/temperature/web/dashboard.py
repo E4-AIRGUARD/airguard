@@ -8,10 +8,14 @@ import argparse
 import json
 import sqlite3
 import time
+import sys
 from pathlib import Path
 
 import pandas as pd
 import streamlit as st
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from fan_power import combo_power_w, observed_energy
 
 
 TARGET_C = 26.0
@@ -210,6 +214,19 @@ def render_dashboard(database: Path, history_seconds: int) -> None:
             st.caption(f"온도 제어 상한: {TARGET_C:.1f}°C · 실제 센서 수신 시각 기준")
         st.markdown('</div>', unsafe_allow_html=True)
 
+        st.markdown('<div class="panel"><p class="panel-title">팬 추정 전력</p><p class="panel-caption">실제 RPM 기반 · 팬 2대 합산</p>', unsafe_allow_html=True)
+        current_power = None if latest is None else combo_power_w(latest.get('intake_rpm'), latest.get('exhaust_rpm'))
+        st.metric("최근 수신 RPM의 추정 전력", number(current_power, " W", digits=3))
+        if not history.empty:
+            power_rows = history.to_dict('records')
+            energy = observed_energy(power_rows)
+            st.write(f"조회 구간 누적 추정 에너지: **{number(energy['energy_wh'], ' Wh', digits=4)}**")
+            st.caption(f"유효 적분 {energy['covered_seconds']:.1f}초 · 결측/공백 제외 {energy['excluded_seconds']:.1f}초")
+            power_chart = pd.DataFrame({'추정 전력 W': [combo_power_w(r.get('intake_rpm'), r.get('exhaust_rpm')) for r in power_rows]}, index=history.index)
+            st.line_chart(power_chart, height=180, width="stretch")
+        st.caption('5V × 0.27A × (RPM/7500)³, 팬별 합산. 실측 전력 아님 · Jetson/ESP32 전력 제외. 수신 지연 시 마지막 RPM 기준입니다.')
+        st.markdown('</div>', unsafe_allow_html=True)
+
         st.markdown('<div class="panel"><p class="panel-title">팬 운전 추세</p><p class="panel-caption">실제 PWM과 RPM 피드백</p>', unsafe_allow_html=True)
         if not history.empty:
             columns = [column for column in ("intake_pwm", "exhaust_pwm", "intake_rpm", "exhaust_rpm") if history[column].notna().any()]
@@ -240,11 +257,14 @@ def render_dashboard(database: Path, history_seconds: int) -> None:
                 candidates['total_relative_energy'] = None
             if 'recovery_seconds' not in candidates:
                 candidates['recovery_seconds'] = None
-            st.markdown('<div class="panel"><p class="panel-title">PWM 후보 비교</p><p class="panel-caption">상대 팬 에너지 기준</p>', unsafe_allow_html=True)
+            for column in ('estimated_power_w', 'predicted_recovery_energy_wh'):
+                if column not in candidates:
+                    candidates[column] = None
+            st.markdown('<div class="panel"><p class="panel-title">PWM 후보 비교</p><p class="panel-caption">후보 PWM별 RPM 기반 추정</p>', unsafe_allow_html=True)
             candidates["판정"] = candidates.apply(lambda x: "선택" if x["selected"] else "목표 충족" if x["safe"] else "목표 초과", axis=1)
-            candidates = candidates.rename(columns={"intake_pwm":"흡기", "exhaust_pwm":"배기", "predicted_temp_c":"예측 °C", "relative_energy":"상대 전력", "total_relative_energy":"전력×회복시간", "recovery_seconds":"회복시간(초)"})
-            st.dataframe(candidates[["흡기", "배기", "예측 °C", "상대 전력", "회복시간(초)", "전력×회복시간", "판정"]], hide_index=True, width="stretch")
-            st.caption('후보 PWM 유지 시의 예상 회복시간 × 상대 전력(PWM³)으로 비교합니다. 회복시간은 정책 목표 기준이며, 600초는 추정 탐색 상한입니다. 장기 회복시간은 실험 검증이 필요합니다.')
+            candidates = candidates.rename(columns={"intake_pwm":"흡기", "exhaust_pwm":"배기", "predicted_temp_c":"예측 °C", "estimated_power_w":"추정 전력(W)", "predicted_recovery_energy_wh":"회복 예상 에너지(Wh)", "recovery_seconds":"회복시간(초)"})
+            st.dataframe(candidates[["흡기", "배기", "예측 °C", "추정 전력(W)", "회복시간(초)", "회복 예상 에너지(Wh)", "판정"]], hide_index=True, width="stretch")
+            st.caption('후보 PWM별 측정 중앙 RPM과 정격 사양으로 전력을 근사합니다. 예상 에너지=전력×회복 예상시간/3600. 이전 방식의 DB 기록은 W/Wh로 재표기하지 않습니다. 회복시간 미정은 에너지도 미정이며, 0초는 추가 회복 불필요이지 유지 전력이 0이라는 뜻은 아닙니다.')
             st.markdown('</div>', unsafe_allow_html=True)
 
 

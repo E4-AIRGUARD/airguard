@@ -78,6 +78,8 @@ python3 AI/temperature/src/compare_event_detection.py --include-v4 --output AI/t
 
 ## v6 궤적 예측·상승률 억제 후보
 
+현재 전력 계산은 [RPM 기반 추정식](docs/fan_power_estimation.md)으로 통일했습니다. 과거 버전 비교 표는 변경 전 PWM³ 상대 지표를 사용한 결과이므로 새 정책의 에너지 결과와 혼용하지 않습니다. 모델 재학습 없이 후보 전력 평가만 변경했으며, Jetson에는 `src/fan_power.py`도 함께 배포해야 합니다.
+
 설계와 검증의 진행 순서는 [v4 기준 모델](docs/lstm_v4_baseline.md) → [v5 정책 안정화](docs/lstm_v5_policy.md) → [v6 궤적·상승률 제어](docs/lstm_v6_trajectory.md)에 기록했습니다. 각 문서에는 채택 이유뿐 아니라 미해결 문제와 증강 적용 여부도 포함합니다.
 
 v6는 최근 8개 샘플에서 1/3/5초 뒤 온도와 향후 상한 위험을 함께 학습합니다. 제어기는 26°C 상한 여유를 먼저 확인하고, 양의 상승률·예상 회복 에너지·PWM 변경 비용으로 후보를 비교합니다. 회복시간을 추정하지 못하면 총 에너지는 미정으로 남기고 단기 전력 대용값만 사용합니다. 검증 데이터에서는 원본 상승률 보조 ON을 선택했습니다. 해당 설정은 모델 파일에 저장됩니다.
