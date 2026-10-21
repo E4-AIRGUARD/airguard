@@ -7,6 +7,7 @@ from dataclasses import dataclass, replace
 from threading import Lock
 
 import numpy as np
+from temperature_features import raw_temperature_rates
 
 MAX_INTERPOLATED_SAMPLES = 1
 
@@ -100,7 +101,7 @@ class SensorBuffer:
         with self._lock:
             return len(self._samples) == self.window_size
 
-    def control_feature_matrix(self, default_intake_pwm: float, default_exhaust_pwm: float) -> np.ndarray:
+    def control_feature_matrix(self, default_intake_pwm: float, default_exhaust_pwm: float, include_raw_rates: bool = False) -> np.ndarray:
         """온도 예측기용 입력: 온도, 최근 변화율, 실제 흡기·배기 PWM입니다.
 
         센서가 PWM을 보내지 않는 경우에는 마지막으로 보낸 팬 명령을 사용합니다.
@@ -124,7 +125,11 @@ class SensorBuffer:
             ]
             for item, temperature, rate in zip(samples, temperatures, rates)
         ]
-        return np.asarray(rows, dtype=np.float32)
+        context = np.asarray(rows, dtype=np.float32)
+        if include_raw_rates:
+            raw_rates = raw_temperature_rates([s.temperature_c for s in samples], times)
+            context = np.column_stack((context, raw_rates)).astype(np.float32)
+        return context
 
     def _smoothed_temperatures(self, samples: list[SensorSample]) -> list[float]:
         recent: deque[float] = deque(maxlen=self.median_size)
