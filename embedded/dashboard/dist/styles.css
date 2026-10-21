@@ -25,3 +25,8 @@
 @media(max-width:1180px){.device-specs>div{flex-wrap:wrap;gap:4px}.device-specs dd{margin-left:auto}.event-photos img,.photo-empty{height:170px}}
 @media(max-width:980px){.event-photos img,.photo-empty{height:190px}.device-content p{min-height:0}}
 @media(max-width:650px){.page-heading>.badge{font-size:9px}.device-picture{height:240px}.device-model{min-height:0}.device-specs>div{flex-wrap:nowrap}.event-detail>.chart,.power-panel .chart{min-height:135px}.event-photos{grid-template-columns:1fr}.event-photos img,.photo-empty{height:190px}.event-photos>div+div{margin-top:10px}.power-summary{flex-wrap:wrap}.power-heading h3 small{display:block;margin:5px 0 0}.detail-spec{gap:15px}.detail-spec b{text-align:right}.pagination span{margin-left:5px}}
+
+/* Live Jetson camera; stale frames are hidden instead of shown as live. */
+.camera.live-camera>img{object-fit:contain;filter:none}.camera.live-camera>img[hidden]{display:none}.camera-live-message{position:absolute;inset:0;display:grid;place-items:center;padding:70px 24px;color:#dce7f5;text-align:center;background:#172431}.camera-live-message[hidden]{display:none}.live-camera .camera-top,.live-camera .camera-bottom{z-index:1}.live-camera:fullscreen{width:100vw;height:100vh}
+
+.actual-event-photo{width:100%;max-width:640px;height:auto;border-radius:8px;margin-top:12px}

@@ -9,3 +9,11 @@ __pycache__/
 qa/
 .openai/
 .site-tools/
+runtime/
+integrations/**/runtime/
+*.db
+*.db-wal
+*.db-shm
+*.key
+*.pid
+*.jsonl
