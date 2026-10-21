@@ -1,12 +1,13 @@
 <!doctype html>
 <html lang="ko">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0e2039"><meta name="description" content="에어가드 챔버 환경 모니터링 대시보드. 센서, 팬, CFD, 이상·회복 기록을 한곳에서 확인합니다."><title>에어가드 | 환경 모니터링</title><link rel="stylesheet" href="styles.css"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#0e2039"><meta name="description" content="에어가드 챔버 환경 모니터링 대시보드. 센서, 팬, CFD, 이상·회복 기록을 한곳에서 확인합니다."><title>에어가드 | 환경 모니터링</title><link rel="stylesheet" href="styles.css?v=20261021-live4"></head>
 <body>
 <aside class="sidebar" id="sidebar">
  <a class="brand" href="#dashboard"><span class="brand-symbol">A<span></span></span><span>에어가드<small>AIRGUARD</small></span></a>
  <div class="workspace"><span class="dot"></span><div>챔버 모니터링<small>환경 통합 관제 시스템</small></div><span class="workspace-mark">01</span></div>
  <div class="nav-caption">WORKSPACE</div>
  <nav aria-label="주 메뉴">
+  <a href="#live" data-nav="live"><span data-icon="link"></span>장비 데이터 연동</a>
   <a href="#dashboard" data-nav="dashboard"><span data-icon="dashboard"></span>메인 대시보드</a>
   <a href="#cfd-current" data-nav="cfd"><span data-icon="box"></span>CFD 시뮬레이션<span class="chevron">⌄</span></a>
   <div class="subnav"><a href="#cfd-current" data-nav="cfd-current">현재 팬 조합</a><a href="#cfd-select" data-nav="cfd-select">선택 팬 조합</a></div>
@@ -24,5 +25,12 @@
 <div id="toast" role="status"></div>
 <dialog id="hardware-dialog" aria-labelledby="hardware-title"><button class="close-dialog" aria-label="닫기">×</button><div id="hardware-detail"></div></dialog>
 <dialog id="power-dialog" aria-labelledby="power-title"><button class="close-dialog" aria-label="설명 닫기">×</button><div id="power-detail"></div></dialog>
-<script src="app.js"></script>
+<script src="device-link.js?v=20261021-control2"></script>
+<script src="app.js?v=20261021-live4"></script>
+<script src="live-measurements.js?v=20261021-live4"></script>
+<script src="temperature-integration.js?v=20261021-control1"></script>
+<script src="live-camera.js?v=20261021-live4"></script>
+<script src="smoke-alert.js?v=20261021-motion1"></script>
+<script src="dashboard-lifecycle.js?v=20261021-lease1"></script>
+<script>route();startDeviceLink();</script>
 </body></html>

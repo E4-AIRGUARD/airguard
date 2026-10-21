@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AIRGUARD 팬 모니터</title>
+<style>
+/* 레이아웃: 상단 상태줄 → 핵심 숫자 2칸(PM, 팬) → 에너지 비교 → 시계열. 계기판처럼 훑어보는 화면 */
+:root{
+  --bg:#eef2f2; --surface:#ffffff; --ink:#112321; --muted:#5b6f6c; --line:#d6dfde;
+  --accent:#0b7a78; --accent-soft:#d3ecea; --good:#1d7f48; --good-soft:#d9f0e2;
+  --warn:#9a6700; --warn-soft:#f8ebc9; --bad:#b4281c; --bad-soft:#f8dad6; --grid:#e3e9e8;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0c1413; --surface:#142120; --ink:#e6f1ef; --muted:#93aaa6; --line:#264240;
+  --accent:#46c2bf; --accent-soft:#17403f; --good:#4cc882; --good-soft:#173a29;
+  --warn:#e3b341; --warn-soft:#3d3115; --bad:#ff7a6c; --bad-soft:#4a211d; --grid:#1d3230;
+  color-scheme: dark; } }
+:root[data-theme="dark"]{
+  --bg:#0c1413; --surface:#142120; --ink:#e6f1ef; --muted:#93aaa6; --line:#264240;
+  --accent:#46c2bf; --accent-soft:#17403f; --good:#4cc882; --good-soft:#173a29;
+  --warn:#e3b341; --warn-soft:#3d3115; --bad:#ff7a6c; --bad-soft:#4a211d; --grid:#1d3230;
+  color-scheme: dark; }
+*{box-sizing:border-box}
+html,body{height:auto}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
+  font-size:15px;line-height:1.45;padding-block:20px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1080px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.num{font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+header{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;justify-content:space-between}
+h1{font-size:18px;margin:0;letter-spacing:.01em}
+h1 small{display:block;font-size:12px;font-weight:400;color:var(--muted);letter-spacing:0}
+.ctrls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.chip i{width:7px;height:7px;border-radius:50%;background:currentColor}
+.chip.good{background:var(--good-soft);color:var(--good)} .chip.warn{background:var(--warn-soft);color:var(--warn)} .chip.bad{background:var(--bad-soft);color:var(--bad)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:transparent;color:var(--muted);padding:6px 11px;font:inherit;font-size:13px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 11px;border-radius:8px;font:inherit;font-size:13px;cursor:pointer}
+button:focus-visible,.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:720px){.grid2{grid-template-columns:1fr}}
+section{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-width:0}
+h2{font-size:12px;margin:0 0 10px;color:var(--muted);font-weight:600;letter-spacing:.06em}
+.big{font-size:56px;line-height:1;font-weight:700;letter-spacing:-.02em}
+.big small{font-size:15px;font-weight:500;color:var(--muted);margin-left:6px;letter-spacing:0}
+.row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.sub{color:var(--muted);font-size:13px}
+.fan{display:grid;grid-template-columns:44px 1fr;gap:6px 12px;align-items:center;margin-bottom:12px}
+.fan b{font-size:13px;font-weight:600}
+.fan .val{font-size:30px;font-weight:700;line-height:1}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;grid-column:2}
+.steps span{height:26px;border-radius:6px;background:var(--grid);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted)}
+.steps span.on{background:var(--accent);color:#fff;font-weight:600}
+.why{margin-top:4px;font-size:13px;color:var(--muted)}
+.why strong{color:var(--ink);font-weight:600}
+.bars{display:flex;flex-direction:column;gap:12px}
+.bar{display:grid;grid-template-columns:190px 1fr 130px;gap:12px;align-items:center}
+@media (max-width:560px){.bar{grid-template-columns:1fr 100px}.bar .track{grid-column:1 / -1;order:3}}
+.bar .name{font-size:14px} .bar .name small{display:block;color:var(--muted);font-size:12px}
+.track{height:18px;background:var(--grid);border-radius:5px;overflow:hidden}
+.fill{height:100%;border-radius:5px;transition:width .4s}
+.bar .v{text-align:right;font-size:18px;font-weight:650}
+.bar .v small{display:block;font-size:12px;font-weight:400;color:var(--muted)}
+.save{margin-top:14px;padding:10px 12px;border-radius:8px;background:var(--good-soft);color:var(--good);font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.stats div{display:flex;flex-direction:column;gap:2px}.stats b{font-size:20px;font-weight:650}
+@media (max-width:560px){.stats{grid-template-columns:1fr 1fr}}
+h3{font-size:14px;margin:0 0 10px;font-weight:600}
+.bar.me .name{font-weight:650}
+.bar.me .track{background:var(--accent-soft)}
+.bar .name small b{color:var(--ink);font-weight:600}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent);margin-left:6px}
+.note{margin-top:10px;font-size:12px;color:var(--muted)}
+canvas{width:100%;height:250px;display:block}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:8px}
+.legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+#empty{display:none;text-align:center;padding:40px 16px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>AIRGUARD 팬 모니터<small>PM2.5 · 팬 속도 · 추정 에너지 (전력은 RPM 기반 추정값)</small></h1>
+    <div class="ctrls">
+      <span class="chip" id="status"><i></i><span id="statusText">연결 중</span></span>
+      <div class="seg" role="group" aria-label="집계 구간">
+        <button data-win="600" aria-pressed="false">10분</button>
+        <button data-win="3600" aria-pressed="true">1시간</button>
+        <button data-win="0" aria-pressed="false">전체</button>
+      </div>
+      <button class="btn" id="open">로그 파일 열기</button>
+      <input type="file" id="file" accept=".csv" hidden>
+    </div>
+  </header>
+
+  <div id="empty">에너지 로그를 읽지 못했습니다. 서버 실행 여부와 로그 경로를 확인하거나 위의 “로그 파일 열기”로 CSV를 직접 선택하세요.</div>
+
+  <div class="grid2">
+    <section aria-live="polite">
+      <h2>현재 PM2.5</h2>
+      <div class="row"><div class="big num" id="pm">—<small>µg/m³</small></div><span class="chip" id="band"></span></div>
+      <div class="sub" style="margin-top:10px" id="trend">&nbsp;</div>
+      <div class="sub">목표 20 이하 · 방 배경 농도 약 18~22</div>
+    </section>
+    <section aria-live="polite">
+      <h2>팬 속도 (PWM %)</h2>
+      <div class="fan"><b>흡기</b><div class="val num" id="fi">—</div><div class="steps" id="si"></div></div>
+      <div class="fan"><b>배기</b><div class="val num" id="fe">—</div><div class="steps" id="se"></div></div>
+      <div class="why" id="why"></div>
+    </section>
+  </div>
+
+  <section>
+    <h2 id="etitle">에너지 비교 (추정)</h2>
+    <div class="stats">
+      <div><span class="sub">지금 소비전력</span><b class="num" id="curP">—</b></div>
+      <div><span class="sub" id="winLbl">구간 누적</span><b class="num" id="winE">—</b></div>
+      <div><span class="sub">PM20 도달 후 유지</span><b id="holdNote">—</b></div>
+    </div>
+    <h3 id="epTitle"></h3>
+    <div class="bars" id="cmp"></div>
+    <div class="save" id="save"></div>
+    <div class="note">“예상”은 학습한 감쇠 모델이 같은 출발 농도에서 그 조합을 끝까지 고정해 돌렸을 때를 계산한 값입니다. 에너지 = 추정 전력(W) × 시간이며 실제 전력계 값이 아닙니다.</div>
+  </section>
+
+  <section>
+    <h2>PM2.5와 팬 조합 추이</h2>
+    <canvas id="chart" role="img" aria-label="PM2.5 시계열과 흡기·배기 팬 속도"></canvas>
+    <div class="legend"><span><i style="background:var(--ink)"></i>PM2.5</span><span><i style="background:var(--good);height:0;border-top:2px dashed var(--good)"></i>목표 20</span><span>아래 두 줄: 흡기·배기 속도(진할수록 강함)</span></div>
+  </section>
+</div>
+
+<script>
+const SAMPLE = `/*SAMPLE*/`;
+const MODEL = /*MODEL*/;                         // model.json 요약 (build_dashboard.py가 넣음)
+const TIER = {35:'약', 60:'중', 100:'강'};
+function interpLog(levels, vals, pm){                // levels 내림차순, PM 로그축 보간
+  if (pm >= levels[0]) return vals[0];
+  if (pm <= levels[levels.length-1]) return vals[vals.length-1];
+  for (let k = 0; k < levels.length-1; k++){
+    const hi = levels[k], lo = levels[k+1];
+    if (pm <= hi && pm >= lo){ const w = (Math.log(pm)-Math.log(lo))/(Math.log(hi)-Math.log(lo)); return vals[k+1] + (vals[k]-vals[k+1])*w; }
+  }
+}
+// 고정 조합 c로 pm에서 PM20까지 예상 시간(초): 구간 A(PM50까지, 조합별 표) + 구간 B(PM50->20, 조합 무관 표)
+function predictTime(c, pm){
+  const la = MODEL.levels_a, lb = MODEL.levels_b;
+  const tail = x => interpLog(lb, lb.map(L => MODEL.tail[L]), Math.min(x, 50));
+  if (pm <= 20) return 0;
+  if (pm <= 50) return tail(pm);
+  const t = MODEL.combos[c].to50;
+  return interpLog(la, la.map(L => t[L]), pm) + tail(50);
+}
+function comboLabel(c){ const [i,e] = c.split(',').map(Number); return `${i}/${e} <small>${TIER[i]}${TIER[e]}</small>`; }
+const REASON = {
+  min_energy_within_deadline:'마감 안에서 에너지가 가장 적은 조합',
+  no_deadline_min_energy:'마감 없음: 에너지 최소 조합',
+  tail_lowest_power:'PM 50 이하: 가장 약한 조합',
+  target_reached:'목표 도달: 약약 유지',
+  sensor_invalid_or_stale:'센서 이상: 안전을 위해 강강',
+  deadline_unattainable_fastest:'마감 달성 어려움: 가장 빠른 조합'
+};
+const HOLD = new Set(['hold_interval','min_hold','fixed']);
+let rows = [], winSec = 3600, mode = 'live', lastTime = null, lastChange = Date.now(), demoIdx = 0, timer = null;
+
+const $ = id => document.getElementById(id);
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+function parseCSV(text){
+  const out = [], lines = text.replace(/\r/g,'').split('\n').filter(Boolean);
+  for (let i = 1; i < lines.length; i++){
+    const c = []; let cur = '', q = false;
+    for (const ch of lines[i]){ if (ch === '"') q = !q; else if (ch === ',' && !q){ c.push(cur); cur = ''; } else cur += ch; }
+    c.push(cur);
+    if (c.length < 6) continue;
+    out.push({ t:+c[0], pm: c[1] === '' ? NaN : +c[1], combo:c[2], w:+c[3], e:+c[4], reason:c[5] });
+  }
+  return out.filter(r => Number.isFinite(r.t) && Number.isFinite(r.e));
+}
+function fmtE(j){ return j >= 10000 ? [ (j/1000).toFixed(1), 'kJ' ] : [ j.toFixed(j < 100 ? 1 : 0), 'J' ]; }
+function eHTML(j){ const [n,u] = fmtE(j); return `${n} ${u}<small>${(j/3600).toFixed(3)} Wh</small>`; }
+function tier(p){ return p >= 100 ? '강' : p >= 60 ? '중' : '약'; }
+
+function steps(el, v){
+  el.innerHTML = [35,60,100].map(p => `<span class="${v === p ? 'on' : ''}">${p} ${tier(p)}</span>`).join('');
+}
+function band(pm){
+  const b = $('band');
+  if (!Number.isFinite(pm)){ b.className = 'chip bad'; b.textContent = '센서 값 없음'; return; }
+  if (pm <= 20){ b.className = 'chip good'; b.innerHTML = '<i></i>목표 도달'; }
+  else if (pm <= 50){ b.className = 'chip warn'; b.innerHTML = '<i></i>거의 회복'; }
+  else if (pm >= 500){ b.className = 'chip bad'; b.innerHTML = '<i></i>500 이상 (모델 범위 밖, 가장 빠른 조합)'; }
+  else { b.className = 'chip bad'; b.innerHTML = '<i></i>농도 높음'; }
+}
+
+function render(){
+  if (!rows.length){ $('empty').style.display = 'block'; return; }
+  $('empty').style.display = 'none';
+  const last = rows[rows.length-1];
+  const lastValid = [...rows].reverse().find(r => Number.isFinite(r.pm));
+  $('pm').innerHTML = `${Number.isFinite(last.pm) ? Math.round(last.pm) : '—'}<small>µg/m³</small>`;
+  band(last.pm);
+  const ago = [...rows].reverse().find(r => r.t <= last.t - 60 && Number.isFinite(r.pm));
+  $('trend').textContent = ago && Number.isFinite(last.pm) ? `1분 전 ${Math.round(ago.pm)} → ${last.pm - ago.pm >= 0 ? '+' : ''}${Math.round(last.pm - ago.pm)}` : '\u00a0';
+
+  const [i,e] = last.combo.split(',').map(Number);
+  $('fi').textContent = Number.isFinite(i) ? i + '%' : '—';
+  $('fe').textContent = Number.isFinite(e) ? e + '%' : '—';
+  steps($('si'), i); steps($('se'), e);
+  const why = [...rows].reverse().find(r => !HOLD.has(r.reason)) || last;
+  $('why').innerHTML = `<strong>${tier(i)}${tier(e)}</strong> · ${REASON[why.reason] || why.reason}`;
+
+  // 집계 구간 누적 에너지
+  const t1 = last.t, t0 = winSec ? Math.max(rows[0].t, t1 - winSec) : rows[0].t;
+  const start = rows.find(r => r.t >= t0) || rows[0];
+  const act = Math.max(0, last.e - start.e), dur = Math.max(0, t1 - start.t);
+  $('curP').textContent = `${last.w.toFixed(2)} W`;
+  $('winLbl').textContent = `최근 ${dur < 90 ? Math.round(dur) + '초' : Math.round(dur/60) + '분'} 누적`;
+  $('winE').innerHTML = eHTML(act).replace(/<small>.*<\/small>/, '');
+  compare(rows);
+  chart();
+}
+
+// 마지막 '회복 구간'(PM이 50을 넘어 올라간 시점 ~ PM20 이하 도달)을 찾아, 같은 출발 PM에서 9개 고정 조합과 비교한다.
+function findEpisode(rs){
+  let st = -1, last = null;
+  for (let k = 0; k < rs.length; k++){
+    const pm = rs[k].pm;
+    if (!Number.isFinite(pm)) continue;
+    if (st < 0 && pm > 50) st = k;
+    else if (st >= 0 && pm <= 20){ last = {a:st, b:k, done:true}; st = -1; }
+  }
+  return st >= 0 ? {a:st, b:rs.length-1, done:false} : last;
+}
+function compare(rs){
+  const ep = findEpisode(rs), box = $('cmp'), W = {};
+  Object.keys(MODEL.combos).forEach(c => W[c] = MODEL.combos[c].power_w);
+  $('holdNote').textContent = '약약(35/35) 유지';
+  if (!ep){
+    $('epTitle').textContent = 'PM이 목표 범위라 비교할 회복 구간이 없습니다';
+    box.innerHTML = ''; $('save').textContent = `PM 50 이하에서는 가장 약한 조합(약약, ${W['35,35'].toFixed(2)} W)을 유지합니다.`; return;
+  }
+  const a = rs[ep.a], b = rs[ep.b], pm0 = Math.min(500, a.pm), dt = b.t - a.t, ea = b.e - a.e;
+  $('epTitle').textContent = `${ep.done ? '마지막 회복 구간' : '진행 중인 회복 구간'}: PM ${Math.round(pm0)} 에서 출발, ${ep.done ? 'PM20 도달까지' : '지금까지'} ${Math.round(dt)}초`;
+  const list = Object.keys(W).map(c => { const t = predictTime(c, pm0); return {c, t, e:W[c]*t}; }).sort((x,y) => x.e - y.e);
+  const mx = Math.max(ea, ...list.map(x => x.e), 1e-9);
+  const rank = list.filter(x => x.e < ea).length + 1, fast = list.filter(x => x.t < dt).length + 1;
+  const row = (name, sub, e, cls, color, op) => `<div class="bar ${cls}"><div class="name">${name}<small>${sub}</small></div><div class="track"><div class="fill" style="width:${e/mx*100}%;background:${color};opacity:${op}"></div></div><div class="v num">${eHTML(e)}</div></div>`;
+  let html = row('이번 제어 (실제)<span class="tag">' + (ep.done ? '완료' : '진행 중') + '</span>', `<b>${Math.round(dt)}초</b> 걸림`, ea, 'me', 'var(--accent)', 1);
+  list.forEach(x => { html += row(`고정 ${comboLabel(x.c)}`, `예상 ${Math.round(x.t)}초`, x.e, '', x.t <= dt ? 'var(--muted)' : 'var(--bad)', .6); });
+  box.innerHTML = html;
+  const minE = list[0], quick = list.slice().sort((x,y) => x.t - y.t)[0];
+  $('save').innerHTML = `고정 9개 조합 중 에너지는 <b>${rank}번째로 적고</b>(가장 적은 건 ${minE.c.replace(',','/')}, 예상 ${Math.round(minE.e)} J), 시간은 <b>${fast}번째로 빠릅니다</b>(가장 빠른 건 ${quick.c.replace(',','/')}, 예상 ${Math.round(quick.t)}초). 약한 조합은 에너지가 적은 대신 느리므로 두 값을 같이 보세요.`;
+}
+
+function chart(){
+  const cv = $('chart'), dpr = window.devicePixelRatio || 1;
+  const w = cv.clientWidth, h = cv.clientHeight;
+  cv.width = w*dpr; cv.height = h*dpr;
+  const g = cv.getContext('2d'); g.scale(dpr, dpr); g.clearRect(0,0,w,h);
+  if (!rows.length) return;
+  const last = rows[rows.length-1];
+  const have = last.t - rows[0].t, span = Math.max(30, winSec ? Math.min(winSec, have) : have);
+  const t0 = last.t - span, data = rows.filter(r => r.t >= t0);
+  const L = 40, R = 8, T = 8, B = 52, pw = w-L-R, ph = h-T-B;
+  const maxPM = Math.max(100, ...data.map(r => Number.isFinite(r.pm) ? r.pm : 0));
+  const ymax = [100,150,300,500,1000,1500,2000,3000,5000].find(v => maxPM <= v) || Math.ceil(maxPM/1000)*1000;   // 500을 넘는 값도 그대로 보인다
+  const X = t => L + (t - t0)/span*pw, Y = v => T + ph - Math.min(v,ymax)/ymax*ph;
+  g.font = '11px system-ui,sans-serif'; g.fillStyle = css('--muted'); g.strokeStyle = css('--grid'); g.lineWidth = 1;
+  for (const v of [0, ymax/2, ymax]){ g.beginPath(); g.moveTo(L, Y(v)); g.lineTo(w-R, Y(v)); g.stroke(); g.textAlign = 'right'; g.fillText(Math.round(v), L-6, Y(v)+4); }
+  g.textAlign = 'left'; g.fillText(span >= 120 ? `${Math.round(span/60)}분 전` : `${Math.round(span)}초 전`, L, h-2); g.textAlign = 'right'; g.fillText('지금', w-R, h-2);
+  if (ymax > 500){ g.setLineDash([2,4]); g.strokeStyle = css('--muted'); g.beginPath(); g.moveTo(L, Y(500)); g.lineTo(w-R, Y(500)); g.stroke(); g.setLineDash([]); g.textAlign = 'left'; g.fillStyle = css('--muted'); g.fillText('500 (모델 시간표 범위)', L+4, Y(500)-4); }
+  g.setLineDash([5,4]); g.strokeStyle = css('--good'); g.beginPath(); g.moveTo(L, Y(20)); g.lineTo(w-R, Y(20)); g.stroke(); g.setLineDash([]);
+  g.strokeStyle = css('--ink'); g.lineWidth = 2; g.beginPath(); let pen = false;
+  for (const r of data){ if (!Number.isFinite(r.pm)){ pen = false; continue; } const x = X(r.t), y = Y(r.pm); pen ? g.lineTo(x,y) : g.moveTo(x,y); pen = true; }
+  g.stroke();
+  // 팬 조합 띠 (흡기, 배기)
+  for (let k = 0; k < 2; k++){
+    const y = T + ph + 10 + k*18;
+    for (let n = 0; n < data.length; n++){
+      const r = data[n], nx = n+1 < data.length ? data[n+1].t : last.t;
+      const p = +r.combo.split(',')[k];
+      if (!Number.isFinite(p)) continue;
+      g.globalAlpha = p >= 100 ? 1 : p >= 60 ? .6 : .28; g.fillStyle = css('--accent');
+      g.fillRect(X(r.t), y, Math.max(1, X(nx) - X(r.t)), 12);
+    }
+    g.globalAlpha = 1; g.fillStyle = css('--muted'); g.textAlign = 'right'; g.fillText(k ? '배기' : '흡기', L-6, y+10);
+  }
+}
+
+function setStatus(kind, text){ $('status').className = 'chip ' + kind; $('statusText').textContent = text; }
+
+async function poll(){
+  try{
+    const res = await fetch('/api/log?rows=3600', {cache:'no-store'});
+    if (!res.ok) throw new Error(res.status);
+    rows = parseCSV(await res.text());
+    const lt = rows.length ? rows[rows.length-1].t : null;
+    if (lt !== lastTime){ lastTime = lt; lastChange = Date.now(); }
+    const stale = (Date.now() - lastChange) / 1000;
+    setStatus(stale > 15 ? 'warn' : 'good', stale > 15 ? `갱신 멈춤 ${Math.round(stale)}초` : '실시간');
+    render();
+  } catch (err){
+    if (mode === 'live' && !rows.length){ startDemo(); return; }
+    setStatus('bad', '서버 연결 끊김');
+  }
+}
+function startDemo(){
+  clearInterval(timer); mode = 'demo';
+  const all = parseCSV(SAMPLE); demoIdx = 2;
+  setStatus('warn', '데모 데이터 (실제 로그 아님)');
+  const step = () => { rows = all.slice(0, demoIdx); demoIdx = demoIdx >= all.length ? 2 : demoIdx + 1; render(); };
+  step(); timer = setInterval(step, 400);
+}
+function startLive(){ mode = 'live'; clearInterval(timer); poll(); timer = setInterval(poll, 2000); }
+
+document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => {
+  winSec = +b.dataset.win;
+  document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  render();
+}));
+$('open').addEventListener('click', () => $('file').click());
+$('file').addEventListener('change', async ev => {
+  const f = ev.target.files[0]; if (!f) return;
+  clearInterval(timer); mode = 'file'; rows = parseCSV(await f.text());
+  setStatus('', '파일: ' + f.name); render();
+});
+window.addEventListener('resize', chart);
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', chart);
+if (new URLSearchParams(location.search).has('demo') || location.protocol === 'file:') startDemo(); else startLive();
+</script>
+</body>
+</html>

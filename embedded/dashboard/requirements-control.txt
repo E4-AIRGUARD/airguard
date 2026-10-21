@@ -1,0 +1,4 @@
+# Jetson: install the PyTorch build matching JetPack/CUDA separately first.
+# These ranges match the Python 3.10 integration; see README for CPU test setup.
+numpy>=1.24,<3
+pyserial>=3.5,<4
