@@ -22,6 +22,17 @@ python3 AI/temperature/src/main_runner.py \
 
 모델·기본 DB 경로는 스크립트 위치 기준이므로 셸 작업 폴더에 의존하지 않습니다. 기본 DB는 `AI/temperature/runtime/edge_events.db`이며 자동 생성합니다. 사용자가 명시한 상대 경로 옵션은 현재 작업 폴더 기준입니다. 기본 LSTM 파일은 이전 10초 모델이므로 v4 시험은 파일명을 명시합니다.
 
+## Streamlit 대시보드
+
+메인과 별도 터미널에서 실행합니다. 기본 DB는 메인과 같은 `AI/temperature/runtime/edge_events.db`입니다. 별도 DB로 시험했다면 `-- --database <경로>`를 뒤에 지정합니다.
+
+```bash
+python3 -m pip install 'streamlit>=1.37,<2'
+python3 -m streamlit run AI/temperature/web/dashboard.py
+```
+
+대시보드는 센서·팬 피드백·제어 기록을 표시하며 직접 팬을 제어하지 않습니다. DB와 새 HTML 대시보드는 커밋하지 않습니다.
+
 ## 데이터 구조
 
 ```text
