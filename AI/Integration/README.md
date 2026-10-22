@@ -1,15 +1,21 @@
-# AIRGUARD 팬 자동제어
+# AIRGUARD 통합 프로젝트
 
 온도 LSTM v6와 PM2.5 제어 요구를 흡기·배기별 최대 PWM으로 통합한다.
 단일 Serial 연결, 대시보드 연결 만료 시 팬 정지, 온도·PM 독립 사건 저장과
 선택적 Aiven 업로드를 지원한다. **이 폴더의 코드와 모델만으로 실행할 수 있다.**
+
+기존 smoke 폴더의 내용 전체를 `AI/Integration`으로 옮겼다.
+독립 PM 제어·실험 자료는 [fan_control](fan_control/README.md),
+카메라 연기 분류 프로젝트는 [vision](vision/README.md)에 있다.
 
 ## 폴더 구조
 
 Python·ML 프로젝트에서 흔히 사용하는 소스, 모델, 설정, 테스트, 문서 구분을 따른다.
 
 ```text
-AI/smoke/
+AI/Integration/
+├── fan_control/               # 독립 PM 제어·모델·실험 자료
+├── vision/                    # 카메라 연기 분류·학습·평가
 ├── src/airguard_control/       # 실제 실행 코드
 │   ├── control.py             # 센서·팬 통합 실행기
 │   ├── dashboard_lease.py     # 대시보드 연결과 정지
@@ -46,7 +52,7 @@ Python 3.10 이상과 장비에 맞는 PyTorch를 먼저 준비한다.
 Jetson은 JetPack/CUDA에 맞는 PyTorch를 사용한다.
 PyTorch를 일반 의존성에 넣어 자동 교체하지 않는다.
 
-아래 명령은 `AI/smoke` 폴더에서 실행한다.
+아래 명령은 `AI/Integration` 폴더에서 실행한다.
 
 ```bash
 python3 -m pip install -r requirements/control.txt
@@ -91,5 +97,5 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 - [모델 설명](models/README.md)
 - [설정 예시](configs/README.md)
 
-기존 `python AI/smoke/integrated_control.py` 명령은 계속 동작한다.
+저장소 루트에서는 `python AI/Integration/integrated_control.py`로 실행한다.
 실제 Jetson 서비스의 배포 위치는 자동으로 바뀌지 않는다.
