@@ -1,0 +1,4 @@
+* text=auto eol=lf
+models/temperature/*.pt binary
+# 원본 모델 JSON 바이트를 유지해 OS별 체크아웃에서도 manifest 해시가 같다.
+models/pm/model.json -text whitespace=cr-at-eol

@@ -3,10 +3,10 @@ import sys
 import unittest
 from types import SimpleNamespace
 import importlib.util
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-import integrated_control
-from dashboard_lease import DashboardLease,FanLeaseGuard
-from integrated_control import Coordinator,SmokeFan
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'src'))
+import airguard_control.control as integrated_control
+from airguard_control.dashboard_lease import DashboardLease,FanLeaseGuard
+from airguard_control.control import Coordinator,SmokeFan
 
 
 class LeaseTests(unittest.TestCase):

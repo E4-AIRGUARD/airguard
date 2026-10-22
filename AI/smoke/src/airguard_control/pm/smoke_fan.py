@@ -1,8 +1,8 @@
 """연기(PM2.5) 팬 자동제어 통합용 모듈. 센서/팬 코드와 분리되어 있어 다른 제어(온도 등)와 한 루프에서 같이 쓸 수 있다.
 
 사용 (메인 루프에서 1초마다):
-    from smoke_fan import SmokeFan
-    smoke = SmokeFan()                          # model.json, 마감 70초 (run_on_jetson.py 기본값과 같음)
+    from airguard_control.pm.smoke_fan import SmokeFan
+    smoke = SmokeFan()                          # 배포 PM 모델, 기본 마감 70초
     ...
     cmd = smoke.step(pm)                        # pm: PM2.5 원시값 또는 None(센서 오류)
     cmd.intake, cmd.exhaust                     # 연기 쪽이 요구하는 PWM(%). 35/60/100 중 하나
@@ -16,11 +16,8 @@ from dataclasses import dataclass
 from pathlib import Path
 import sys
 
-MODEL_ROOT = Path(__file__).resolve().parents[2]/'embedded/dashboard/integrations/smoke_fan_final'
-sys.path.insert(0, str(MODEL_ROOT))
-from fan_controller import Planner, FanController, EnergyMeter
-
-HERE = str(MODEL_ROOT)
+from airguard_control.paths import model_path as default_model_path
+from airguard_control.pm.fan_controller import Planner, FanController, EnergyMeter
 
 
 @dataclass
@@ -33,8 +30,9 @@ class FanCommand:
 
 
 class SmokeFan:
-    def __init__(self, model_path='model.json', deadline_s=70.0, range_pm=50.0, interval_s=1.0, log_path=None, event_db=None, device_id='jetson-1'):
-        with open(os.path.join(HERE, model_path), encoding='utf-8') as model_file:
+    def __init__(self, model_path=None, deadline_s=70.0, range_pm=50.0, interval_s=1.0, log_path=None, event_db=None, device_id='jetson-1'):
+        model_path = Path(model_path) if model_path is not None else default_model_path('pm/model.json')
+        with model_path.open(encoding='utf-8') as model_file:
             model = json.load(model_file)
         self.planner = Planner(model, prune=False, include_tail=False)
         self.ctl = FanController(self.planner, deadline_s or None, interval_s=interval_s, range_pm=range_pm)
@@ -42,8 +40,8 @@ class SmokeFan:
         self.t0 = None
         self.rec = None
         if event_db:     # PM 이벤트(50 초과 -> 50 이하 회복)를 로컬 대기열에 기록. 올리는 건 uploader.py
-            from event_recorder import EventRecorder, QueueSink
-            self.rec = EventRecorder(QueueSink(event_db), device_id, pm_limit=range_pm, config={'deadline_s': deadline_s, 'model': model_path, 'pwm_source': 'smoke_demand'})
+            from airguard_control.events.event_recorder import EventRecorder, QueueSink
+            self.rec = EventRecorder(QueueSink(event_db), device_id, pm_limit=range_pm, config={'deadline_s': deadline_s, 'model': str(model_path), 'pwm_source': 'smoke_demand'})
 
     def step(self, pm, now=None, event_time=None):
         """now는 제어 시계, event_time은 Unix 시각(생략하면 time.time()). 기록 PWM은 PM 요구값."""

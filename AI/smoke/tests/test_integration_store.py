@@ -4,10 +4,10 @@ import tempfile
 from types import SimpleNamespace
 import unittest
 
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-import integrated_control
-from integration_store import IntegrationStore
-from control_types import InferenceResult
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'src'))
+import airguard_control.control as integrated_control
+from airguard_control.integration_store import IntegrationStore
+from airguard_control.temperature.control_types import InferenceResult
 
 
 class StoreTests(unittest.TestCase):

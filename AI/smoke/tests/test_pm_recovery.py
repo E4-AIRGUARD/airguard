@@ -8,12 +8,11 @@ from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from integrated_control import Coordinator, SmokeFan
-from pm_recovery import PMRecovery
-from event_recorder import EventRecorder, QueueSink
-import uploader
-
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]/'src'))
+from airguard_control.control import Coordinator, SmokeFan
+from airguard_control.events.pm_recovery import PMRecovery
+from airguard_control.events.event_recorder import EventRecorder, QueueSink
+import airguard_control.storage.uploader as uploader
 BASE = 1792580000.
 
 
@@ -166,7 +165,7 @@ class RecoveryTests(unittest.TestCase):
 
     def test_event_photos_use_only_existing_fresh_frames(self):
         import os,time
-        from event_photos import EventPhotos
+        from airguard_control.events.event_photos import EventPhotos
         frame=Path(self.temp.name)/'camera.jpg'
         frame.write_bytes(b'\xff\xd8test\xff\xd9')
         now=time.time();os.utime(frame,(now,now))
@@ -183,11 +182,11 @@ class RecoveryTests(unittest.TestCase):
 
     def test_camera_cache_rejects_stale_source(self):
         import io
-        from recovery_camera import RecoveryCamera
+        from airguard_control.events.recovery_camera import RecoveryCamera
         cache=RecoveryCamera('http://camera.test',Path(self.temp.name)/'frame.jpg')
-        with patch('recovery_camera.urlopen',return_value=io.BytesIO(b'{"cameraOk":false,"ageSec":1}')) as get:
+        with patch('airguard_control.events.recovery_camera.urlopen',return_value=io.BytesIO(b'{"cameraOk":false,"ageSec":1}')) as get:
             self.assertFalse(cache.update());self.assertEqual(get.call_count,1)
-        with patch('recovery_camera.urlopen',side_effect=[io.BytesIO(b'{"cameraOk":true,"ageSec":0.1}'),io.BytesIO(b'\xff\xd8test\xff\xd9')]):
+        with patch('airguard_control.events.recovery_camera.urlopen',side_effect=[io.BytesIO(b'{"cameraOk":true,"ageSec":0.1}'),io.BytesIO(b'\xff\xd8test\xff\xd9')]):
             self.assertTrue(cache.update());self.assertTrue(cache.target.is_file())
 
 
@@ -222,9 +221,9 @@ class UploadTests(unittest.TestCase):
     def count(self): return self.sink.db.execute('SELECT COUNT(*) FROM queue').fetchone()[0]
 
     def test_relocated_connection_uses_sibling_config_and_explicit_env(self):
-        import aiven_connection
+        import airguard_control.storage.aiven_connection as aiven_connection
         root = Path(__file__).resolve().parents[1]
-        self.assertEqual(Path(aiven_connection.__file__).resolve().parent, root)
+        self.assertEqual(Path(aiven_connection.__file__).resolve().parent, root/'src/airguard_control/storage')
         conn = FakeConnection()
         with patch.object(aiven_connection, 'connect', return_value=conn) as connect:
             self.assertIs(uploader.connect(), conn)

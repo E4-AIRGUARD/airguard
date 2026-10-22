@@ -1,7 +1,7 @@
 """Record PM events from fresh shared telemetry, independently of fan demands."""
 import math
 
-from event_recorder import EventRecorder, QueueSink
+from airguard_control.events.event_recorder import EventRecorder, QueueSink
 
 
 class PMRecovery:

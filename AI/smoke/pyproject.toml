@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "airguard-fan-control"
+version = "0.1.0"
+description = "AIRGUARD 온도 및 PM 팬 자동제어"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24,<3", "pyserial>=3.5,<4"]
+
+[project.optional-dependencies]
+upload = ["PyMySQL>=1.1,<2", "python-dotenv>=1,<2"]
+
+[project.scripts]
+airguard-control = "airguard_control.control:main"
+airguard-upload = "airguard_control.storage.uploader:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.data-files]
+"share/airguard-fan-control/models" = ["models/manifest.json"]
+"share/airguard-fan-control/models/temperature" = ["models/temperature/lstm_temperature_trajectory_v6.pt"]
+"share/airguard-fan-control/models/pm" = ["models/pm/model.json"]

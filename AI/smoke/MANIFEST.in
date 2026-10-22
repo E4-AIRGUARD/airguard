@@ -1,0 +1,5 @@
+recursive-include models *.json *.pt *.md
+recursive-include docs *.md
+recursive-include configs *.example *.md
+recursive-include scripts *.py
+recursive-include tests *.py

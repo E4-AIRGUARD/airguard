@@ -19,7 +19,11 @@ __pycache__/
 *.jpeg
 *.png
 *.pt
+!models/temperature/lstm_temperature_trajectory_v6.pt
 *.onnx
 *.engine
 runs/
 .ipynb_checkpoints/
+*.egg-info/
+build/
+dist/

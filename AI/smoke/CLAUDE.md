@@ -91,6 +91,10 @@
 ## 하지 말아야 할 것
 - IMPORTANT: 원본 사진 수정·삭제 금지. 정리 결과는 별도 폴더에 만든다.
 - IMPORTANT: 이미지·모델·`.env`·API 키·토큰·인증 파일 커밋 금지.
+  - 2026-10-22 사용자 명시 요청에 따른 배포 모델 예외:
+    `models/temperature/lstm_temperature_trajectory_v6.pt`와
+    `models/pm/model.json`은 원본 SHA-256을 manifest에 기록해 포함한다.
+    그 외 모델·사진·인증 파일·실측 데이터는 계속 제외한다.
 - IMPORTANT: `AI/smoke/` 밖 파일 수정·커밋 금지. `git add .` 대신 `git add AI/smoke/`.
 - IMPORTANT: 학습/평가 결과 없이 "성능 개선됐다"고 하지 않는다.
 - 의존성 버전 임의 변경 금지

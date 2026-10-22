@@ -3,8 +3,8 @@ import sys
 from types import SimpleNamespace
 import unittest
 
-sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from integrated_control import Coordinator,ActualEnergy,SmokeFan,valid_pair
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'src'))
+from airguard_control.control import Coordinator,ActualEnergy,SmokeFan,valid_pair
 
 
 def sample(t=100,pm=20):
@@ -71,11 +71,10 @@ class IntegrationTests(unittest.TestCase):
             with self.assertRaises(ValueError):valid_pair(pair)
 
     def test_actual_temperature_v6_api(self):
-        from sensor_buffer import SensorSample
-        from temperature_controller import TemperatureController
-        from integrated_control import DEPENDENCIES
-        root=DEPENDENCIES
-        temp=TemperatureController(root/'handoff_v6/models/lstm_temperature_trajectory_v6.pt')
+        from airguard_control.temperature.sensor_buffer import SensorSample
+        from airguard_control.temperature.temperature_controller import TemperatureController
+        from airguard_control.paths import model_path
+        temp=TemperatureController(model_path('temperature/lstm_temperature_trajectory_v6.pt'))
         c=Coordinator(temp,SmokeFan(),SensorSample)
         for t in range(100,110):
             result=c.step(sample(t),wall=t,clock=t)
