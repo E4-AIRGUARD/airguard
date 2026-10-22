@@ -1,6 +1,6 @@
 # 구조와 이관 기준
 
-2026-10-22 사용자의 폴더·모델 정리 요청에 따라 `AI/smoke`를 독립 실행 가능한
+2026-10-22 사용자의 폴더·모델 정리 요청에 따라 `AI`를 독립 실행 가능한
 Python 프로젝트로 정리했다. 실행 코드와 모델에 대한 `embedded/dashboard`
 런타임 경로 의존성을 제거했다. 원래 대시보드 파일과 Jetson 실행본은 보존했다.
 
@@ -18,7 +18,7 @@ Python 프로젝트로 정리했다. 실행 코드와 모델에 대한 `embedded
 
 | 기존 위치 | 새 위치 |
 | --- | --- |
-| `AI/smoke/integrated_control.py` 구현 | `src/airguard_control/control.py` |
+| `AI/integrated_control.py` 구현 | `src/airguard_control/control.py` |
 | PM 제어기·SmokeFan | `src/airguard_control/pm/` |
 | 온도 v6 필수 추론·조회 모듈 | `src/airguard_control/temperature/` |
 | PMRecovery·사건·사진 기록 | `src/airguard_control/events/` |
@@ -43,3 +43,9 @@ models/manifest.json에 기록했다. PM 모델의 원본 데이터가 필요한
 카메라 v7 영상 모델은 별도 영상 서비스의 자산이다. 팬 제어 코드가 이를 직접 로드하지
 않으므로 여기에 중복 저장하지 않는다. 키·실제 .env·인증서·사진·실측 DB·로그는 runtime에
 두고 Git에서 제외한다. 큰 학습 결과·데이터셋을 나중에 공유할 때는 별도 저장소 정책을 정한다.
+
+## 저장소 경로 정정
+
+사용자의 후속 요청에 따라 팬 자동제어 프로젝트를 `AI/smoke/`에서 `AI/` 직속으로 옮겼다.
+실행·모델 경로는 프로젝트 내부 상대 위치를 사용하므로 제어 동작은 바뀌지 않는다.
+기존 `AI/smoke/vision` 영상 분류 프로젝트와 해당 폴더 지침은 유지한다.

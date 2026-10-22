@@ -9,7 +9,7 @@
 Python·ML 프로젝트에서 흔히 사용하는 소스, 모델, 설정, 테스트, 문서 구분을 따른다.
 
 ```text
-AI/smoke/
+AI/
 ├── src/airguard_control/       # 실제 실행 코드
 │   ├── control.py             # 센서·팬 통합 실행기
 │   ├── dashboard_lease.py     # 대시보드 연결과 정지
@@ -46,7 +46,7 @@ Python 3.10 이상과 장비에 맞는 PyTorch를 먼저 준비한다.
 Jetson은 JetPack/CUDA에 맞는 PyTorch를 사용한다.
 PyTorch를 일반 의존성에 넣어 자동 교체하지 않는다.
 
-아래 명령은 `AI/smoke` 폴더에서 실행한다.
+아래 명령은 `AI` 폴더에서 실행한다.
 
 ```bash
 python3 -m pip install -r requirements/control.txt
@@ -91,5 +91,7 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 - [모델 설명](models/README.md)
 - [설정 예시](configs/README.md)
 
-기존 `python AI/smoke/integrated_control.py` 명령은 계속 동작한다.
+저장소 루트에서는 `python AI/integrated_control.py`로 실행한다.
 실제 Jetson 서비스의 배포 위치는 자동으로 바뀌지 않는다.
+
+별도 영상 분류 프로젝트는 [smoke/vision](smoke/vision/README.md)에 있다.
