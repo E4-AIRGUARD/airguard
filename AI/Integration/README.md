@@ -4,9 +4,10 @@
 단일 Serial 연결, 대시보드 연결 만료 시 팬 정지, 온도·PM 독립 사건 저장과
 선택적 Aiven 업로드를 지원한다. **이 폴더의 코드와 모델만으로 실행할 수 있다.**
 
-기존 smoke 폴더의 내용 전체를 `AI/Integration`으로 옮겼다.
-독립 PM 제어·실험 자료는 [fan_control](fan_control/README.md),
-카메라 연기 분류 프로젝트는 [vision](vision/README.md)에 있다.
+통합 실행 코드·모델·설정·테스트는 `AI/Integration`에 모았다.
+독립 PM 제어·실험 자료는 [fan_control](../smoke/fan_control/README.md),
+카메라 연기 분류 프로젝트는 [vision](../smoke/vision/README.md)으로,
+두 프로젝트 모두 `AI/smoke` 아래에 있다.
 
 ## 폴더 구조
 
@@ -14,8 +15,6 @@ Python·ML 프로젝트에서 흔히 사용하는 소스, 모델, 설정, 테스
 
 ```text
 AI/Integration/
-├── fan_control/               # 독립 PM 제어·모델·실험 자료
-├── vision/                    # 카메라 연기 분류·학습·평가
 ├── src/airguard_control/       # 실제 실행 코드
 │   ├── control.py             # 센서·팬 통합 실행기
 │   ├── dashboard_lease.py     # 대시보드 연결과 정지

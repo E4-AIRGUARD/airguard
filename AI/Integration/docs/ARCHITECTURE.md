@@ -1,7 +1,8 @@
 # 구조와 이관 기준
 
-현재 저장소 경로는 `AI/Integration`이다. 사용자 요청에 따라 기존 smoke 폴더 전체를
-이동했으며 `fan_control`과 `vision`의 내부 구조·원본 데이터도 함께 보존했다.
+통합 프로젝트의 저장소 경로는 `AI/Integration`이다. 사용자 요청에 따라
+`fan_control`과 `vision`은 `AI/smoke` 아래에 두고, 나머지 통합 실행 코드·모델·설정·
+테스트·문서를 이 폴더로 이동했다. 두 독립 프로젝트의 내부 구조·원본 데이터는 보존했다.
 통합 실행 명령은 저장소 루트에서 `python AI/Integration/scripts/run_control.py`다.
 
 2026-10-22 사용자의 폴더·모델 정리 요청에 따라 `AI/Integration`를 독립 실행 가능한
