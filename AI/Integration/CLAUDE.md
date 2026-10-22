@@ -1,9 +1,9 @@
-# AirGuard 연기 탐지 (AI/smoke)
+# AirGuard 연기 탐지 (AI/Integration)
 
 ## 프로젝트 개요
 - 목적: 웹캠 사진으로 연기 있음/없음을 분류하는 AI 모델 (위치·박스 탐지는 지금 범위 아님)
 - 전체 흐름: PMS5003 센서 1차 감지 → 웹캠+AI 2차 확인 → 흡기/배기 팬 제어(히스테리시스)
-- 담당 범위: 이 폴더(`AI/smoke/`)만. 펌웨어·센서 실험은 `embedded/`(다른 팀원 담당)
+- 담당 범위: 이 폴더(`AI/Integration/`)만. 펌웨어·센서 실험은 `embedded/`(다른 팀원 담당)
 - 배포 대상: Jetson → ESP32(`embedded/firmware/T08_cleanbox_fw`)에 시리얼 명령 (연동 방식 확인 필요)
 
 ## 기술 스택
@@ -95,12 +95,12 @@
     `models/temperature/lstm_temperature_trajectory_v6.pt`와
     `models/pm/model.json`은 원본 SHA-256을 manifest에 기록해 포함한다.
     그 외 모델·사진·인증 파일·실측 데이터는 계속 제외한다.
-- IMPORTANT: `AI/smoke/` 밖 파일 수정·커밋 금지. `git add .` 대신 `git add AI/smoke/`.
+- IMPORTANT: `AI/Integration/` 밖 파일 수정·커밋 금지. `git add .` 대신 `git add AI/Integration/`.
 - IMPORTANT: 학습/평가 결과 없이 "성능 개선됐다"고 하지 않는다.
 - 의존성 버전 임의 변경 금지
 - IMPORTANT: `git push --force`, `git reset --hard`처럼 무언가를 강제로 덮어쓰는 명령은 실행 전에 한 번 더 물어보고, 확실한 승인을 받은 뒤에만 실행한다.
 
 ## 완료 기준
-- `git status`에 `AI/smoke/` 밖 변경 없음, 커밋 금지 파일 스테이징 없음
+- `git status`에 `AI/Integration/` 밖 변경 없음, 커밋 금지 파일 스테이징 없음
 - 스크립트가 오류 없이 끝까지 실행되고 테스트 통과
 - PR이 위 형식대로 작성됨

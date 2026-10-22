@@ -1,6 +1,11 @@
 # 구조와 이관 기준
 
-2026-10-22 사용자의 폴더·모델 정리 요청에 따라 `AI/smoke`를 독립 실행 가능한
+통합 프로젝트의 저장소 경로는 `AI/Integration`이다. 사용자 요청에 따라
+`fan_control`과 `vision`은 `AI/smoke` 아래에 두고, 나머지 통합 실행 코드·모델·설정·
+테스트·문서를 이 폴더로 이동했다. 두 독립 프로젝트의 내부 구조·원본 데이터는 보존했다.
+통합 실행 명령은 저장소 루트에서 `python AI/Integration/scripts/run_control.py`다.
+
+2026-10-22 사용자의 폴더·모델 정리 요청에 따라 `AI/Integration`를 독립 실행 가능한
 Python 프로젝트로 정리했다. 실행 코드와 모델에 대한 `embedded/dashboard`
 런타임 경로 의존성을 제거했다. 원래 대시보드 파일과 Jetson 실행본은 보존했다.
 
@@ -18,7 +23,7 @@ Python 프로젝트로 정리했다. 실행 코드와 모델에 대한 `embedded
 
 | 기존 위치 | 새 위치 |
 | --- | --- |
-| `AI/smoke/integrated_control.py` 구현 | `src/airguard_control/control.py` |
+| `AI/Integration/integrated_control.py` 구현 | `src/airguard_control/control.py` |
 | PM 제어기·SmokeFan | `src/airguard_control/pm/` |
 | 온도 v6 필수 추론·조회 모듈 | `src/airguard_control/temperature/` |
 | PMRecovery·사건·사진 기록 | `src/airguard_control/events/` |
