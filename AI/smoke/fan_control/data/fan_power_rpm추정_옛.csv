@@ -1,0 +1,7 @@
+﻿fan,PWM,W,RPM,근거
+intake,35,0.0651,2730,5V x 0.27A x (RPM/7500)^3
+intake,60,0.3156,4620,5V x 0.27A x (RPM/7500)^3
+intake,100,0.9326,6630,5V x 0.27A x (RPM/7500)^3
+exhaust,35,0.0789,2910,5V x 0.27A x (RPM/7500)^3
+exhaust,60,0.4024,5010,5V x 0.27A x (RPM/7500)^3
+exhaust,100,1.1502,7110,5V x 0.27A x (RPM/7500)^3
