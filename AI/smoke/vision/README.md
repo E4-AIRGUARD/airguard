@@ -87,7 +87,3 @@ python benchmarks/tune_rule.py scores_v4_pt640.json grid.csv
 ```
 
 `tune_rule.py`의 연기 구간(`SMOKE`)과 제외 구간(`EXCL`)은 측정에 쓴 영상(cmp2) 기준입니다. 다른 영상에는 직접 바꿔야 합니다.
-
-## 라이선스
-
-YOLO11은 Ultralytics의 AGPL-3.0 라이선스입니다. 공개하거나 배포하기 전에 라이선스 조건을 확인하고 `LICENSE` 파일을 추가해야 합니다.
