@@ -1,0 +1,4 @@
+﻿tag,model,imgsz,frames,pre_ms,infer_ms_mean,infer_ms_p50,infer_ms_p95,infer_ms_max,total_ms_mean,fps_total,gpu_mem_mb
+v4_pt640,smoke_cls_v4.pt,640,600,3.521,36.137,35.302,40.426,44.818,39.658,25.216,62.7
+v4_trt640,smoke_cls_v4.engine,640,600,3.492,28.362,27.23,32.293,32.961,31.853,31.394,9.4
+v4_pt640_p,smoke_cls_v4.pt,640,600,3.483,35.139,35.114,35.475,36.089,38.622,25.892,62.7
