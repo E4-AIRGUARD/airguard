@@ -2,9 +2,7 @@
 /* 에어가드 대시보드에 "연기 감지 알림"을 붙이는 스크립트.
    Jetson의 smoke_alert.py (기본 포트 8092)에서 1초마다 상태를 가져와서
    - 화면 위에 빨간 알림 배너(감지 시각, 점수, 감지 순간 사진)
-   - 토스트 알림
    - 메인 화면 "최근 알림·운전 기록"에 연기 감지/해제 기록
-   - 왼쪽 아래 연결 상태 표시
    를 보여 줍니다. app.js 는 고치지 않고, index.html 에서 app.js 다음에 이 파일 한 줄만 추가하면 됩니다.
 
    알림 서버 주소를 정하는 법 (먼저 찾은 것을 씀)
@@ -13,6 +11,10 @@
      3) 이 파일보다 먼저 정의된 window.SMOKE_API
    주소가 없으면 아무 일도 하지 않아요(기존 대시보드 그대로). */
 (() => {
+  const demo = new URLSearchParams(location.search).get('demo') === '1';
+  window.addEventListener('airguard:smoke-status', event => {
+    document.body.classList.toggle('smoke-detected', !!event.detail?.smoke);
+  });
   const STORE = 'airguard.smokeApi';
   const store = {
     get: k => { try { return localStorage.getItem(k); } catch { return null; } },
@@ -20,12 +22,12 @@
     del: k => { try { localStorage.removeItem(k); } catch { /* */ } }
   };
   const param = new URLSearchParams(location.search).get('smoke');
-  if (param === 'off') store.del(STORE);
-  else if (param) store.set(STORE, param);
-  const api = ((param && param !== 'off' ? param : store.get(STORE)) || window.SMOKE_API || '').replace(/\/+$/, '');
-  if (!api) { console.info('[smoke-alert] 알림 서버 주소가 없어 꺼져 있습니다. 주소 뒤에 ?smoke=http://젯슨주소:8092 를 붙여 여세요.'); return; }
+  if (!demo && param === 'off') store.del(STORE);
+  else if (!demo && param) store.set(STORE, param);
+  const api = demo ? '' : ((param && param !== 'off' ? param : store.get(STORE)) || window.SMOKE_API || '').replace(/\/+$/, '');
+  if (!api && !demo) { console.info('[smoke-alert] 알림 서버 주소가 없어 꺼져 있습니다. 주소 뒤에 ?smoke=http://젯슨주소:8092 를 붙여 여세요.'); return; }
 
-  const POLL_MS = 1000, STALE_SEC = 6, CLEARED_SHOW_MS = 8000;
+  const POLL_MS = 1000, CLEARED_SHOW_MS = 8000;
   const html = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const fmtTime = iso => iso ? new Intl.DateTimeFormat('ko-KR', { timeZone: 'Asia/Seoul', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(new Date(iso)) : '—';
   const fmtDur = sec => sec == null ? '' : sec >= 60 ? `${Math.floor(sec / 60)}분 ${sec % 60}초` : `${sec}초`;
@@ -42,20 +44,15 @@
   .sa-banner small{opacity:.92}
   .sa-banner button{background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.6);border-radius:8px;padding:6px 10px;cursor:pointer;font:inherit}
   .sa-banner .sa-col{display:flex;flex-direction:column;gap:6px}
-  .sa-pill{position:fixed;right:12px;bottom:12px;z-index:9998;padding:5px 10px;border-radius:999px;background:#0e2039;color:#dbe7f5;font:12px system-ui,'Noto Sans KR',sans-serif;opacity:.9}
-  .sa-pill i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#8a97a8}
-  .sa-pill.ok i{background:#2fd3a0}.sa-pill.warn i{background:#f2b84b}.sa-pill.bad i{background:#ef5b73}
   @keyframes sa-pulse{50%{box-shadow:0 0 0 6px rgba(217,45,74,.35),0 10px 30px rgba(10,20,40,.35)}}
   @media (max-width:520px){.sa-banner img{display:none}}`;
   document.head.appendChild(style);
 
   const banner = document.createElement('div');
   banner.className = 'sa-banner'; banner.setAttribute('role', 'alert'); banner.setAttribute('aria-live', 'assertive');
-  const pill = document.createElement('div');
-  pill.className = 'sa-pill'; pill.setAttribute('role', 'status');
-  document.body.append(banner, pill);
+  if(demo)document.body.append(banner);
 
-  let soundOn = store.get('airguard.smokeSound') === '1', audio = null, beepTimer = null;
+  let soundOn = !demo && store.get('airguard.smokeSound') === '1', audio = null, beepTimer = null;
   const beep = () => {
     try {
       audio = audio || new (window.AudioContext || window.webkitAudioContext)();
@@ -72,17 +69,19 @@
   let prev = null, hideTimer = null, dismissedId = null, last = null;
 
   function showAlert(d) {
+    if(!demo)return;
     const cur = d.current || d.incidents[0] || {};
     if (dismissedId === cur.id) return;
     banner.className = 'sa-banner alert show';
-    banner.innerHTML = `${cur.id ? `<img alt="연기가 처음 감지된 순간의 사진" src="${html(api)}/event/${html(cur.id)}.jpg">` : ''}
-      <div class="sa-text"><b>⚠ 연기 감지</b><small>${html(fmtTime(cur.start))} 시작 · 현재 점수 ${d.score.toFixed(2)} · 최고 ${Number(cur.peak || d.score).toFixed(2)}<br>${html(d.deviceId)} 카메라</small></div>
+    banner.innerHTML = `${cur.id ? `<img alt="${demo ? '배치 확인용 예시 사진' : '연기가 처음 감지된 순간의 사진'}" src="${demo ? 'assets/chamber.jpg' : `${html(api)}/event/${html(cur.id)}.jpg`}">` : ''}
+      <div class="sa-text"><b>⚠ 연기 감지${demo ? ' · 데모' : ''}</b><small>${html(fmtTime(cur.start))} 시작 · 현재 점수 ${d.score.toFixed(2)} · 최고 ${Number(cur.peak || d.score).toFixed(2)}<br>${demo ? '화면 확인용 가상 상황 · 실제 감지 아님' : `${html(d.deviceId)} 카메라`}</small></div>
       <div class="sa-col"><button data-sa="ack">확인</button><button data-sa="sound">${soundOn ? '소리 끄기' : '소리 켜기'}</button></div>`;
   }
   function showCleared(inc) {
+    if(!demo)return;
     clearTimeout(hideTimer);
     banner.className = 'sa-banner clear show';
-    banner.innerHTML = `<div class="sa-text"><b>✓ 연기 해제</b><small>${html(fmtTime(inc.start))} ~ ${html(fmtTime(inc.end))} · ${html(fmtDur(inc.durationSec))}</small></div><div class="sa-col"><button data-sa="ack">닫기</button></div>`;
+    banner.innerHTML = `<div class="sa-text"><b>✓ 연기 해제${demo ? ' · 데모' : ''}</b><small>${html(fmtTime(inc.start))} ~ ${html(fmtTime(inc.end))} · ${html(fmtDur(inc.durationSec))}</small></div><div class="sa-col"><button data-sa="ack">닫기</button></div>`;
     hideTimer = setTimeout(() => banner.classList.remove('show'), CLEARED_SHOW_MS);
   }
   banner.addEventListener('click', e => {
@@ -90,14 +89,14 @@
     if (b.dataset.sa === 'ack') {
       dismissedId = last && last.current ? last.current.id : dismissedId;
       banner.classList.remove('show');
+      syncBeep(false);
     } else {
-      soundOn = !soundOn; store.set('airguard.smokeSound', soundOn ? '1' : '0');
+      soundOn = !soundOn; if (!demo) store.set('airguard.smokeSound', soundOn ? '1' : '0');
       b.textContent = soundOn ? '소리 끄기' : '소리 켜기';
       syncBeep(!!(last && last.smoke) && !banner.classList.contains('clear'));
     }
   });
 
-  function setPill(kind, text) { pill.className = `sa-pill ${kind}`; pill.innerHTML = `<i></i>${html(text)}`; }
 
   function rowsHtml(d) {
     return (d.incidents || []).slice(0, 3).flatMap(inc => {
@@ -109,6 +108,8 @@
       `<div class="activity-row"><time>${html(fmtTime(r[0]).slice(0, 5))}</time><span class="activity-icon">${typeof icon === 'function' ? icon(r[1]) : ''}</span><div><b>${html(r[2])}</b><p>${html(r[3])}</p></div></div>`).join('');
   }
   function injectRows() {
+    if (demo) { mountDemoToggle(); return; }
+    return; // The unified recent-alerts module owns the live activity panel.
     if (!last || typeof state === 'undefined' || state.page !== 'dashboard') return;
     const box = document.querySelector('.activity');
     if (box) {
@@ -132,14 +133,10 @@
       last = d;
       window.dispatchEvent(new CustomEvent('airguard:smoke-status', {detail:d}));
       injectRows();
-      const stale = d.ageSec != null && d.ageSec > STALE_SEC || !d.cameraOk;
-      const live = d.raw !== undefined ? d.raw : d.smoke;
-      setPill(stale ? 'warn' : live ? (d.smoke ? 'bad' : 'warn') : 'ok', stale ? '연기 감지: 카메라 응답 없음' : live ? (d.smoke ? `연기 감지 중 · 점수 ${d.score.toFixed(2)}` : `모델 연기 판정 · 움직임 조건 대기 · 점수 ${d.score.toFixed(2)}`) : d.smoke ? `연기 없음(알림 해제 대기) · 점수 ${d.score.toFixed(2)}` : `연기 없음 · 점수 ${d.score.toFixed(2)}`);
       if (d.smoke) {
         if (prev !== true) {                       // 새로 켜짐 (또는 페이지를 열었을 때 이미 켜져 있음)
           dismissedId = null;
           clearTimeout(hideTimer);
-          if (typeof showToast === 'function') showToast('연기가 감지되었습니다');
           if (typeof render === 'function' && state.page === 'dashboard') render();
         }
         showAlert(d); syncBeep(!banner.classList.contains('clear') && dismissedId !== (d.current && d.current.id));
@@ -152,12 +149,38 @@
       prev = d.smoke;
     } catch (e) {
       window.dispatchEvent(new CustomEvent('airguard:smoke-status', {detail:null}));
-      setPill('bad', '연기 알림 서버 연결 끊김');
     } finally {
       clearTimeout(timer);
     }
   }
-  setPill('', '연기 알림 서버 연결 중…');
+  function mountDemoToggle() {
+    const footer = document.querySelector('.camera-footer');
+    if (!footer || footer.querySelector('[data-smoke-demo]')) return;
+    const button = document.createElement('button');
+    button.className = 'button smoke-demo-toggle';
+    button.dataset.smokeDemo = '1';
+    button.type = 'button';
+    button.textContent = last?.smoke ? '연기 해제 테스트' : '연기 발생 테스트';
+    button.setAttribute('aria-pressed', String(!!last?.smoke));
+    button.addEventListener('click', () => {
+      const active = !last?.smoke;
+      const now = new Date().toISOString();
+      const incident = active
+        ? {id:'DEMO-SMOKE', start:now, peak:.94, end:null}
+        : {...last.current, end:now, durationSec:Math.round((Date.now()-Date.parse(last.current.start))/1000)};
+      last = {smoke:active, score:active ? .94 : .05, deviceId:'DEMO', cameraOk:true, ageSec:0,
+        current:active?incident:null, incidents:[incident]};
+      dismissedId = null;
+      clearTimeout(hideTimer);
+      window.dispatchEvent(new CustomEvent('airguard:smoke-status', {detail:last}));
+      if (active) showAlert(last); else showCleared(incident);
+      syncBeep(active);
+      button.textContent = active ? '연기 해제 테스트' : '연기 발생 테스트';
+      button.setAttribute('aria-pressed', String(active));
+    });
+    footer.appendChild(button);
+  }
+  if (demo) { mountDemoToggle(); return; }
   poll(); setInterval(poll, POLL_MS);
   window.addEventListener('hashchange', () => setTimeout(injectRows, 0));
 })();

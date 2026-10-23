@@ -10,6 +10,7 @@ import signal
 import sys
 import threading
 import time
+import uuid
 from urllib.request import urlopen
 from urllib.parse import urlsplit,parse_qs
 
@@ -165,6 +166,11 @@ def main():
     ap.add_argument('--host',default='127.0.0.1');ap.add_argument('--port',type=int,default=8095)
     ap.add_argument('--log',type=Path,default=ROOT/'runtime/integrated_decisions.jsonl')
     ap.add_argument('--database',type=Path,default=ROOT/'runtime/integrated_events.db')
+    ap.add_argument('--event-db',type=Path,default=ROOT/'runtime/pm_pending.sqlite3',
+                    help='Local PM recovery upload queue (no automatic MySQL connection)')
+    ap.add_argument('--device-id',default='jetson-1')
+    ap.add_argument('--temperature-event-db',type=Path,default=ROOT/'runtime/temperature_pending.sqlite3')
+    ap.add_argument('--recovery-camera-url',help='Existing smoke camera API origin; reuses its frames')
     ap.add_argument('--dashboard-lease-key',type=Path)
     ap.add_argument('--lease-timeout',type=float,default=15)
     args=ap.parse_args()
@@ -182,9 +188,25 @@ def main():
     import torch
     torch.set_num_threads(1)
     from integration_store import IntegrationStore
+    from pm_recovery import PMRecovery
     temperature=TemperatureController(ROOT/'handoff_v6/models/lstm_temperature_trajectory_v6.pt')
     smoke=SmokeFan()
     store=IntegrationStore(args.database)
+    recovery=PMRecovery(args.event_db,args.device_id)
+    temperature_recovery=PMRecovery(args.temperature_event_db,args.device_id,category='temperature')
+    recovery_camera=None
+    vision_recovery=None
+    if args.recovery_camera_url:
+        from event_photos import EventPhotos
+        from recovery_camera import RecoveryCamera
+        frame=args.event_db.parent/'recovery_camera.jpg'
+        recovery.recorder.photos=EventPhotos(frame,args.event_db.parent)
+        temperature_recovery.recorder.photos=EventPhotos(frame,args.temperature_event_db.parent)
+        recovery_camera=RecoveryCamera(args.recovery_camera_url,frame)
+        recovery_camera.start()
+        from vision_recovery import VisionRecovery
+        vision_recovery=VisionRecovery(args.recovery_camera_url,args.event_db,args.device_id)
+        vision_recovery.start()
     state={'status':None,'sensor_data':dict(available=False,stale=True,sensor=None,history=[],events=[])};lock=threading.Lock();stop=threading.Event();owner=None;serving=False
     class Handler(BaseHTTPRequestHandler):
         def log_message(self,*args):pass
@@ -205,7 +227,19 @@ def main():
             self.end_headers();self.wfile.write(body)
         def do_GET(self):
             url=urlsplit(self.path)
-            if url.path=='/api/control':
+            if url.path.startswith('/api/recovery-photo/'):
+                parts=url.path.strip('/').split('/')
+                try:
+                    if len(parts)!=4 or any(str(uuid.UUID(v))!=v for v in parts[2:]):raise ValueError('Invalid ID')
+                    photo=args.event_db.parent/'photos'/parts[2]/(parts[3]+'.jpg')
+                    if not photo.is_file():photo=args.temperature_event_db.parent/'photos'/parts[2]/(parts[3]+'.jpg')
+                    if not photo.is_file() or photo.stat().st_size>10*1024*1024:raise ValueError('Missing photo')
+                    raw=photo.read_bytes()
+                    if not raw.startswith(b'\xff\xd8') or not raw.endswith(b'\xff\xd9'):raise ValueError('Invalid JPEG')
+                except (ValueError,OSError):self.send_error(404);return
+                self.send_response(200);self.send_header('Content-Type','image/jpeg');self.send_header('Cache-Control','no-store')
+                self.send_header('Content-Length',str(len(raw)));self.end_headers();self.wfile.write(raw);return
+            elif url.path=='/api/control':
                 with lock:payload=dict(state['status']) if state['status'] else dict(mode='starting',timestamp=None)
                 stamp=payload.get('timestamp');payload['stale']=not finite(stamp) or time.time()-stamp>5
             elif url.path=='/api/temperature':
@@ -249,6 +283,10 @@ def main():
                             with urlopen(args.source_api,timeout=2) as r:data=json.load(r)
                         except (OSError,ValueError):data=dict(available=False,stale=True)
                     result=coord.step(data,enabled=lease.status()['active'] if lease else True)
+                    recovery.observe(data,result)
+                    temperature_recovery.observe(data,result)
+                    result['recoveryEvents']=recovery.snapshot()+temperature_recovery.snapshot()
+                    if vision_recovery:result['recoveryEvents']+=vision_recovery.snapshot()
                     if lease:result['dashboardLease']=lease.status()
                     store.record(data,result,coord.latest_decision)
                     result['sensor']=data.get('sensor')
@@ -268,6 +306,10 @@ def main():
                 elif args.shutdown!='hold':owner.send(*map(int,args.shutdown.split(',')))
             finally:owner.close()
         smoke.close()
+        recovery.close()
+        temperature_recovery.close()
+        if recovery_camera:recovery_camera.close()
+        if vision_recovery:vision_recovery.close()
         if serving:server.shutdown()
         server.server_close()
         store.close()

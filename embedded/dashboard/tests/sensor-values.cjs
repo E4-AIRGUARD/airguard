@@ -1,0 +1,30 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const source=fs.readFileSync('dist/live-measurements.js','utf8');
+const context=vm.createContext({assert,temperatureData:null,icon:()=>'',badge:()=>'',esc:String,
+  liveNumber:v=>Number.isFinite(v)?v.toFixed(1):'—',measuredChart:()=>'',trendThreshold:()=>null});
+vm.runInContext('const measured=()=>temperatureData?.available&&!temperatureData.stale?temperatureData.sensor:null;',context);
+vm.runInContext(source.slice(source.indexOf('function sensorValueAbnormal('),source.indexOf('function actualMetrics(')),context);
+vm.runInContext(source.slice(source.indexOf('function actualTrendCards('),source.indexOf('trends=function')),context);
+vm.runInContext(`
+temperatureData={available:true,stale:false,abnormal:false,sensor:{bme_ok:true,pms_ok:true,temperature_c:26,pm25_ug_m3:51,humidity_pct:40},history:[]};
+assert.equal(sensorValueAbnormal('temperature_c'),true);
+assert.equal(sensorValueAbnormal('pm25_ug_m3'),true);
+assert.equal(sensorValueAbnormal('humidity_pct'),false);
+assert.match(actualMetric('온도','temp',26,'°C',true,''),/metric-number sensor-abnormal/);
+assert.match(actualMetric('PM2.5','dust',51,'µg\/m³',true,''),/metric-number sensor-abnormal/);
+assert.equal((actualTrendCards().match(/metric-number sensor-abnormal/g)||[]).length,2);
+temperatureData.sensor.temperature_c=25;temperatureData.sensor.pm25_ug_m3=50;
+assert.equal(sensorValueAbnormal('temperature_c'),false);
+assert.equal(sensorValueAbnormal('pm25_ug_m3'),false);
+assert.ok(!actualTrendCards().includes('sensor-abnormal'));
+temperatureData.abnormal=true;
+assert.equal(sensorValueAbnormal('temperature_c'),true,'Active temperature recovery stays highlighted');
+temperatureData.stale=true;
+assert.equal(sensorValueAbnormal('temperature_c'),false);
+temperatureData.stale=false;temperatureData.sensor.bme_ok=false;
+assert.equal(sensorValueAbnormal('temperature_c'),false);
+temperatureData=null;
+assert.ok(!actualTrendCards().includes('sensor-abnormal'));
+`,context);
+assert.ok(!fs.readFileSync('dist/smoke-alert.js','utf8').includes('showToast('));
+console.log('PASS: abnormal sensor values on dashboard and trends, recovery, boundaries, stale/invalid data and no smoke toast.');

@@ -1,0 +1,141 @@
+{
+  "source": "E4-AIRGUARD_OpenFOAM.zip",
+  "source_sha256": "b125b93fb57f431bd3cf9f07b9b97f7ba020e629173c43ce23e09dbaa3888542",
+  "files": [
+    {
+      "path": "BASE/I100E100_BASE.mp4",
+      "bytes": 1355106,
+      "sha256": "7af3b4dd9aa860302fedfd1901e76a493c8274e8649a161f60a9a079fe09ee51"
+    },
+    {
+      "path": "BASE/I100E35_BASE.mp4",
+      "bytes": 1320429,
+      "sha256": "6fd560fbf17c1f41f032a3146801e5ff69402c0b11e406f149799d9290f6664d"
+    },
+    {
+      "path": "BASE/I100E60_BASE.mp4",
+      "bytes": 1338235,
+      "sha256": "cbb6650ccf13cd916ea8853069414448246831759d90d6e500496fb3c55dee0e"
+    },
+    {
+      "path": "BASE/I35E100_BASE.mp4",
+      "bytes": 1016022,
+      "sha256": "f12f5593229a80717fb4ae00dd95c7fb6aaa5ed5b27026a8cc885b66762110ef"
+    },
+    {
+      "path": "BASE/I35E35_BASE.mp4",
+      "bytes": 1042428,
+      "sha256": "0ed15d6f9d5e44c0ea87829596624cbaf22873751054902140b017e22ad032e6"
+    },
+    {
+      "path": "BASE/I35E60_BASE.mp4",
+      "bytes": 1009853,
+      "sha256": "dfc06ec726cbc868c04469e050f72b7667d745899eb61fc4e693c90c4e0e9952"
+    },
+    {
+      "path": "BASE/I60E100_BASE.mp4",
+      "bytes": 1339471,
+      "sha256": "855576f305e6d3ef3c9c8e6bd91d46208f8e6510c69583ff0d2eba2a2e48cd47"
+    },
+    {
+      "path": "BASE/I60E35_BASE.mp4",
+      "bytes": 1008281,
+      "sha256": "30234b192d63082dfacc6bfc534aa172cf436f8984930470fab3687b962d747a"
+    },
+    {
+      "path": "BASE/I60E60_BASE.mp4",
+      "bytes": 1026330,
+      "sha256": "f8e62b813634fe3d59bfdc1ec845c7c005dae808e7148538bf9e82ab231f4de6"
+    },
+    {
+      "path": "HEAT/I100E100_HEAT.mp4",
+      "bytes": 1723987,
+      "sha256": "d0641253bb6ccade4556f31371dd3dbf6c6c576186e7d618cbaf7df78f06c714"
+    },
+    {
+      "path": "HEAT/I100E35_HEAT.mp4",
+      "bytes": 1691638,
+      "sha256": "d83a607fd312b00f294dc54a92b19c6fb8c231619d8de4712a1596760f5041a1"
+    },
+    {
+      "path": "HEAT/I100E60_HEAT.mp4",
+      "bytes": 1719830,
+      "sha256": "db15b06f15d796f8e043142fc9be20fc15dd686aa1600655c61e27d874dbefe9"
+    },
+    {
+      "path": "HEAT/I35E100_HEAT.mp4",
+      "bytes": 1696023,
+      "sha256": "63f58e2e2c6329e2111a6858cc5ebe1c6c514aa1306a64e3db05f0271d9ee741"
+    },
+    {
+      "path": "HEAT/I35E35_HEAT.mp4",
+      "bytes": 1786421,
+      "sha256": "a792d9bac455d6e224e83ece36df3c7cccc86ca4a2d31038e49c45cc14a57c64"
+    },
+    {
+      "path": "HEAT/I35E60_HEAT.mp4",
+      "bytes": 1674007,
+      "sha256": "31691e5ed94ec6d30ee6fa439cdf9b718f4980a45dcd4ebbb062f49847d1359c"
+    },
+    {
+      "path": "HEAT/I60E100_HEAT.mp4",
+      "bytes": 1718537,
+      "sha256": "89104904b551a2c60684bc577453ca9175e9cf5fe80c21722e1828ddb6e428e0"
+    },
+    {
+      "path": "HEAT/I60E35_HEAT.mp4",
+      "bytes": 1678188,
+      "sha256": "b6c3ff51896fb46deac8e2ce1eb8e87d09db127b3a59f0dee1ba1ff887f3ecdb"
+    },
+    {
+      "path": "HEAT/I60E60_HEAT.mp4",
+      "bytes": 1697607,
+      "sha256": "d66db9b009a1a81cd41a239ec419431696b90a4a5eae5fc4e5fac45268e3ca2d"
+    },
+    {
+      "path": "SMOKE/I100E100_SMOKE.mp4",
+      "bytes": 1933049,
+      "sha256": "f14fd80a21301ac67aab75b3f353b66dc500f04e35a4f18a30ebec05deddd2e0"
+    },
+    {
+      "path": "SMOKE/I100E35_SMOKE.mp4",
+      "bytes": 1880053,
+      "sha256": "c72ba7a1d864f1fbd6420bd3a2780ca608ca0656a0e1f93e610c3422bca662c7"
+    },
+    {
+      "path": "SMOKE/I100E60_SMOKE.mp4",
+      "bytes": 1888663,
+      "sha256": "ecd091795b93dc923e4e5ddf9d9d3a29c1299405368931e858c6e623a8fc9fc6"
+    },
+    {
+      "path": "SMOKE/I35E100_SMOKE.mp4",
+      "bytes": 1880546,
+      "sha256": "844aa6a1ce4015ec7eaa43ae7ee59296fbcaeee1196772fdea07ce01b8d01549"
+    },
+    {
+      "path": "SMOKE/I35E35_SMOKE.mp4",
+      "bytes": 1987988,
+      "sha256": "ff85d793f3f1c38913e4853b1502f024f14ffa3ab9ccc17b8d08f29b4cde6906"
+    },
+    {
+      "path": "SMOKE/I35E60_SMOKE.mp4",
+      "bytes": 1883660,
+      "sha256": "55503b55dacd96f0d6058485aa57fc77322481d88b0511d977745e9983aa9135"
+    },
+    {
+      "path": "SMOKE/I60E100_SMOKE.mp4",
+      "bytes": 1884564,
+      "sha256": "dcbb143cb078efa22258acb724b4c4fe88e86b152a2a0e3a7df2d90892e621b3"
+    },
+    {
+      "path": "SMOKE/I60E35_SMOKE.mp4",
+      "bytes": 1893426,
+      "sha256": "0898ade055b9e3813ebfa9700b41ff87226e2d6e97f85f3abd122b406321f309"
+    },
+    {
+      "path": "SMOKE/I60E60_SMOKE.mp4",
+      "bytes": 1877774,
+      "sha256": "d6ba95413f74b07562099db95b9e0cd93af14c25cff71b0d0532fdf80e835f75"
+    }
+  ]
+}

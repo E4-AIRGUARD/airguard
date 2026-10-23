@@ -1,0 +1,33 @@
+.recovery-toolbar label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:#52657c}.recovery-toolbar select,.recovery-toolbar input{max-width:230px}.recovery-layout{align-items:start;grid-template-columns:1fr}.recovery-detail{padding:24px;min-width:0}.recovery-detail h3{margin:22px 0 10px;font-size:15px}.recovery-detail .chart{width:100%;height:auto}.recovery-times{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}.recovery-times dt{font-size:11px;color:#66788e}.recovery-times dd{margin:5px 0 0;font-size:12px}.recovery-device{display:block;color:#6c7d91;font-size:10px;margin-top:5px}.recovery-detail-actions{margin:20px 0}.recovery-photos{grid-template-columns:repeat(2,minmax(0,1fr));}.recovery-photos figure{margin:0}.recovery-photos figcaption{font-size:11px;margin-bottom:7px;color:#52657c}.recovery-photos img{width:100%;height:150px;object-fit:contain;background:#eef2f6}.recovery-detail details summary{cursor:pointer;margin-top:24px}.recovery-layout .events-list h2{display:flex;justify-content:space-between;gap:10px}.recovery-layout .event-select{text-align:left;font-size:12px}.recovery-layout td{font-size:12px}.recovery-layout .badge{white-space:normal}.recovery-photos [hidden]{display:none}@media(max-width:1150px){.recovery-layout{grid-template-columns:1fr}.recovery-photos{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:600px){.recovery-detail{padding:16px}.recovery-times{grid-template-columns:1fr}.recovery-photos{grid-template-columns:1fr 1fr}.recovery-toolbar .toolbar-group{width:100%}.recovery-toolbar label{flex:1;min-width:130px}.recovery-toolbar select,.recovery-toolbar input{width:100%}}
+
+.recovery-follow{display:flex;gap:8px;align-items:center;font-size:12px;color:#52657c;margin:12px 0}.recovery-follow input{width:auto}
+.recovery-detail-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.recovery-detail-actions button:disabled{opacity:.5;cursor:default}
+.recovery-loading{min-height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px 16px;color:#66788e;gap:12px}
+.recovery-loading strong{font-size:18px;color:#102743}.recovery-loading p{margin:0;font-size:12px}.recovery-loading small{font-size:11px}
+.recovery-spinner{width:30px;height:30px;border:3px solid #e6ecf3;border-top-color:#2375f2;border-radius:50%;animation:spin 1s linear infinite}
+@media(prefers-reduced-motion:reduce){.recovery-spinner{animation:none}}
+
+/* Keep pagination at the bottom of the event card as its height grows. */
+main[data-page="events"] .recovery-layout>.events-list{display:flex;flex-direction:column}
+main[data-page="events"] .recovery-layout>.events-list>.pagination{order:1;margin-top:auto;padding-top:16px;justify-content:center}
+
+/* Let record panels grow with their content and wrap with available width. */
+@media(min-width:1101px){
+main[data-page="events"] .recovery-layout{display:flex;flex-wrap:wrap;align-items:stretch}
+main[data-page="events"] .recovery-layout>.events-list{flex:1 1 320px}
+main[data-page="events"] .recovery-layout>.recovery-detail{flex:1 1 640px}
+main[data-page="events"] .recovery-detail{padding:16px}
+main[data-page="events"] .recovery-detail .card-head{padding:0 0 10px}
+main[data-page="events"] .recovery-times{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0}
+main[data-page="events"] .recovery-times dd{font-size:10px;line-height:1.5}
+main[data-page="events"] .recovery-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+main[data-page="events"] .recovery-detail h3{font-size:12px;margin:12px 0 6px}
+main[data-page="events"] .recovery-charts .note{font-size:9px;line-height:1.5}
+main[data-page="events"] .recovery-detail-actions{margin:10px 0}
+main[data-page="events"] .recovery-photos{grid-template-columns:repeat(3,minmax(0,1fr))}
+main[data-page="events"] .recovery-photos img{height:100px}
+main[data-page="events"] .recovery-toolbar{margin-bottom:8px}
+main[data-page="events"] .recovery-toolbar label{gap:4px;font-size:10px}
+main[data-page="events"] .recovery-follow{font-size:10px;margin:8px 0}
+}

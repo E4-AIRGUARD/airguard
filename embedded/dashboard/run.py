@@ -9,7 +9,7 @@ import math
 import sqlite3
 import socket
 import time
-from urllib.parse import urlsplit
+from urllib.parse import urlsplit, parse_qs
 from urllib.request import Request, urlopen
 from urllib.error import URLError
 
@@ -84,10 +84,11 @@ def read_temperature(database, power, now=None):
 
 class DashboardHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, database, power, lease_key=None,
-                 control_url='http://100.106.99.75:8095', **kwargs):
+                 control_url='http://100.106.99.75:8095', recovery=None, **kwargs):
         self.database, self.power = database, power
         self.lease_key=lease_key
         self.control_url=control_url.rstrip('/')
+        self.recovery=recovery
         super().__init__(*args, **kwargs)
 
     def do_POST(self):
@@ -117,7 +118,9 @@ class DashboardHandler(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         path = urlsplit(self.path).path
-        if path == '/api/temperature':
+        if path.startswith('/api/recovery/'):
+            self.recovery_request()
+        elif path == '/api/temperature':
             body = json.dumps(read_temperature(self.database, self.power), ensure_ascii=False,
                               allow_nan=False).encode('utf-8')
             self.send_response(200)
@@ -131,6 +134,64 @@ class DashboardHandler(SimpleHTTPRequestHandler):
         else:
             super().do_GET()
 
+    def recovery_request(self):
+        port = self.server.server_address[1]
+        if self.headers.get('Host') not in {f'127.0.0.1:{port}', f'localhost:{port}'}:
+            self.send_error(403); return
+        status, content_type = 200, 'application/json; charset=utf-8'
+        filename, archive = None, None
+        try:
+            if self.recovery is None: raise RuntimeError('Not configured')
+            url = urlsplit(self.path)
+            query = parse_qs(url.query, keep_blank_values=True)
+            parts = url.path.strip('/').split('/')
+            if parts == ['api', 'recovery', 'events']:
+                if set(query)-{'date','category','status','page'} or any(len(v)!=1 for v in query.values()):
+                    raise ValueError('Invalid query')
+                payload = self.recovery.list_events(query.get('date', [''])[0], query.get('category', ['all'])[0],
+                    query.get('status', ['all'])[0], int(query.get('page', ['1'])[0]))
+            elif query:
+                raise ValueError('Unexpected query')
+            elif len(parts)==4 and parts[:3]==['api','recovery','events']:
+                payload = self.recovery.detail(parts[3])
+            elif len(parts)==5 and parts[:3]==['api','recovery','events'] and parts[4]=='csv':
+                payload = self.recovery.export_csv(parts[3])
+                content_type = 'text/csv; charset=utf-8'
+                filename = 'AIRGUARD_'+parts[3]+'.csv'
+            elif len(parts)==5 and parts[:3]==['api','recovery','events'] and parts[4]=='photos.zip':
+                archive = self.recovery.export_photos(parts[3])
+                payload = b''
+                content_type = 'application/zip'
+                filename = 'AIRGUARD_'+parts[3]+'_photos.zip'
+            elif len(parts)==4 and parts[:3]==['api','recovery','photos']:
+                payload = self.recovery.photo(parts[3]); content_type = 'image/jpeg'
+            else:
+                raise LookupError('Not found')
+        except ValueError:
+            status, payload = 400, dict(available=False, message='조회 조건이 올바르지 않습니다.')
+        except LookupError:
+            status, payload = 404, dict(available=False, message='기록 또는 원본 사진이 없습니다.')
+        except Exception:
+            # Never expose driver errors: they can contain hostnames or credentials.
+            status, payload = 503, dict(available=False, message='Aiven 기록을 조회할 수 없습니다. 서버의 DB 설정과 연결 상태를 확인하세요.')
+        body = payload if isinstance(payload, bytes) else json.dumps(clean_json(payload), ensure_ascii=False, allow_nan=False).encode('utf-8')
+        try:
+            length = len(body)
+            if archive is not None:
+                length = archive.seek(0, 2)
+                archive.seek(0)
+            self.send_response(status)
+            self.send_header('Content-Type', content_type)
+            self.send_header('Cache-Control', 'no-store')
+            self.send_header('X-Content-Type-Options', 'nosniff')
+            if filename: self.send_header('Content-Disposition', 'attachment; filename="'+filename+'"')
+            self.send_header('Content-Length', str(length))
+            self.end_headers()
+            if archive is not None: self.copyfile(archive, self.wfile)
+            else: self.wfile.write(body)
+        finally:
+            if archive is not None: archive.close()
+
 def main():
     parser = argparse.ArgumentParser(description="Airguard dashboard local preview")
     parser.add_argument("--port", type=int, default=8091)
@@ -138,6 +199,9 @@ def main():
     parser.add_argument('--control-url', default='http://100.106.99.75:8095',
                         help='Trusted Jetson control server origin (configured by the operator)')
     parser.add_argument('--lease-key', type=Path, default=ROOT/'runtime/dashboard_lease.key')
+    parser.add_argument('--aiven-env', type=Path, default=ROOT/'runtime/aiven/.env')
+    parser.add_argument('--photo-root', type=Path, default=ROOT/'runtime/aiven',
+                        help='Local root containing the archived photos/ directory')
     parser.add_argument("--database", type=Path,
                         default=ROOT / 'integrations/handoff_v6/runtime/edge_events.db')
     parser.add_argument("--temperature-src", type=Path,
@@ -158,8 +222,12 @@ def main():
     spec.loader.exec_module(power)
     lease_file=args.lease_key
     lease_key=lease_file.read_text().strip() if lease_file.is_file() else None
+    from aiven_connection import connect
+    from recovery_api import RecoveryRepository
+    recovery = RecoveryRepository(lambda: connect(args.aiven_env, readonly=True), args.photo_root, args.control_url)
     handler = partial(DashboardHandler, directory=str(ROOT / 'dist'),lease_key=lease_key,
                       control_url=args.control_url,
+                      recovery=recovery,
                       database=args.database.resolve(), power=power)
     try:
         with DashboardServer((args.host, args.port), handler) as server:

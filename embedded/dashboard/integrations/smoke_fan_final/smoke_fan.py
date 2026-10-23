@@ -29,16 +29,20 @@ class FanCommand:
 
 
 class SmokeFan:
-    def __init__(self, model_path='model.json', deadline_s=70.0, range_pm=50.0, interval_s=1.0, log_path=None):
+    def __init__(self, model_path='model.json', deadline_s=70.0, range_pm=50.0, interval_s=1.0, log_path=None, event_db=None, device_id='jetson-1'):
         with open(os.path.join(HERE, model_path), encoding='utf-8') as model_file:
             model = json.load(model_file)
         self.planner = Planner(model, prune=False, include_tail=False)
         self.ctl = FanController(self.planner, deadline_s or None, interval_s=interval_s, range_pm=range_pm)
         self.meter = EnergyMeter(self.planner, log_path)
         self.t0 = None
+        self.rec = None
+        if event_db:     # PM 이벤트(50 초과 -> 50 이하 회복)를 로컬 대기열에 기록. 올리는 건 uploader.py
+            from event_recorder import EventRecorder, QueueSink
+            self.rec = EventRecorder(QueueSink(event_db), device_id, pm_limit=range_pm, config={'deadline_s': deadline_s, 'model': model_path, 'pwm_source': 'smoke_demand'})
 
-    def step(self, pm, now=None):
-        """센서값 1개를 넣고 현재 요구 조합을 돌려준다. now는 초 단위 시각(생략하면 time.time())."""
+    def step(self, pm, now=None, event_time=None):
+        """now는 제어 시계, event_time은 Unix 시각(생략하면 time.time()). 기록 PWM은 PM 요구값."""
         now = time.time() if now is None else now
         if self.t0 is None:
             self.t0 = now
@@ -47,10 +51,16 @@ class SmokeFan:
         d = self.ctl.tick(t)
         row = self.meter.update(d)
         i, e = (int(x) for x in d.combo.split(','))
+        if self.rec:
+            # The control clock may be monotonic; event timestamps must be Unix time.
+            self.rec.update(time.time() if event_time is None else event_time, pm, i, e)
         return FanCommand(i, e, d.reason, d.pm, self.meter.energy_j)
 
     def close(self):
         self.meter.close()
+        if self.rec:
+            self.rec.close()
+            self.rec.sink.close()
 
 
 def combine_max(smoke_cmd, temp_intake, temp_exhaust):

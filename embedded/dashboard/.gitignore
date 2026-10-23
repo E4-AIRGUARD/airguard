@@ -17,3 +17,8 @@ integrations/**/runtime/
 *.key
 *.pid
 *.jsonl
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+*.sqlite3-journal
+*.sqlite3.lock

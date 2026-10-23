@@ -38,11 +38,18 @@ def main():
     ap.add_argument('--interval', type=float, default=1.0, help='제어기 재계획 주기(초)')
     ap.add_argument('--prune', action='store_true', help='후보를 3단계로 줄임(기본은 9개 조합 전부 비교)')
     ap.add_argument('--period', type=float, default=1.0, help='센서 읽는 주기(초)')
+    ap.add_argument('--event-db', default=None, help='PM 이벤트(50 초과 -> 회복)를 쌓을 로컬 대기열 파일(예: pending.sqlite3). 지정하면 uploader.py가 DB로 올림')
+    ap.add_argument('--device-id', default='jetson-1')
     a = ap.parse_args()
 
-    model = json.load(open(os.path.join(HERE, a.model), encoding='utf-8'))
+    with open(os.path.join(HERE, a.model), encoding='utf-8') as model_file:
+        model = json.load(model_file)
     planner = Planner(model, prune=a.prune, include_tail=a.include_tail)
     ctl, meter = FanController(planner, a.deadline or None, interval_s=a.interval, range_pm=a.range_pm), EnergyMeter(planner, a.log)
+    rec = None
+    if a.event_db:
+        from event_recorder import EventRecorder, QueueSink
+        rec = EventRecorder(QueueSink(a.event_db), a.device_id, pm_limit=a.range_pm, config={'deadline_s': a.deadline, 'model': a.model, 'pwm_source': 'smoke_demand', 'live': a.live, 'fake': a.fake})
     reader = fake_pm_factory() if a.fake else read_pm
     last, t0 = None, time.time()
     try:
@@ -56,6 +63,9 @@ def main():
             ctl.feed(now, pm)
             d = ctl.tick(now)
             row = meter.update(d)
+            if rec:
+                ci, ce = (int(x) for x in d.combo.split(','))
+                rec.update(time.time(), pm, ci, ce)
             if d.combo != last:
                 i, e = (int(x) for x in d.combo.split(','))
                 print('PM=%s -> 흡기/배기 %s (%s)' % (row['pm'], d.combo, d.reason))
@@ -67,6 +77,9 @@ def main():
         pass
     finally:
         meter.close()
+        if rec:
+            rec.close()
+            rec.sink.close()
         if a.live:
             set_fan(100, 100)                # 종료 시 안전하게 환기
         print('추정 누적 에너지 %.1f J' % meter.energy_j)
