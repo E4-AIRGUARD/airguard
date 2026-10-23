@@ -36,8 +36,10 @@ class FanPowerTests(unittest.TestCase):
         self.assertIsNone(observed_energy(rows[:1])['energy_wh'])
 
     def test_runtime_and_db_use_explicit_units(self):
-        from main_runner import relative_fan_energy
-        self.assertAlmostEqual(relative_fan_energy(35, 35), candidate_power_w(35, 35))
+        from pathlib import Path
+        source = (Path(__file__).resolve().parents[1]/'src/event_store.py').read_text()
+        self.assertIn('estimated_power_w', source)
+        self.assertIn('power_estimation_method', source)
 
 
 if __name__ == '__main__':

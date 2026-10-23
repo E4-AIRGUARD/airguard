@@ -1,4 +1,8 @@
 """Train 1/3/5 s trajectories, future rise and upper-limit risk on fixed run splits."""
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]/"src"))
+
 import argparse
 import hashlib
 import json
@@ -9,10 +13,9 @@ import pandas as pd
 import torch
 from torch import nn
 
-from improve_lstm_stability import examples
+from prepare_examples import examples
 from project_paths import TRAINING_CSV,SPLIT_CSV,RESULTS_DIR,MODELS_DIR
 from trajectory_lstm_v6 import TrajectoryLSTM
-from main_runner import LstmMpcController
 
 
 def build_items(data):

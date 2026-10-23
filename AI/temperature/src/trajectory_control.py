@@ -11,7 +11,7 @@ class TrajectorySwitchGate:
     def reset(self):
         self.pending=None;self.count=0
 
-    def decide(self,current,proposed,now,last_change,maintenance_seconds,upper_risk=False):
+    def decide(self,current,proposed,now,last_change,upper_risk=False):
         if current is None:
             self.reset();return proposed,'초기 궤적 후보 선택'
         key=(proposed.intake_pwm,proposed.exhaust_pwm)
@@ -37,7 +37,8 @@ class TrajectorySwitchGate:
 
 
 def choose_trajectory(controller,history,allowed):
-    from main_runner import CandidateComparison,InferenceResult,candidate_summary,relative_fan_energy
+    from control_types import CandidateComparison,InferenceResult,candidate_summary
+    from fan_power import candidate_power_w as relative_fan_energy
     pairs=allowed or controller.pwm_candidates
     current=getattr(controller,'current_command_pair',None)
     rows=[]

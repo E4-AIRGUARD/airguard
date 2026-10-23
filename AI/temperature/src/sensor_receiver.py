@@ -133,26 +133,3 @@ class SerialSensorReceiver:
             if self.serial_port is not None:
                 self.serial_port.close()
                 self.serial_port = None
-
-
-class DummySensorPublisher:
-    """USB Serial 없이 버퍼·제어·대시보드 흐름을 확인합니다."""
-
-    def __init__(self, on_sample: Callable[[SensorSample], None], stop_event: Event):
-        self.on_sample = on_sample
-        self.stop_event = stop_event
-        self.thread = Thread(target=self._run, name="dummy-sensor", daemon=True)
-
-    def start(self) -> None:
-        self.thread.start()
-
-    def _run(self) -> None:
-        temperature = 22.5
-        direction = 1.0
-        while not self.stop_event.wait(1.0):
-            temperature += 0.09 * direction
-            if temperature >= 27.0:
-                direction = -1.0
-            elif temperature <= 22.5:
-                direction = 1.0
-            self.on_sample(SensorSample(timestamp=time.time(), temperature_c=temperature))
