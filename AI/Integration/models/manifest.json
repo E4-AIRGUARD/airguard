@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "source_commit": "996b85fcf88fadcb5654254107b254a9546d809a",
+  "models": [
+    {
+      "path": "temperature/lstm_temperature_trajectory_v6.pt",
+      "bytes": 29193,
+      "sha256": "ed0adbdb8ee35a3703bfc0bba4cd1d441e2c454233f6b3ff5e14ff516ee418f6",
+      "source": "embedded/dashboard/integrations/handoff_v6/models/lstm_temperature_trajectory_v6.pt"
+    },
+    {
+      "path": "pm/model.json",
+      "bytes": 10401,
+      "sha256": "4e0adc1eaa2b88b161271aa2f977a5ba88b5de1ad350ef8335239c3f1f7bb598",
+      "source": "embedded/dashboard/integrations/smoke_fan_final/model.json"
+    }
+  ]
+}

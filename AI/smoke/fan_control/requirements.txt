@@ -1,0 +1,4 @@
+# 젯슨에서 제어기를 돌릴 때는 표준 라이브러리만 필요해요.
+numpy>=1.24          # 회귀 모델을 다시 학습할 때만 필요 (training/)
+pymysql>=1.1         # 이벤트를 MySQL로 올릴 때만 필요 (integrations/db/uploader.py)
+pytest>=8            # 테스트 (tests/)
